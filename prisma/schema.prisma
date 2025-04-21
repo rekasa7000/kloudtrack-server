@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+  SUPERADMIN
+
+  @@map("user_role_enum")
+}
+
+enum ProblemStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+
+  @@map("problem_status_enum")
+}
+
+model User {
+  id             Int       @id @default(autoincrement()) @map("user_id")
+  userName       String    @unique @map("user_name")
+  firstName      String?   @map("first_name")
+  lastName       String?   @map("last_name")
+  email          String    @unique @map("email")
+  role           Role      @map("role")
+  password       String    @map("password")
+  phone          String?   @map("phone")
+  profilePicture String?   @map("profile_picture")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime? @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Organization {
+  id               Int       @id @default(autoincrement()) @map("organization_id")
+  organizationName String    @map("organization_name")
+  description      String?   @map("description")
+  displayPicture   String?   @map("display_picture")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime? @updatedAt @map("updated_at")
+
+  @@map("organizations")
+}
+
+model ApiKey {
+  id             Int       @id @default(autoincrement()) @map("api_key_id")
+  organizationId Int       @map("organization_id")
+  keyValue       String    @map("key_value")
+  isActive       Boolean   @map("is_active")
+  expiresAt      DateTime  @map("expires_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime? @updatedAt @map("updated_at")
+
+  @@map("api_keys")
+}
+
+model Station {
+  id              Int       @id @default(autoincrement()) @map("station_id")
+  stationName     String    @unique @map("station_name")
+  stationType     String    @map("station_type")
+  location        Json      @map("location")
+  barangay        String    @map("barangay")
+  city            String    @map("city")
+  province        String    @map("province")
+  country         String    @map("country")
+  password        String    @map("password")
+  elevation       Float?    @map("elevation")
+  stationPicture  String?   @map("station_picture")
+  isActive        Boolean   @map("is_active")
+  activatedAt     DateTime  @map("activated_at")
+  firmwareVersion String    @map("firmware_version")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime? @updatedAt @map("updated_at")
+
+  @@map("stations")
+}
+
+model SensorData {
+  id             Int      @id @default(autoincrement()) @map("sensor_data_id")
+  stationId      Int      @map("station_id")
+  temperature    Float?   @map("temperature")
+  humidity       Float?   @map("humidity")
+  pressure       Float?   @map("pressure")
+  heatIndex      Float?   @map("heat_index")
+  windDirection  Float?   @map("wind_direction")
+  windSpeed      Float?   @map("wind_speed")
+  precipitation  Float?   @map("precipitation")
+  uvIndex        Float?   @map("uv_index")
+  lightIntensity Float?   @map("light_intensity")
+  recordedAt     DateTime @map("recorded_at")
+  createdAt      DateTime @map("created_at")
+
+  @@map("sensor_data")
+}
+
+model ProblemReport {
+  id          Int           @id @default(autoincrement()) @map("problem_report_id")
+  title       String        @map("title")
+  description String        @map("description")
+  metadata    Json          @map("metadata")
+  issuedBy    Int?          @map("issued_by")
+  status      ProblemStatus @default(OPEN) @map("status")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  @@map("problem_reports")
+}

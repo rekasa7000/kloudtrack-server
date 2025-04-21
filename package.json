@@ -1,0 +1,51 @@
+{
+  "name": "kloudtrack-backend",
+  "version": "1.0.0",
+  "description": "Backend for weather station data collection using MQTT, WebSocket and REST API",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "concurrently \"tsc --watch\" \"nodemon -q dist/server.js\"",
+    "lint": "eslint 'src/**/*.ts' --fix",
+    "test": "jest",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio"
+  },
+  "keywords": [
+    "express",
+    "typescript",
+    "server"
+  ],
+  "author": "rekasa <regeecasana57@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "@prisma/client": "^5.4.1",
+    "@types/express": "^5.0.1",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.19",
+    "concurrently": "^8.2.2",
+    "cors": "^2.8.5",
+    "mqtt": "^5.0.5",
+    "nodemon": "^3.1.9",
+    "pino": "^8.15.1",
+    "pino-pretty": "^10.2.0",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@sinclair/typebox": "^0.34.33",
+    "@types/jsonwebtoken": "^9.0.9",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.1",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "prisma": "^5.4.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
