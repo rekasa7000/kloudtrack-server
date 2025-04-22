@@ -1,28 +1,20 @@
-import { TSchema } from "@sinclair/typebox";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
 import { NextFunction, Request, Response } from "express";
+import { z } from "zod";
+import { AppError } from "../utils/error";
 
-const ajv = new Ajv({ allErrors: true });
-addFormats(ajv);
-
-type RequestPart = "body" | "query" | "params" | "headers";
-
-export const validate = <T extends TSchema>(
-  schema: TSchema,
-  part: RequestPart = "body"
-) => {
-  const validateFn = ajv.compile(schema);
-  return (req: Request, res: Response, next: NextFunction): void => {
-    const data = req[part];
-    const valid = validateFn(data);
-
-    if (!valid) {
-      res.status(400).json({
-        message: `Validation error on part ${part}`,
-        errors: validateFn.errors,
-      });
+export const validate =
+  (schema: z.ZodObject<any>) =>
+  (req: Request, res: Response, next: NextFunction) => {
+    try {
+      schema.parse(req.body);
+      next();
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        console.error("Validation Errors:", error.issues);
+        const zError = error.issues[0].message;
+        next(new AppError(zError, 401));
+      } else {
+        next(new AppError("Invalid Data", 401));
+      }
     }
-    next();
   };
-};
