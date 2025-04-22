@@ -1,17 +1,32 @@
 import { Request, Response, NextFunction } from "express";
-
-export interface AppError extends Error {
-  status?: number;
-}
+import { AppError } from "../utils/error";
+import logger from "../utils/logger";
+import config from "../config/config";
 
 export const errorHandler = (
-  err: AppError,
+  err: Error | AppError,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  console.error(err);
-  res.status(err.status || 500).json({
-    message: err.message || "Internal Server Error",
+  const statusCode = "statusCode" in err ? err.statusCode : 500;
+  const message = err.message || "Internal Server Error";
+
+  if (statusCode === 500 || !("isOperational" in err)) {
+    logger.error(`[${req.method}] ${req.path} >> ${statusCode}: ${message}`, {
+      stack: err.stack,
+    });
+  }
+
+  res.status(statusCode).json({
+    success: false,
+    message,
+    stack: config.NODE_ENV === "development" ? err.stack : undefined,
   });
+};
+
+export const asyncHandler = (fn: any) => {
+  return function (req: Request, res: Response, next: NextFunction) {
+    fn(req, res, next).catch(next);
+  };
 };

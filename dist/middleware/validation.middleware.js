@@ -1,25 +1,22 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validate = void 0;
-const ajv_1 = __importDefault(require("ajv"));
-const ajv_formats_1 = __importDefault(require("ajv-formats"));
-const ajv = new ajv_1.default({ allErrors: true });
-(0, ajv_formats_1.default)(ajv);
-const validate = (schema, part = "body") => {
-    const validateFn = ajv.compile(schema);
-    return (req, res, next) => {
-        const data = req[part];
-        const valid = validateFn(data);
-        if (!valid) {
-            res.status(400).json({
-                message: `Validation error on part ${part}`,
-                errors: validateFn.errors,
-            });
-        }
+const zod_1 = require("zod");
+const error_1 = require("../utils/error");
+const validate = (schema) => (req, res, next) => {
+    try {
+        schema.parse(req.body);
         next();
-    };
+    }
+    catch (error) {
+        if (error instanceof zod_1.z.ZodError) {
+            console.error("Validation Errors:", error.issues);
+            const zError = error.issues[0].message;
+            next(new error_1.AppError(zError, 401));
+        }
+        else {
+            next(new error_1.AppError("Invalid Data", 401));
+        }
+    }
 };
 exports.validate = validate;
