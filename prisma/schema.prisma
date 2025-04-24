@@ -33,10 +33,23 @@ model User {
   password       String    @map("password")
   phone          String?   @map("phone")
   profilePicture String?   @map("profile_picture")
+  organizationId  Int?         @map("organization_id")
   createdAt      DateTime  @default(now()) @map("created_at")
   updatedAt      DateTime? @updatedAt @map("updated_at")
+  resetTokens    ResetToken[] @relation("UserResetTokens")
 
   @@map("users")
+}
+
+model ResetToken {
+  id        Int      @id @default(autoincrement()) @map("reset_token_id")
+  token     String   @unique @map("token")
+  userId    Int      @map("user_id")
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  user      User     @relation("UserResetTokens", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("reset_tokens")
 }
 
 model Organization {

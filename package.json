@@ -21,7 +21,6 @@
   "author": "rekasa <regeecasana57@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "@prisma/client": "^5.4.1",
     "@types/express": "^5.0.1",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.19",
@@ -34,16 +33,23 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@prisma/client": "^6.6.0",
     "@sinclair/typebox": "^0.34.33",
     "@types/jsonwebtoken": "^9.0.9",
+    "@types/nodemailer": "^6.4.16",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.1",
     "express": "^5.1.0",
+    "express-validator": "^7.2.1",
+    "form-data": "^4.0.2",
     "jsonwebtoken": "^9.0.2",
-    "prisma": "^5.4.1"
+    "mailgun.js": "^12.0.1",
+    "nodemailer": "^6.9.15",
+    "prisma": "^6.6.0",
+    "zod": "^3.24.3"
   },
   "engines": {
     "node": ">=18.0.0"
