@@ -34,8 +34,10 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@types/aws-iot-device-sdk": "^2.2.8",
     "@types/cors": "^2.8.17",
     "@types/jsonwebtoken": "^9.0.9",
+    "aws-iot-device-sdk": "^2.2.15",
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.1",
