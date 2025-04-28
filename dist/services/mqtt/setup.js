@@ -3,38 +3,51 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.mqttService = void 0;
-exports.setupMqttService = setupMqttService;
+exports.setupMqttService = void 0;
 const mqtt_1 = require("../../config/mqtt");
 const logger_1 = __importDefault(require("../../utils/logger"));
 const service_1 = require("./service");
-exports.mqttService = (0, service_1.createMqttService)(mqtt_1.mqttConfig);
-function setupMqttService() {
-    exports.mqttService.subscribe("devices/+/telemetry", (message) => {
-        logger_1.default.info("Received telemetry data:", message);
-        // * TODO: CREATE DATA IN THE DATABSE
+const mqttService = (0, service_1.createMultiStationMqttService)();
+const setupMqttService = async () => {
+    // const stations = await prisma.station.findMany();
+    // stations.map((station) => {
+    //   mqttService.addStation(createStationConfig(station.stationName));
+    // });
+    mqttService.addStation((0, mqtt_1.createStationConfig)("test"));
+    await mqttService.connectAll();
+    mqttService.subscribe("Kloudtrack/weather/data", (message) => {
+        console.log(message.weather.temperature);
     });
-    exports.mqttService.subscribe("devices/+/status", (message) => {
-        logger_1.default.info("Device status update:", message);
+    mqttService.on("message", async ({ stationId, topic, message }) => {
+        try {
+            logger_1.default.info(`Message received from ${stationId} on topic ${topic}`);
+            console.log("station id: ", stationId);
+            console.log("topic: ", topic);
+            console.log("payload: ", message);
+            const payloadStr = message.toString();
+            const data = JSON.parse(payloadStr);
+            if (!data.temperature || !data.humidity) {
+                logger_1.default.warn(`Invalid payload from station ${stationId}:`, data);
+                return;
+            }
+            logger_1.default.info(`Data saved for station ${stationId}`);
+        }
+        catch (error) {
+            logger_1.default.error(`Failed to process message from ${stationId}:`, error);
+        }
     });
-    // Connect to AWS IoT Core
-    exports.mqttService
-        .connect()
-        .then(() => {
-        logger_1.default.info("Successfully connected to AWS IoT Core");
-    })
-        .catch((error) => {
-        logger_1.default.error("Failed to connect to AWS IoT Core:", error);
-        process.exit(1);
+    // * LOGIC HERE
+    // default handlers
+    mqttService.on("reconnect", (stationId) => {
+        logger_1.default.info(`MQTT client for station ${stationId} reconnecting`);
     });
-    exports.mqttService.on("reconnect", () => {
-        logger_1.default.info("MQTT client reconnecting");
+    mqttService.on("offline", (stationId) => {
+        logger_1.default.warn(`MQTT client for station ${stationId} is offline`);
     });
-    exports.mqttService.on("offline", () => {
-        logger_1.default.warn("MQTT client is offline");
+    mqttService.on("error", (error, stationId) => {
+        logger_1.default.error(`MQTT client error for station ${stationId}:`, error);
     });
-    exports.mqttService.on("error", (error) => {
-        logger_1.default.error("MQTT client error:", error);
-    });
-    return exports.mqttService;
-}
+    mqttService.publish("devices/device123/control", { command: "ON" });
+    return mqttService;
+};
+exports.setupMqttService = setupMqttService;

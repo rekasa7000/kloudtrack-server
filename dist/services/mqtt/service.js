@@ -36,11 +36,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createMqttService = exports.MqttService = void 0;
+exports.createMultiStationMqttService = exports.MultiStationMqttService = void 0;
 const awsIot = __importStar(require("aws-iot-device-sdk"));
 const logger_1 = __importDefault(require("../../utils/logger"));
 const events_1 = require("events");
-class MqttService {
+class StationConnection {
     config;
     device;
     connected = false;
@@ -52,10 +52,6 @@ class MqttService {
     }
     init() {
         try {
-            console.log("[MQTT CONFIG PATHS]");
-            console.log("keyPath:", this.config.keyPath);
-            console.log("certPath:", this.config.certPath);
-            console.log("caPath:", this.config.caPath);
             this.device = new awsIot.device({
                 keyPath: this.config.keyPath,
                 certPath: this.config.certPath,
@@ -69,15 +65,15 @@ class MqttService {
             this.setupEventHandlers();
         }
         catch (error) {
-            logger_1.default.error("Failed to initialize MQTT connection:", error);
+            logger_1.default.error(`Failed to initialize MQTT connection for station ${this.config.stationId}:`, error);
             throw error;
         }
     }
     setupEventHandlers() {
         this.device.on("connect", () => {
             this.connected = true;
-            logger_1.default.info(`MQTT client connected: ${this.config.clientId}`);
-            this.eventEmitter.emit("connect");
+            logger_1.default.info(`MQTT client connected: ${this.config.clientId} (Station: ${this.config.stationId})`);
+            this.eventEmitter.emit("connect", this.config.stationId);
             if (this.subscriptions.size > 0) {
                 this.subscriptions.forEach((_, topic) => {
                     this.device.subscribe(topic);
@@ -86,39 +82,40 @@ class MqttService {
         });
         this.device.on("close", () => {
             this.connected = false;
-            logger_1.default.info(`MQTT client disconnected: ${this.config.clientId}`);
-            this.eventEmitter.emit("disconnect");
+            logger_1.default.info(`MQTT client disconnected: ${this.config.clientId} (Station: ${this.config.stationId})`);
+            this.eventEmitter.emit("disconnect", this.config.stationId);
         });
         this.device.on("reconnect", () => {
-            logger_1.default.info(`MQTT client reconnecting: ${this.config.clientId}`);
-            this.eventEmitter.emit("reconnect");
+            logger_1.default.info(`MQTT client reconnecting: ${this.config.clientId} (Station: ${this.config.stationId})`);
+            this.eventEmitter.emit("reconnect", this.config.stationId);
         });
         this.device.on("offline", () => {
             this.connected = false;
-            logger_1.default.info(`MQTT client offline: ${this.config.clientId}`);
-            this.eventEmitter.emit("offline");
+            logger_1.default.info(`MQTT client offline: ${this.config.clientId} (Station: ${this.config.stationId})`);
+            this.eventEmitter.emit("offline", this.config.stationId);
         });
         this.device.on("error", (error) => {
-            logger_1.default.error(`MQTT client error: ${this.config.clientId}`, error);
-            this.eventEmitter.emit("error", error);
+            logger_1.default.error(`MQTT client error: ${this.config.clientId} (Station: ${this.config.stationId})`, error);
+            this.eventEmitter.emit("error", error, this.config.stationId);
         });
         this.device.on("message", (topic, payload) => {
             try {
                 const message = JSON.parse(payload.toString());
-                logger_1.default.debug(`Message received on topic ${topic}:`, message);
+                logger_1.default.debug(`Message received on topic ${topic} (Station: ${this.config.stationId}):`, message);
                 const topicParts = topic.split("/");
                 if (topicParts.length >= 2) {
                     const deviceId = topicParts[1];
                     message.deviceId = deviceId;
                 }
+                message.stationId = this.config.stationId;
                 const subscribers = this.subscriptions.get(topic);
                 if (subscribers) {
                     subscribers.forEach((callback) => {
                         try {
-                            callback(message);
+                            callback(message, this.config.stationId);
                         }
                         catch (error) {
-                            logger_1.default.error(`Error in subscriber callback for topic ${topic}:`, error);
+                            logger_1.default.error(`Error in subscriber callback for topic ${topic} (Station: ${this.config.stationId}):`, error);
                         }
                     });
                 }
@@ -127,21 +124,26 @@ class MqttService {
                         subscribedTopic !== topic) {
                         subscriberCallbacks.forEach((callback) => {
                             try {
-                                callback(message);
+                                callback(message, this.config.stationId);
                             }
                             catch (error) {
-                                logger_1.default.error(`Error in wildcard subscriber callback for topic ${subscribedTopic}:`, error);
+                                logger_1.default.error(`Error in wildcard subscriber callback for topic ${subscribedTopic} (Station: ${this.config.stationId}):`, error);
                             }
                         });
                     }
                 });
-                this.eventEmitter.emit("message", { topic, message });
+                this.eventEmitter.emit("message", {
+                    topic,
+                    message,
+                    stationId: this.config.stationId,
+                });
             }
             catch (error) {
-                logger_1.default.error(`Failed to parse message on topic ${topic}:`, error);
+                logger_1.default.error(`Failed to parse message on topic ${topic} (Station: ${this.config.stationId}):`, error);
                 this.eventEmitter.emit("message", {
                     topic,
                     message: payload.toString(),
+                    stationId: this.config.stationId,
                 });
             }
         });
@@ -173,7 +175,7 @@ class MqttService {
         }
         return new Promise((resolve, reject) => {
             const connectTimeout = setTimeout(() => {
-                reject(new Error("Connection timeout"));
+                reject(new Error(`Connection timeout for station ${this.config.stationId}`));
             }, 10000);
             const connectHandler = () => {
                 clearTimeout(connectTimeout);
@@ -200,7 +202,7 @@ class MqttService {
             }
         }
         this.subscriptions.get(topic).add(callback);
-        logger_1.default.info(`Subscribed to topic: ${topic}`);
+        logger_1.default.info(`Subscribed to topic: ${topic} (Station: ${this.config.stationId})`);
     }
     unsubscribe(topic, callback) {
         if (!this.subscriptions.has(topic)) {
@@ -221,28 +223,22 @@ class MqttService {
                 this.device.unsubscribe(topic);
             }
         }
-        logger_1.default.info(`Unsubscribed from topic: ${topic}`);
+        logger_1.default.info(`Unsubscribed from topic: ${topic} (Station: ${this.config.stationId})`);
     }
     publish(topic, message, options = {}) {
         return new Promise((resolve, reject) => {
             const messageStr = typeof message === "string" ? message : JSON.stringify(message);
             this.device.publish(topic, messageStr, { qos: options.qos || 0, retain: options.retain || false }, (error) => {
                 if (error) {
-                    logger_1.default.error(`Failed to publish message to topic ${topic}:`, error);
+                    logger_1.default.error(`Failed to publish message to topic ${topic} (Station: ${this.config.stationId}):`, error);
                     reject(error);
                 }
                 else {
-                    logger_1.default.debug(`Message published to topic ${topic}:`, message);
+                    logger_1.default.debug(`Message published to topic ${topic} (Station: ${this.config.stationId}):`, message);
                     resolve();
                 }
             });
         });
-    }
-    on(event, listener) {
-        this.eventEmitter.on(event, listener);
-    }
-    off(event, listener) {
-        this.eventEmitter.off(event, listener);
     }
     getConnectedDevices() {
         const devices = new Set();
@@ -255,8 +251,154 @@ class MqttService {
         return Array.from(devices);
     }
 }
-exports.MqttService = MqttService;
-const createMqttService = (config) => {
-    return new MqttService(config);
+class MultiStationMqttService {
+    stations = new Map();
+    eventEmitter = new events_1.EventEmitter();
+    constructor() { }
+    addStation(config) {
+        if (this.stations.has(config.stationId)) {
+            logger_1.default.warn(`Station ${config.stationId} is already registered. Skipping.`);
+            return;
+        }
+        try {
+            const station = new StationConnection(config);
+            this.stations.set(config.stationId, station);
+            station.eventEmitter.on("connect", (stationId) => {
+                this.eventEmitter.emit("connect", stationId);
+            });
+            station.eventEmitter.on("disconnect", (stationId) => {
+                this.eventEmitter.emit("disconnect", stationId);
+            });
+            station.eventEmitter.on("reconnect", (stationId) => {
+                this.eventEmitter.emit("reconnect", stationId);
+            });
+            station.eventEmitter.on("offline", (stationId) => {
+                this.eventEmitter.emit("offline", stationId);
+            });
+            station.eventEmitter.on("error", (error, stationId) => {
+                this.eventEmitter.emit("error", error, stationId);
+            });
+            station.eventEmitter.on("message", (data) => {
+                this.eventEmitter.emit("message", data);
+            });
+            logger_1.default.info(`Station ${config.stationId} added successfully`);
+        }
+        catch (error) {
+            logger_1.default.error(`Failed to add station ${config.stationId}:`, error);
+            throw error;
+        }
+    }
+    removeStation(stationId) {
+        const station = this.stations.get(stationId);
+        if (!station) {
+            logger_1.default.warn(`Station ${stationId} not found. Cannot remove.`);
+            return;
+        }
+        station.disconnect();
+        this.stations.delete(stationId);
+        logger_1.default.info(`Station ${stationId} removed successfully`);
+    }
+    getStation(stationId) {
+        return this.stations.get(stationId);
+    }
+    getStationIds() {
+        return Array.from(this.stations.keys());
+    }
+    isConnected(stationId) {
+        const station = this.stations.get(stationId);
+        return station ? station.isConnected() : false;
+    }
+    async connect(stationId) {
+        const station = this.stations.get(stationId);
+        if (!station) {
+            throw new Error(`Station ${stationId} not found`);
+        }
+        return station.connect();
+    }
+    async connectAll() {
+        const connections = Array.from(this.stations.values()).map((station) => station.connect().catch((error) => {
+            logger_1.default.error(`Failed to connect station ${station.config.stationId}:`, error);
+            return Promise.resolve();
+        }));
+        await Promise.all(connections);
+    }
+    disconnect(stationId) {
+        const station = this.stations.get(stationId);
+        if (station) {
+            station.disconnect();
+        }
+    }
+    disconnectAll() {
+        this.stations.forEach((station) => station.disconnect());
+    }
+    subscribe(topic, callback, stationId) {
+        if (stationId) {
+            const station = this.stations.get(stationId);
+            if (!station) {
+                throw new Error(`Station ${stationId} not found`);
+            }
+            station.subscribe(topic, callback);
+        }
+        else {
+            this.stations.forEach((station) => {
+                station.subscribe(topic, callback);
+            });
+        }
+    }
+    unsubscribe(topic, callback, stationId) {
+        if (stationId) {
+            const station = this.stations.get(stationId);
+            if (!station) {
+                throw new Error(`Station ${stationId} not found`);
+            }
+            station.unsubscribe(topic, callback);
+        }
+        else {
+            this.stations.forEach((station) => {
+                station.unsubscribe(topic, callback);
+            });
+        }
+    }
+    publish(topic, message, options = {}, stationId) {
+        if (stationId) {
+            const station = this.stations.get(stationId);
+            if (!station) {
+                return Promise.reject(new Error(`Station ${stationId} not found`));
+            }
+            return station.publish(topic, message, options);
+        }
+        else {
+            const promises = Array.from(this.stations.values()).map((station) => station.publish(topic, message, options).catch((error) => {
+                logger_1.default.error(`Failed to publish to station ${station.config.stationId}:`, error);
+                return Promise.resolve();
+            }));
+            return Promise.all(promises).then(() => { });
+        }
+    }
+    on(event, listener) {
+        this.eventEmitter.on(event, listener);
+    }
+    off(event, listener) {
+        this.eventEmitter.off(event, listener);
+    }
+    getConnectedDevices(stationId) {
+        const result = {};
+        if (stationId) {
+            const station = this.stations.get(stationId);
+            if (station) {
+                result[stationId] = station.getConnectedDevices();
+            }
+        }
+        else {
+            this.stations.forEach((station, id) => {
+                result[id] = station.getConnectedDevices();
+            });
+        }
+        return result;
+    }
+}
+exports.MultiStationMqttService = MultiStationMqttService;
+const createMultiStationMqttService = () => {
+    return new MultiStationMqttService();
 };
-exports.createMqttService = createMqttService;
+exports.createMultiStationMqttService = createMultiStationMqttService;
