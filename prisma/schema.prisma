@@ -7,6 +7,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum StationType {
+  WEATHERSTATION
+  RAINGAUGE
+  RIVERLEVEL
+  COASTALLEVEL
+
+  @@map("station_type_enum")
+}
+
 enum Role {
   USER
   ADMIN
@@ -63,22 +72,24 @@ model ApiKey {
 }
 
 model Station {
-  id              Int       @id @default(autoincrement()) @map("station_id")
-  stationName     String    @unique @map("station_name")
-  stationType     String    @map("station_type")
-  location        Json      @map("location")
-  barangay        String    @map("barangay")
-  city            String    @map("city")
-  province        String    @map("province")
-  country         String    @map("country")
-  password        String    @map("password")
-  elevation       Float?    @map("elevation")
-  stationPicture  String?   @map("station_picture")
-  isActive        Boolean   @map("is_active")
-  activatedAt     DateTime  @map("activated_at")
-  firmwareVersion String    @map("firmware_version")
-  createdAt       DateTime  @default(now()) @map("created_at")
-  updatedAt       DateTime? @updatedAt @map("updated_at")
+  id              Int         @id @default(autoincrement()) @map("station_id")
+  stationName     String      @unique @map("station_name")
+  stationType     StationType @map("station_type")
+  location        Json        @map("location")
+  barangay        String      @map("barangay")
+  city            String      @map("city")
+  province        String      @map("province")
+  country         String      @map("country")
+  serialCode      String      @map("serial_code")
+  elevation       Float?      @map("elevation")
+  stationPicture  String?     @map("station_picture")
+  isActive        Boolean     @map("is_active")
+  activatedAt     DateTime    @map("activated_at")
+  firmwareVersion String      @map("firmware_version")
+  keyPath         String      @map("key_path")
+  certPath        String      @map("cert_path")
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime?   @updatedAt @map("updated_at")
 
   @@map("stations")
 }
@@ -94,6 +105,7 @@ model SensorData {
   windSpeed      Float?   @map("wind_speed")
   precipitation  Float?   @map("precipitation")
   uvIndex        Float?   @map("uv_index")
+  distance       Float?   @map("distance")
   lightIntensity Float?   @map("light_intensity")
   recordedAt     DateTime @map("recorded_at")
   createdAt      DateTime @map("created_at")

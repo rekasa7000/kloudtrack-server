@@ -1,6 +1,29 @@
-import { MqttService, createMqttService } from "./service";
-import { mqttConfig } from "../../config/mqtt";
+import { setupMqttService } from "./setup";
+import {
+  MultiStationMqttService,
+  PublishOptions,
+  createMultiStationMqttService,
+} from "./service";
 
-export const mqttService = createMqttService(mqttConfig);
+export { setupMqttService };
 
-export type { MqttService };
+export {
+  MultiStationMqttService,
+  PublishOptions,
+  createMultiStationMqttService,
+};
+
+let mqttServiceInstance: MultiStationMqttService | undefined;
+
+export async function getMqttService(): Promise<MultiStationMqttService> {
+  if (!mqttServiceInstance) {
+    mqttServiceInstance = await setupMqttService();
+  }
+  return mqttServiceInstance;
+}
+
+export default {
+  setupMqttService,
+  getMqttService,
+  createMultiStationMqttService,
+};

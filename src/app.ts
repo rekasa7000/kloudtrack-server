@@ -1,13 +1,12 @@
-// src/index.ts
 import express from "express";
 import cors from "cors";
 import { Request, Response } from "express";
-
 import { errorHandler } from "./middleware/error-handler.middleware";
 import { corsOptions, customCors } from "./middleware/cors.middleware";
 import router from "./routes";
 import logger from "./utils/logger";
 import { setupMqttService } from "./services/mqtt/setup";
+import config from "./config/config";
 
 const app = express();
 
@@ -27,24 +26,20 @@ app.use((req: Request, res: Response) => {
 // error handler
 app.use(errorHandler);
 
-// init MQTT service
-const mqttService = setupMqttService();
+(async () => {
+  try {
+    const mqttService = await setupMqttService();
+    logger.info("MQTT service initialized successfully");
 
-// Graceful shutdown handler
-const gracefulShutdown = () => {
-  logger.info("Shutting down server...");
-  mqttService.disconnect();
-  process.exit(0);
-};
+    app.locals.mqttService = mqttService;
 
-// shutdown handlers
-process.on("SIGINT", gracefulShutdown);
-process.on("SIGTERM", gracefulShutdown);
-
-// start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  logger.info(`Server running on port ${PORT}`);
-});
+    app.listen(config.PORT, () => {
+      logger.info(`Server running on port ${config.PORT}`);
+    });
+  } catch (error) {
+    logger.error("Failed to initialize MQTT service:", error);
+    process.exit(1);
+  }
+})();
 
 export default app;

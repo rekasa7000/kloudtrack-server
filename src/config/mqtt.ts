@@ -1,14 +1,29 @@
-export const mqttConfig = {
-  keyPath: process.env.AWS_IOT_KEY_PATH || "./certs/private.key",
-  certPath: process.env.AWS_IOT_CERT_PATH || "./certs/certificate.pem.crt",
-  caPath: process.env.AWS_IOT_CA_PATH || "./certs/AmazonRootCA1.pem",
-  clientId:
-    process.env.AWS_IOT_CLIENT_ID ||
-    `server-${Math.random().toString(16).substring(2, 10)}`,
-  host:
-    process.env.AWS_IOT_HOST ||
-    "your-aws-iot-endpoint.iot.region.amazonaws.com",
-  port: Number(process.env.AWS_IOT_PORT) || 8883,
-  protocol: (process.env.AWS_IOT_PROTOCOL || "mqtts") as "mqtts" | "wss",
-  reconnectPeriod: Number(process.env.AWS_IOT_RECONNECT_PERIOD) || 5000,
-};
+import path from "path";
+import { MqttStation } from "../types/mqtt.type";
+import { getCertificateDir } from "../utils/certificate";
+
+export function createStationConfig(
+  stationId: string,
+  certificateDir: string = getCertificateDir(),
+  host: string = "a68bn74ibyvu1-ats.iot.ap-southeast-1.amazonaws.com"
+): MqttStation {
+  return {
+    keyPath: path.resolve(
+      __dirname,
+      `${certificateDir}/${stationId}/${stationId}-private.pem.key`
+    ),
+    certPath: path.resolve(
+      __dirname,
+      `${certificateDir}/${stationId}/${stationId}-certificate.pem.crt`
+    ),
+    caPath: path.resolve(__dirname, `${certificateDir}/AmazonRootCA1.pem`),
+    clientId: `server-${stationId}-${Math.random()
+      .toString(16)
+      .substring(2, 10)}`,
+    host: host,
+    port: 8883,
+    protocol: "mqtts",
+    reconnectPeriod: 10000,
+    stationId: stationId,
+  };
+}
