@@ -970,3 +970,117 @@
 {"level":30,"time":"04/29/2025, 10:24:25 AM","pid":4958,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: Kloudtrack/weather/data (Station: test)"}
 {"level":30,"time":"04/29/2025, 10:24:25 AM","pid":4958,"hostname":"DWCM-iMac.local","description":"MQTT service initialized successfully"}
 {"level":30,"time":"04/29/2025, 10:24:25 AM","pid":4958,"hostname":"DWCM-iMac.local","description":"Server running on port 3000"}
+{"level":30,"time":"04/30/2025, 03:46:35 PM","pid":10484,"hostname":"DWCM-iMac.local","description":"Station test added successfully"}
+{"level":30,"time":"04/30/2025, 03:46:35 PM","pid":10484,"hostname":"DWCM-iMac.local","description":"MQTT client connected: server-test-ca8dcc5b (Station: test)"}
+{"level":30,"time":"04/30/2025, 03:46:35 PM","pid":10484,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: Kloudtrack/weather/data (Station: test)"}
+{"level":30,"time":"04/30/2025, 03:46:35 PM","pid":10484,"hostname":"DWCM-iMac.local","description":"MQTT service initialized successfully"}
+{"level":30,"time":"04/30/2025, 03:46:35 PM","pid":10484,"hostname":"DWCM-iMac.local","description":"Server running on port 3000"}
+{"level":30,"time":"04/30/2025, 04:18:30 PM","pid":17446,"hostname":"DWCM-iMac.local","description":"Station test added successfully"}
+{"level":30,"time":"04/30/2025, 04:18:30 PM","pid":17446,"hostname":"DWCM-iMac.local","description":"MQTT client connected: server-test-46c00c9b (Station: test)"}
+{"level":30,"time":"04/30/2025, 04:18:30 PM","pid":17446,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: kloudtrack/weather/data (Station: test)"}
+{"level":30,"time":"04/30/2025, 04:18:30 PM","pid":17446,"hostname":"DWCM-iMac.local","description":"MQTT service initialized successfully"}
+{"level":30,"time":"04/30/2025, 04:18:30 PM","pid":17446,"hostname":"DWCM-iMac.local","description":"Server running on port 3000"}
+{"level":30,"time":"04/30/2025, 04:19:01 PM","pid":17538,"hostname":"DWCM-iMac.local","description":"Station test added successfully"}
+{"level":30,"time":"04/30/2025, 04:19:01 PM","pid":17538,"hostname":"DWCM-iMac.local","description":"MQTT client connected: server-test-08db1e4a (Station: test)"}
+{"level":30,"time":"04/30/2025, 04:19:01 PM","pid":17538,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: kloudtrack/KTB61815AC/data (Station: test)"}
+{"level":30,"time":"04/30/2025, 04:19:01 PM","pid":17538,"hostname":"DWCM-iMac.local","description":"MQTT service initialized successfully"}
+{"level":30,"time":"04/30/2025, 04:19:01 PM","pid":17538,"hostname":"DWCM-iMac.local","description":"Server running on port 3000"}
+{"level":30,"time":"04/30/2025, 04:19:14 PM","pid":17584,"hostname":"DWCM-iMac.local","description":"Station test added successfully"}
+{"level":30,"time":"04/30/2025, 04:19:14 PM","pid":17584,"hostname":"DWCM-iMac.local","description":"MQTT client connected: server-test-448229d0 (Station: test)"}
+{"level":30,"time":"04/30/2025, 04:19:14 PM","pid":17584,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: kloudtrack/KTB61815AC/data (Station: test)"}
+{"level":30,"time":"04/30/2025, 04:19:14 PM","pid":17584,"hostname":"DWCM-iMac.local","description":"MQTT service initialized successfully"}
+{"level":30,"time":"04/30/2025, 04:19:14 PM","pid":17584,"hostname":"DWCM-iMac.local","description":"Server running on port 3000"}
+{"level":30,"time":"04/30/2025, 04:19:17 PM","pid":17625,"hostname":"DWCM-iMac.local","description":"Station test added successfully"}
+{"level":30,"time":"04/30/2025, 04:19:17 PM","pid":17625,"hostname":"DWCM-iMac.local","description":"MQTT client connected: server-test-524cdd52 (Station: test)"}
+{"level":30,"time":"04/30/2025, 04:19:17 PM","pid":17625,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: kloudtrack/KTB61815AC/data (Station: test)"}
+{"level":30,"time":"04/30/2025, 04:19:17 PM","pid":17625,"hostname":"DWCM-iMac.local","description":"MQTT service initialized successfully"}
+{"level":30,"time":"04/30/2025, 04:19:17 PM","pid":17625,"hostname":"DWCM-iMac.local","description":"Server running on port 3000"}
+{"level":30,"time":"04/30/2025, 04:20:53 PM","pid":17672,"hostname":"DWCM-iMac.local","description":"Station test added successfully"}
+{"level":30,"time":"04/30/2025, 04:20:54 PM","pid":17672,"hostname":"DWCM-iMac.local","description":"MQTT client connected: server-test-d0de6101 (Station: test)"}
+{"level":30,"time":"04/30/2025, 04:20:54 PM","pid":17672,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: kloudtrack/KTB61815AC/data (Station: test)"}
+{"level":30,"time":"04/30/2025, 04:20:54 PM","pid":17672,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: kloudtrack/KTB61815AC/data (Station: test)"}
+{"level":30,"time":"04/30/2025, 04:20:54 PM","pid":17672,"hostname":"DWCM-iMac.local","description":"MQTT service initialized successfully"}
+{"level":30,"time":"04/30/2025, 04:20:54 PM","pid":17672,"hostname":"DWCM-iMac.local","description":"Server running on port 3000"}
+{"level":30,"time":"04/30/2025, 04:21:00 PM","pid":17716,"hostname":"DWCM-iMac.local","description":"Station test added successfully"}
+{"level":30,"time":"04/30/2025, 04:21:01 PM","pid":17716,"hostname":"DWCM-iMac.local","description":"MQTT client connected: server-test-460222c4 (Station: test)"}
+{"level":30,"time":"04/30/2025, 04:21:01 PM","pid":17716,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: kloudtrack/KTB61815AC/data (Station: test)"}
+{"level":30,"time":"04/30/2025, 04:21:01 PM","pid":17716,"hostname":"DWCM-iMac.local","description":"MQTT service initialized successfully"}
+{"level":30,"time":"04/30/2025, 04:21:01 PM","pid":17716,"hostname":"DWCM-iMac.local","description":"Server running on port 3000"}
+{"level":30,"time":"04/30/2025, 04:21:08 PM","pid":17806,"hostname":"DWCM-iMac.local","description":"Station test added successfully"}
+{"level":30,"time":"04/30/2025, 04:21:08 PM","pid":17806,"hostname":"DWCM-iMac.local","description":"MQTT client connected: server-test-bc8a5027 (Station: test)"}
+{"level":30,"time":"04/30/2025, 04:21:08 PM","pid":17806,"hostname":"DWCM-iMac.local","description":"MQTT service initialized successfully"}
+{"level":30,"time":"04/30/2025, 04:21:08 PM","pid":17806,"hostname":"DWCM-iMac.local","description":"Server running on port 3000"}
+{"level":30,"time":"04/30/2025, 04:21:49 PM","pid":17938,"hostname":"DWCM-iMac.local","description":"Station test added successfully"}
+{"level":30,"time":"04/30/2025, 04:21:49 PM","pid":17938,"hostname":"DWCM-iMac.local","description":"MQTT client connected: server-test-d3ec8cb6 (Station: test)"}
+{"level":30,"time":"04/30/2025, 04:21:49 PM","pid":17938,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: kloudtrack/KTB61815AC/activation (Station: test)"}
+{"level":30,"time":"04/30/2025, 04:21:49 PM","pid":17938,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: kloudtrack/KTB61815AC/data (Station: test)"}
+{"level":30,"time":"04/30/2025, 04:21:49 PM","pid":17938,"hostname":"DWCM-iMac.local","description":"MQTT service initialized successfully"}
+{"level":30,"time":"04/30/2025, 04:21:49 PM","pid":17938,"hostname":"DWCM-iMac.local","description":"Server running on port 3000"}
+{"level":30,"time":"04/30/2025, 04:21:49 PM","pid":17938,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/activation"}
+{"level":30,"time":"04/30/2025, 04:21:49 PM","pid":17938,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:21:50 PM","pid":17938,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/activation"}
+{"level":30,"time":"04/30/2025, 04:21:50 PM","pid":17938,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:22:02 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Station test added successfully"}
+{"level":30,"time":"04/30/2025, 04:22:02 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"MQTT client connected: server-test-cf05c7a8 (Station: test)"}
+{"level":30,"time":"04/30/2025, 04:22:02 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: kloudtrack/KTB61815AC/activation (Station: test)"}
+{"level":30,"time":"04/30/2025, 04:22:02 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: kloudtrack/KTB61815AC/data (Station: test)"}
+{"level":30,"time":"04/30/2025, 04:22:02 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"MQTT service initialized successfully"}
+{"level":30,"time":"04/30/2025, 04:22:02 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Server running on port 3000"}
+{"level":30,"time":"04/30/2025, 04:22:03 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/activation"}
+{"level":30,"time":"04/30/2025, 04:22:03 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:22:03 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/activation"}
+{"level":30,"time":"04/30/2025, 04:22:03 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:23:31 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:23:31 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:23:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:23:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:23:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:23:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:23:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:23:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:23:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:23:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:23:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:23:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:25:31 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:25:31 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:25:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:25:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:25:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:25:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:25:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:25:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:25:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:25:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:25:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:25:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:25:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:25:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:25:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:25:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:25:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:25:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:25:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:25:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:25:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:25:32 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:25:33 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:25:33 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:25:33 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:25:33 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:25:33 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:25:33 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:25:33 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:25:33 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:25:33 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:25:33 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:25:33 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:25:33 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:25:33 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:25:33 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:25:33 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/data"}
+{"level":30,"time":"04/30/2025, 04:25:33 PM","pid":17983,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"04/30/2025, 04:26:16 PM","pid":18089,"hostname":"DWCM-iMac.local","description":"Station test added successfully"}
+{"level":30,"time":"04/30/2025, 04:26:16 PM","pid":18089,"hostname":"DWCM-iMac.local","description":"MQTT client connected: server-test-c59f7f0a (Station: test)"}
+{"level":30,"time":"04/30/2025, 04:26:16 PM","pid":18089,"hostname":"DWCM-iMac.local","description":"MQTT service initialized successfully"}
+{"level":30,"time":"04/30/2025, 04:26:16 PM","pid":18089,"hostname":"DWCM-iMac.local","description":"Server running on port 3000"}

@@ -4,9 +4,9 @@
   "description": "Backend for weather station data collection using MQTT, WebSocket and REST API",
   "main": "dist/server.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && tsc-alias",
     "start": "node dist/server.js",
-    "dev": "concurrently \"tsc --watch\" \"nodemon -q dist/server.js\"",
+    "dev": "concurrently \"tsc --watch \" \"nodemon -q dist/server.js\"",
     "lint": "eslint 'src/**/*.ts' --fix",
     "test": "jest",
     "prisma:generate": "prisma generate",

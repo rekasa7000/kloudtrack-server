@@ -1,12 +1,13 @@
 import express from "express";
 import cors from "cors";
 import { Request, Response } from "express";
-import { errorHandler } from "./middleware/error-handler.middleware";
-import { corsOptions, customCors } from "./middleware/cors.middleware";
-import router from "./routes";
-import logger from "./utils/logger";
-import { setupMqttService } from "./services/mqtt/setup";
-import config from "./config/config";
+
+import { setupMqttService } from "./core/services/station.service";
+import { corsOptions, customCors } from "./core/middlewares/cors.middleware";
+import { errorHandler } from "./core/middlewares/error-handler.middleware";
+import logger from "./core/utils/logger";
+import config from "./config/environment.config";
+import apiRoutes from "./route";
 
 const app = express();
 
@@ -16,8 +17,7 @@ app.options(/(.*)/, cors(corsOptions));
 app.use(express.json());
 
 // routes
-app.use(router);
-
+app.use("/api", apiRoutes);
 // 404 handler
 app.use((req: Request, res: Response) => {
   res.status(404).json({ error: "Not Found" });

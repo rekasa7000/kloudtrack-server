@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const pino_1 = __importDefault(require("pino"));
 const fs_1 = __importDefault(require("fs"));
-const environment_config_1 = __importDefault(require("../config/environment.config"));
+const environment_config_1 = __importDefault(require("../../config/environment.config"));
 const logStream = fs_1.default.createWriteStream("./app.log", { flags: "a" });
 const consoleTransport = pino_1.default.transport({
     target: "pino-pretty",
