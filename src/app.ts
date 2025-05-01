@@ -28,10 +28,10 @@ app.use(errorHandler);
 
 (async () => {
   try {
-    const mqttService = await setupMqttService();
+    // const mqttService = await setupMqttService();
     logger.info("MQTT service initialized successfully");
 
-    app.locals.mqttService = mqttService;
+    // app.locals.mqttService = mqttService;
 
     app.listen(config.PORT, () => {
       logger.info(`Server running on port ${config.PORT}`);

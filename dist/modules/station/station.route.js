@@ -13,4 +13,8 @@ router.put("/:id", station_controller_1.updateStation);
 router.delete("/:id", station_controller_1.deleteStation);
 // GET STATION BY ID
 router.get("/:id", station_controller_1.getStationById);
+// POST REQUEST ACTIVATION
+router.post("/activate", station_controller_1.requestActivation);
+// POST REQUEST DEACTIVATION
+router.post("/deactivate", station_controller_1.requestDeactivation);
 exports.default = router;

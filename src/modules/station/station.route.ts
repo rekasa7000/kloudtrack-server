@@ -5,7 +5,8 @@ import {
   getAllStations,
   getStationById,
   updateStation,
-} from "./station.controller";
+  requestActivation,
+  requestDeactivation } from "./station.controller";
 
 const router = Router();
 
@@ -19,5 +20,8 @@ router.put("/:id", updateStation);
 router.delete("/:id", deleteStation);
 // GET STATION BY ID
 router.get("/:id", getStationById);
-
+// POST REQUEST ACTIVATION
+router.post("/activate", requestActivation);
+// POST REQUEST DEACTIVATION
+router.post("/deactivate", requestDeactivation);
 export default router;
