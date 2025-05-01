@@ -1,6 +1,6 @@
 import pino from "pino";
 import fs from "fs";
-import config from "../config/config";
+import config from "../../config/environment.config";
 
 const logStream = fs.createWriteStream("./app.log", { flags: "a" });
 

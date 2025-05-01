@@ -5,7 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createStationConfig = createStationConfig;
 const path_1 = __importDefault(require("path"));
-function createStationConfig(stationId, certificateDir = "../../certificates", host = "a68bn74ibyvu1-ats.iot.ap-southeast-1.amazonaws.com") {
+const certificate_1 = require("../core/utils/certificate");
+function createStationConfig(stationId, certificateDir = (0, certificate_1.getCertificateDir)(), host = "a68bn74ibyvu1-ats.iot.ap-southeast-1.amazonaws.com") {
     return {
         keyPath: path_1.default.resolve(__dirname, `${certificateDir}/${stationId}/${stationId}-private.pem.key`),
         certPath: path_1.default.resolve(__dirname, `${certificateDir}/${stationId}/${stationId}-certificate.pem.crt`),
