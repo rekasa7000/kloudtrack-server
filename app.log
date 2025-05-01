@@ -1084,3 +1084,45 @@
 {"level":30,"time":"04/30/2025, 04:26:16 PM","pid":18089,"hostname":"DWCM-iMac.local","description":"MQTT client connected: server-test-c59f7f0a (Station: test)"}
 {"level":30,"time":"04/30/2025, 04:26:16 PM","pid":18089,"hostname":"DWCM-iMac.local","description":"MQTT service initialized successfully"}
 {"level":30,"time":"04/30/2025, 04:26:16 PM","pid":18089,"hostname":"DWCM-iMac.local","description":"Server running on port 3000"}
+{"level":30,"time":"05/01/2025, 02:13:29 PM","pid":27534,"hostname":"DWCM-iMac.local","description":"Station test added successfully"}
+{"level":30,"time":"05/01/2025, 02:13:30 PM","pid":27534,"hostname":"DWCM-iMac.local","description":"MQTT client connected: server-test-e637da8d (Station: test)"}
+{"level":30,"time":"05/01/2025, 02:13:30 PM","pid":27534,"hostname":"DWCM-iMac.local","description":"MQTT service initialized successfully"}
+{"level":30,"time":"05/01/2025, 02:13:30 PM","pid":27534,"hostname":"DWCM-iMac.local","description":"Server running on port 3000"}
+{"level":30,"time":"05/01/2025, 02:13:30 PM","pid":28312,"hostname":"DWCM-iMac.local","description":"Station test added successfully"}
+{"level":30,"time":"05/01/2025, 02:13:31 PM","pid":28312,"hostname":"DWCM-iMac.local","description":"MQTT client connected: server-test-993ac1a1 (Station: test)"}
+{"level":30,"time":"05/01/2025, 02:13:31 PM","pid":28312,"hostname":"DWCM-iMac.local","description":"MQTT service initialized successfully"}
+{"level":30,"time":"05/01/2025, 02:13:31 PM","pid":28312,"hostname":"DWCM-iMac.local","description":"Server running on port 3000"}
+{"level":30,"time":"05/01/2025, 02:13:53 PM","pid":28494,"hostname":"DWCM-iMac.local","description":"Station test added successfully"}
+{"level":30,"time":"05/01/2025, 02:13:53 PM","pid":28494,"hostname":"DWCM-iMac.local","description":"MQTT client connected: server-test-83e9d04e (Station: test)"}
+{"level":30,"time":"05/01/2025, 02:13:53 PM","pid":28494,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: kloudtrack/KTB61815AC/status (Station: test)"}
+{"level":30,"time":"05/01/2025, 02:13:53 PM","pid":28494,"hostname":"DWCM-iMac.local","description":"MQTT service initialized successfully"}
+{"level":30,"time":"05/01/2025, 02:13:53 PM","pid":28494,"hostname":"DWCM-iMac.local","description":"Server running on port 3000"}
+{"level":30,"time":"05/01/2025, 02:14:03 PM","pid":28543,"hostname":"DWCM-iMac.local","description":"Station test added successfully"}
+{"level":30,"time":"05/01/2025, 02:14:04 PM","pid":28543,"hostname":"DWCM-iMac.local","description":"MQTT client connected: server-test-98dca9ec (Station: test)"}
+{"level":30,"time":"05/01/2025, 02:14:04 PM","pid":28543,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: kloudtrack/KTB61815AC/command (Station: test)"}
+{"level":30,"time":"05/01/2025, 02:14:04 PM","pid":28543,"hostname":"DWCM-iMac.local","description":"MQTT service initialized successfully"}
+{"level":30,"time":"05/01/2025, 02:14:04 PM","pid":28543,"hostname":"DWCM-iMac.local","description":"Server running on port 3000"}
+{"level":30,"time":"05/01/2025, 02:14:33 PM","pid":28591,"hostname":"DWCM-iMac.local","description":"Station test added successfully"}
+{"level":30,"time":"05/01/2025, 02:14:33 PM","pid":28591,"hostname":"DWCM-iMac.local","description":"MQTT client connected: server-test-e8ec4ac6 (Station: test)"}
+{"level":30,"time":"05/01/2025, 02:14:33 PM","pid":28591,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: kloudtrack/KTB61815AC/command (Station: test)"}
+{"level":30,"time":"05/01/2025, 02:14:33 PM","pid":28591,"hostname":"DWCM-iMac.local","description":"MQTT service initialized successfully"}
+{"level":30,"time":"05/01/2025, 02:14:33 PM","pid":28591,"hostname":"DWCM-iMac.local","description":"Server running on port 3000"}
+{"level":30,"time":"05/01/2025, 02:14:34 PM","pid":28591,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/command"}
+{"level":30,"time":"05/01/2025, 02:14:34 PM","pid":28591,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"05/01/2025, 02:14:34 PM","pid":28591,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/command"}
+{"level":30,"time":"05/01/2025, 02:14:34 PM","pid":28591,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"05/01/2025, 02:14:41 PM","pid":28591,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/command"}
+{"level":30,"time":"05/01/2025, 02:14:41 PM","pid":28591,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"05/01/2025, 02:15:06 PM","pid":28641,"hostname":"DWCM-iMac.local","description":"Station test added successfully"}
+{"level":30,"time":"05/01/2025, 02:15:07 PM","pid":28641,"hostname":"DWCM-iMac.local","description":"MQTT client connected: server-test-13667109 (Station: test)"}
+{"level":30,"time":"05/01/2025, 02:15:07 PM","pid":28641,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: kloudtrack/KTB61815AC/command (Station: test)"}
+{"level":30,"time":"05/01/2025, 02:15:07 PM","pid":28641,"hostname":"DWCM-iMac.local","description":"MQTT service initialized successfully"}
+{"level":30,"time":"05/01/2025, 02:15:07 PM","pid":28641,"hostname":"DWCM-iMac.local","description":"Server running on port 3000"}
+{"level":30,"time":"05/01/2025, 02:15:07 PM","pid":28641,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/command"}
+{"level":30,"time":"05/01/2025, 02:15:07 PM","pid":28641,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"05/01/2025, 02:15:07 PM","pid":28641,"hostname":"DWCM-iMac.local","description":"Message received from test on topic kloudtrack/KTB61815AC/command"}
+{"level":30,"time":"05/01/2025, 02:15:07 PM","pid":28641,"hostname":"DWCM-iMac.local","description":"Data saved for station test"}
+{"level":30,"time":"05/01/2025, 02:15:29 PM","pid":28687,"hostname":"DWCM-iMac.local","description":"Station test added successfully"}
+{"level":30,"time":"05/01/2025, 02:15:29 PM","pid":28687,"hostname":"DWCM-iMac.local","description":"MQTT client connected: server-test-5573cd3a (Station: test)"}
+{"level":30,"time":"05/01/2025, 02:15:29 PM","pid":28687,"hostname":"DWCM-iMac.local","description":"MQTT service initialized successfully"}
+{"level":30,"time":"05/01/2025, 02:15:29 PM","pid":28687,"hostname":"DWCM-iMac.local","description":"Server running on port 3000"}

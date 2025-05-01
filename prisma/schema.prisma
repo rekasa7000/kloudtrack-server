@@ -72,26 +72,38 @@ model ApiKey {
 }
 
 model Station {
-  id              Int         @id @default(autoincrement()) @map("station_id")
-  stationName     String      @unique @map("station_name")
-  stationType     StationType @map("station_type")
-  location        Json        @map("location")
-  barangay        String      @map("barangay")
-  city            String      @map("city")
-  province        String      @map("province")
-  country         String      @map("country")
-  serialCode      String      @map("serial_code")
-  elevation       Float?      @map("elevation")
-  stationPicture  String?     @map("station_picture")
-  isActive        Boolean     @map("is_active")
-  activatedAt     DateTime    @map("activated_at")
-  firmwareVersion String      @map("firmware_version")
-  keyPath         String      @map("key_path")
-  certPath        String      @map("cert_path")
-  createdAt       DateTime    @default(now()) @map("created_at")
-  updatedAt       DateTime?   @updatedAt @map("updated_at")
+  id              Int          @id @default(autoincrement()) @map("station_id")
+  stationName     String       @unique @map("station_name")
+  stationType     StationType  @map("station_type")
+  location        Json         @map("location")
+  barangay        String       @map("barangay")
+  city            String       @map("city")
+  province        String       @map("province")
+  country         String       @map("country")
+  serialCode      String       @map("serial_code")
+  elevation       Float?       @map("elevation")
+  stationPicture  String?      @map("station_picture")
+  isActive        Boolean      @map("is_active")
+  activatedAt     DateTime?    @map("activated_at")
+  firmwareVersion String       @map("firmware_version")
+  certificate     Certificate?
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime?    @updatedAt @map("updated_at")
+  certificateId   Int?
 
   @@map("stations")
+}
+
+model Certificate {
+  id        Int       @id @default(autoincrement()) @map("certificate_id")
+  keyPath   String    @map("key_path")
+  certPath  String    @map("cert_path")
+  stationId Int       @unique @map("station_id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  station   Station?  @relation(fields: [stationId], references: [id])
+
+  @@map("certificates")
 }
 
 model SensorData {

@@ -15,14 +15,13 @@ const setupMqttService = async () => {
     // });
     mqttService.addStation((0, mqtt_config_1.createStationConfig)("test"));
     await mqttService.connectAll();
-    // mqttService.subscribe("kloudtrack/KTB61815AC/activation", (message) => {
+    // mqttService.subscribe("kloudtrack/KTB61815AC/command", (message) => {
     //   console.log(message);
     // });
-    // mqttService.publish("kloudtrack/KTB61815AC/activation", {
-    //   action: "activate",
-    //   key: "KT-SECURE-KEY-12345",
+    // mqttService.publish("kloudtrack/KTB61815AC/command", {
+    //   command: "status",
     // });
-    // mqttService.subscribe("kloudtrack/KTB61815AC/data", (message) => {
+    // // mqttService.subscribe("kloudtrack/KTB61815AC/data", (message) => {
     //   console.log(message);
     // });
     mqttService.on("message", async ({ stationId, topic, message }) => {
@@ -34,8 +33,6 @@ const setupMqttService = async () => {
             logger_1.default.error(`Failed to process message from ${stationId}:`, error);
         }
     });
-    // * LOGIC HERE
-    // default handlers
     mqttService.on("reconnect", (stationId) => {
         logger_1.default.info(`MQTT client for station ${stationId} reconnecting`);
     });

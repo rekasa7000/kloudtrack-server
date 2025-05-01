@@ -10,5 +10,5 @@ const certificate_route_1 = __importDefault(require("./modules/certificate/certi
 const router = (0, express_1.Router)();
 router.use("/api/auth", auth_route_1.default);
 router.use("/api/station", station_route_1.default);
-router.use("/api/station", certificate_route_1.default);
+router.use("/api/certificate", certificate_route_1.default);
 exports.default = router;

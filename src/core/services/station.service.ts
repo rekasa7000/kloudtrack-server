@@ -25,15 +25,14 @@ export const setupMqttService = async () => {
 
   await mqttService.connectAll();
 
-  // mqttService.subscribe("kloudtrack/KTB61815AC/activation", (message) => {
+  // mqttService.subscribe("kloudtrack/KTB61815AC/command", (message) => {
   //   console.log(message);
   // });
-  // mqttService.publish("kloudtrack/KTB61815AC/activation", {
-  //   action: "activate",
-  //   key: "KT-SECURE-KEY-12345",
+  // mqttService.publish("kloudtrack/KTB61815AC/command", {
+  //   command: "status",
   // });
 
-  // mqttService.subscribe("kloudtrack/KTB61815AC/data", (message) => {
+  //  mqttService.subscribe("kloudtrack/KTB61815AC/data", (message) => {
   //   console.log(message);
   // });
 
@@ -46,9 +45,6 @@ export const setupMqttService = async () => {
     }
   });
 
-  // * LOGIC HERE
-
-  // default handlers
   mqttService.on("reconnect", (stationId) => {
     logger.info(`MQTT client for station ${stationId} reconnecting`);
   });

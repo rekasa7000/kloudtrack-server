@@ -7,6 +7,6 @@ const router = Router();
 
 router.use("/api/auth", authRoute);
 router.use("/api/station", stationRoute);
-router.use("/api/station", certificateRoute);
+router.use("/api/certificate", certificateRoute);
 
 export default router;
