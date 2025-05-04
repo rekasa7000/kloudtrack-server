@@ -1,4 +1,4 @@
-import { createStationConfig } from "../../config/mqtt.config";
+import { createStationConfig } from "../../config/station.config";
 import logger from "../utils/logger";
 import { createMultiStationMqttService } from "./mqtt.service";
 

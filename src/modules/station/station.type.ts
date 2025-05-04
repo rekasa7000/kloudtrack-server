@@ -24,3 +24,9 @@ export interface Certificate {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface StationLookup {
+  serialCode?: string;
+  stationId?: number;
+  stationName?: string;
+}

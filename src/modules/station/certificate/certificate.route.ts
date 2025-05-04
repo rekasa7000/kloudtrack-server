@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
 import {
   deleteCertificate,
   deleteRootCertificate,
@@ -7,13 +7,23 @@ import {
   updateCertificate,
   updateRootCertificate,
   uploadCertificate,
-  uploadRootCertificate,
+  createRootCertificate,
 } from "./certificate.controller";
 
 const router = Router();
 
-const certificateRoute: string = "/:stationId/certificate";
-const rootCertificateRoute: string = "/certificate/root";
+const rootCertificateRoute: string = "/root";
+const certificateRoute: string = "/:stationId";
+
+// *** AMAZON ROOT CERTIFICATE ***
+// Upload Root Certificate
+router.post(rootCertificateRoute, createRootCertificate);
+// Update Root Certificate
+router.put(rootCertificateRoute, updateRootCertificate);
+// Delete Root Certificate
+router.delete(rootCertificateRoute, deleteRootCertificate);
+// Get Root Certificate
+router.get(rootCertificateRoute, getRootCertificate);
 
 // *** CERTIFICATE PER STATIONS ***
 // Upload Certificate
@@ -24,15 +34,5 @@ router.put(certificateRoute, updateCertificate);
 router.delete(certificateRoute, deleteCertificate);
 // Get Certificate by Station ID
 router.get(certificateRoute, getCertificateByStationId);
-
-// *** AMAZON ROOT CERTIFICATE ***
-// Upload Root Certificate
-router.post(rootCertificateRoute, uploadRootCertificate);
-// Update Root Certificate
-router.put(rootCertificateRoute, updateRootCertificate);
-// Delete Root Certificate
-router.delete(rootCertificateRoute, deleteRootCertificate);
-// Get Root Certificate
-router.get(rootCertificateRoute, getRootCertificate);
 
 export default router;

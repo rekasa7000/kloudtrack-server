@@ -16,6 +16,14 @@ enum StationType {
   @@map("station_type_enum")
 }
 
+enum CertificateStatus {
+  ACTIVE
+  INACTIVE
+  REVOKED
+
+  @@map("certificate_status_enum")
+}
+
 enum Role {
   USER
   ADMIN
@@ -72,38 +80,54 @@ model ApiKey {
 }
 
 model Station {
-  id              Int          @id @default(autoincrement()) @map("station_id")
-  stationName     String       @unique @map("station_name")
-  stationType     StationType  @map("station_type")
-  location        Json         @map("location")
-  barangay        String       @map("barangay")
-  city            String       @map("city")
-  province        String       @map("province")
-  country         String       @map("country")
-  serialCode      String       @map("serial_code")
-  elevation       Float?       @map("elevation")
-  stationPicture  String?      @map("station_picture")
-  isActive        Boolean      @map("is_active")
-  activatedAt     DateTime?    @map("activated_at")
-  firmwareVersion String       @map("firmware_version")
-  certificate     Certificate?
-  createdAt       DateTime     @default(now()) @map("created_at")
-  updatedAt       DateTime?    @updatedAt @map("updated_at")
+  id              Int                 @id @default(autoincrement()) @map("station_id")
+  stationName     String              @unique @map("station_name")
+  stationType     StationType         @map("station_type")
+  location        Json                @map("location")
+  barangay        String              @map("barangay")
+  city            String              @map("city")
+  province        String              @map("province")
+  country         String              @map("country")
+  serialCode      String              @unique @map("serial_code")
+  elevation       Float?              @map("elevation")
+  stationPicture  String?             @map("station_picture")
+  isActive        Boolean             @map("is_active")
+  activatedAt     DateTime?           @map("activated_at")
+  firmwareVersion String              @map("firmware_version")
+  certificate     StationCertificate?
+  createdAt       DateTime            @default(now()) @map("created_at")
+  updatedAt       DateTime?           @updatedAt @map("updated_at")
   certificateId   Int?
 
   @@map("stations")
 }
 
-model Certificate {
-  id        Int       @id @default(autoincrement()) @map("certificate_id")
-  keyPath   String    @map("key_path")
-  certPath  String    @map("cert_path")
-  stationId Int       @unique @map("station_id")
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime? @updatedAt @map("updated_at")
-  station   Station?  @relation(fields: [stationId], references: [id])
+model StationCertificate {
+  id          Int               @id @default(autoincrement()) @map("certificate_id")
+  keyPath     String            @map("key_path")
+  certPath    String            @map("cert_path")
+  awsCertId   String?           @map("aws_certificate_id")
+  awsCertArn  String?           @map("aws_certificate_arn")
+  status      CertificateStatus @map("certificate_status")
+  stationId   Int               @unique @map("station_id")
+  fingerprint String?           @map("fingerprint")
+  expiresAt   DateTime?         @map("expires_at")
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime?         @updatedAt @map("updated_at")
+  station     Station?          @relation(fields: [stationId], references: [id])
 
   @@map("certificates")
+}
+
+model RootCertificate {
+  id        Int               @id @default(autoincrement()) @map("root_certificate_id")
+  path      String            @map("path")
+  version   String            @map("version") //CA1 CA3
+  status    CertificateStatus @map("certificate_status")
+  createdAt DateTime          @default(now()) @map("created_at")
+  updatedAt DateTime?         @updatedAt @map("updated_at")
+
+  @@map("root_certificates")
 }
 
 model SensorData {

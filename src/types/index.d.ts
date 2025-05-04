@@ -1,4 +1,4 @@
-export interface MqttStation {
+interface MqttStation {
   keyPath: string;
   certPath: string;
   caPath: string;
@@ -10,7 +10,7 @@ export interface MqttStation {
   stationId: string;
 }
 
-export interface StationData {
+interface StationData {
   weather: {
     temperature: number;
     humidity: number;
@@ -20,7 +20,7 @@ export interface StationData {
   };
 }
 
-export interface PublishOptions {
+interface PublishOptions {
   qos?: 0 | 1 | 2;
   retain?: boolean;
 }

@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { asyncHandler } from "../../core/middlewares/error-handler.middleware";
-import { AppError } from "../../core/utils/error";
-import prisma from "../../config/database.config";
-import { sendResponse } from "../../core/utils/response";
-import { StationMetadata } from "../../types/station.types";
+import { asyncHandler } from "../../../core/middlewares/error-handler.middleware";
+import { AppError } from "../../../core/utils/error";
+import prisma from "../../../config/database.config";
+import { sendResponse } from "../../../core/utils/response";
+import { StationMetadata } from "../station.type";
 
 // * ALL STATIONS
 export const getAllStations = asyncHandler(

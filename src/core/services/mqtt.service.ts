@@ -1,6 +1,5 @@
 import * as awsIot from "aws-iot-device-sdk";
 import { EventEmitter } from "events";
-import { MqttStation } from "../../types/mqtt.types";
 import logger from "../utils/logger";
 
 export interface PublishOptions {
