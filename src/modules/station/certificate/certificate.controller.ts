@@ -1,7 +1,7 @@
 import path from "path";
-import prisma from "../../../config/database.config";
 import fs from "fs";
 import crypto from "crypto";
+import prisma from "../../../config/database.config";
 
 import { Request, Response } from "express";
 import { sendResponse } from "../../../core/utils/response";
