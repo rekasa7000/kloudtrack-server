@@ -1,11 +1,6 @@
 import { z } from "zod";
 
-export enum StationType {
-  WEATHERSTATION = "AWS",
-  RAINGAUGE = "ARG",
-  RIVERLEVEL = "RLMS",
-  COASTALLEVEL = "CLMS",
-}
+import { StationType } from "@prisma/client";
 
 export const StationMetadataSchema = z.object({
   stationName: z.string().min(1, "Station name is required"),

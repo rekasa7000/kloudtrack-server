@@ -1,11 +1,9 @@
 import fs from "fs";
 import crypto from "crypto";
 import multer from "multer";
-import {
-  CERTIFICATE_TYPES,
-  CERTIFICATE_DIR,
-} from "../../../config/certificate.config";
+
 import path from "path";
+import { CERTIFICATE_DIR, CERTIFICATE_TYPES } from "./certificate.constant";
 
 export const writeCertificateToFile = (
   content: string,

@@ -1126,3 +1126,812 @@
 {"level":30,"time":"05/01/2025, 02:15:29 PM","pid":28687,"hostname":"DWCM-iMac.local","description":"MQTT client connected: server-test-5573cd3a (Station: test)"}
 {"level":30,"time":"05/01/2025, 02:15:29 PM","pid":28687,"hostname":"DWCM-iMac.local","description":"MQTT service initialized successfully"}
 {"level":30,"time":"05/01/2025, 02:15:29 PM","pid":28687,"hostname":"DWCM-iMac.local","description":"Server running on port 3000"}
+{"level":30,"time":"05/05/2025, 10:40:51 AM","pid":5013,"hostname":"DWCM-iMac.local","description":"Station test added successfully"}
+{"level":30,"time":"05/05/2025, 10:40:51 AM","pid":5013,"hostname":"DWCM-iMac.local","description":"MQTT client connected: server-test-6b243f88 (Station: test)"}
+{"level":30,"time":"05/05/2025, 10:40:51 AM","pid":5013,"hostname":"DWCM-iMac.local","description":"MQTT service initialized successfully"}
+{"level":30,"time":"05/05/2025, 10:40:51 AM","pid":5013,"hostname":"DWCM-iMac.local","description":"Server running on port 3000"}
+{"level":50,"time":"05/05/2025, 11:01:17 AM","pid":7666,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 11:01:17 AM","pid":7666,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 11:01:17 AM","pid":7666,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 11:01:17 AM","pid":7666,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service:"}
+{"level":50,"time":"05/05/2025, 11:01:49 AM","pid":7701,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 11:01:49 AM","pid":7701,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 11:01:49 AM","pid":7701,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 11:01:49 AM","pid":7701,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 11:01:49 AM","pid":7701,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 11:01:58 AM","pid":7743,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 11:01:58 AM","pid":7743,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 11:01:58 AM","pid":7743,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 11:01:58 AM","pid":7743,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 11:01:58 AM","pid":7743,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 11:02:09 AM","pid":7776,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 11:02:09 AM","pid":7776,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 11:02:09 AM","pid":7776,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 11:02:09 AM","pid":7776,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 11:02:09 AM","pid":7776,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 11:02:13 AM","pid":7808,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 11:02:13 AM","pid":7808,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 11:02:13 AM","pid":7808,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 11:02:13 AM","pid":7808,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 11:02:13 AM","pid":7808,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 11:05:44 AM","pid":7808,"hostname":"DWCM-iMac.local","description":"[POST] /api/station >> 500: \nInvalid `database_config_1.default.station.create()` invocation in\n/Users/regee/Documents/GitHub/kloudtrack/server/dist/modules/station/metadata/metadata.controller.js:29:64\n\n  26 // * CREATE STATION\n  27 exports.createStation = (0, error_handler_middleware_1.asyncHandler)(async (req, res) => {\n  28     const data = req.body;\n→ 29     const newStation = await database_config_1.default.station.create({\n           data: {\n             stationName: \"Mt. Cloud AWS\",\n             stationType: \"AWS\",\n                          ~~~~~\n             location: \"Mt. Cloud Weather Facility\",\n             barangay: \"Baguio Central\",\n             city: \"Baguio\",\n             province: \"Benguet\",\n             country: \"Philippines\",\n             serialCode: \"AWS-2025-001\",\n             elevation: 1500,\n             stationPicture: \"https://example.com/images/station-mtcloud.jpg\",\n             isActive: true,\n             activatedAt: \"2025-05-01T08:00:00Z\",\n             firmwareVersion: \"v1.4.2\",\n             createdAt: \"2025-05-01T07:50:00Z\",\n             updatedAt: \"2025-05-01T08:00:00Z\"\n           }\n         })\n\nInvalid value for argument `stationType`. Expected StationType."}
+{"level":50,"time":"05/05/2025, 11:06:52 AM","pid":8133,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 11:06:52 AM","pid":8133,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 11:06:52 AM","pid":8133,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 11:06:52 AM","pid":8133,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 11:06:52 AM","pid":8133,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 11:06:54 AM","pid":8239,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 11:06:54 AM","pid":8239,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 11:06:54 AM","pid":8239,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 11:06:54 AM","pid":8239,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 11:06:54 AM","pid":8239,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 11:07:06 AM","pid":8320,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 11:07:06 AM","pid":8320,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 11:07:06 AM","pid":8320,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 11:07:06 AM","pid":8320,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 11:07:06 AM","pid":8320,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 11:07:29 AM","pid":8453,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 11:07:29 AM","pid":8453,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 11:07:29 AM","pid":8453,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 11:07:29 AM","pid":8453,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 11:07:29 AM","pid":8453,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 11:09:12 AM","pid":8594,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 11:09:12 AM","pid":8594,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 11:09:12 AM","pid":8594,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 11:09:12 AM","pid":8594,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 11:09:12 AM","pid":8594,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 11:09:13 AM","pid":8594,"hostname":"DWCM-iMac.local","description":"[POST] /api/station >> 500: \nInvalid `database_config_1.default.station.create()` invocation in\n/Users/regee/Documents/GitHub/kloudtrack/server/dist/modules/station/metadata/metadata.controller.js:29:64\n\n  26 // * CREATE STATION\n  27 exports.createStation = (0, error_handler_middleware_1.asyncHandler)(async (req, res) => {\n  28     const data = req.body;\n→ 29     const newStation = await database_config_1.default.station.create(\nNull constraint violation on the fields: (`certificateId`)"}
+{"level":50,"time":"05/05/2025, 11:20:38 AM","pid":8969,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 11:20:38 AM","pid":8969,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 11:20:38 AM","pid":8969,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 11:20:38 AM","pid":8969,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 11:20:38 AM","pid":8969,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 11:20:40 AM","pid":9758,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 11:20:40 AM","pid":9758,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 11:20:40 AM","pid":9758,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 11:20:40 AM","pid":9758,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 11:20:40 AM","pid":9758,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 11:23:48 AM","pid":10055,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 11:23:48 AM","pid":10055,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 11:23:48 AM","pid":10055,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 11:23:48 AM","pid":10055,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 11:23:48 AM","pid":10055,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 11:23:49 AM","pid":10136,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 11:23:49 AM","pid":10136,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 11:23:49 AM","pid":10136,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 11:23:49 AM","pid":10136,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 11:23:49 AM","pid":10136,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 11:39:12 AM","pid":10669,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 11:39:12 AM","pid":10669,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 11:39:12 AM","pid":10669,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 11:39:12 AM","pid":10669,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 11:39:12 AM","pid":10669,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 11:39:27 AM","pid":10713,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 11:39:27 AM","pid":10713,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 11:39:27 AM","pid":10713,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 11:39:27 AM","pid":10713,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 11:39:27 AM","pid":10713,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:18:21 PM","pid":12301,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:18:21 PM","pid":12301,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:18:21 PM","pid":12301,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:18:21 PM","pid":12301,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:18:21 PM","pid":12301,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:18:23 PM","pid":12338,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:18:23 PM","pid":12338,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:18:23 PM","pid":12338,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:18:23 PM","pid":12338,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:18:23 PM","pid":12338,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:18:25 PM","pid":12364,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:18:25 PM","pid":12364,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:18:25 PM","pid":12364,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:18:25 PM","pid":12364,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:18:25 PM","pid":12364,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:21:36 PM","pid":12607,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:21:36 PM","pid":12607,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:21:36 PM","pid":12607,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:21:36 PM","pid":12607,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:21:36 PM","pid":12607,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:21:48 PM","pid":12643,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:21:48 PM","pid":12643,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:21:48 PM","pid":12643,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:21:48 PM","pid":12643,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:21:48 PM","pid":12643,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:22:20 PM","pid":12689,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:22:20 PM","pid":12689,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:22:20 PM","pid":12689,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:22:20 PM","pid":12689,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:22:20 PM","pid":12689,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:22:27 PM","pid":12723,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:22:27 PM","pid":12723,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:22:27 PM","pid":12723,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:22:27 PM","pid":12723,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:22:27 PM","pid":12723,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:36:49 PM","pid":13265,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:36:49 PM","pid":13265,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:36:49 PM","pid":13265,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:36:49 PM","pid":13265,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:36:49 PM","pid":13265,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:37:12 PM","pid":13309,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:37:12 PM","pid":13309,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:37:12 PM","pid":13309,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:37:12 PM","pid":13309,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:37:12 PM","pid":13309,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:37:18 PM","pid":13347,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:37:18 PM","pid":13347,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:37:18 PM","pid":13347,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:37:18 PM","pid":13347,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:37:18 PM","pid":13347,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:37:50 PM","pid":13386,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:37:50 PM","pid":13386,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:37:50 PM","pid":13386,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:37:50 PM","pid":13386,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:37:50 PM","pid":13386,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:37:59 PM","pid":13493,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:37:59 PM","pid":13493,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:37:59 PM","pid":13493,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:37:59 PM","pid":13493,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:37:59 PM","pid":13493,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:38:01 PM","pid":14089,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:38:01 PM","pid":14089,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:38:01 PM","pid":14089,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:38:01 PM","pid":14089,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:38:01 PM","pid":14089,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:38:42 PM","pid":14514,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:38:42 PM","pid":14514,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:38:42 PM","pid":14514,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:38:42 PM","pid":14514,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:38:42 PM","pid":14514,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:38:52 PM","pid":14596,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:38:52 PM","pid":14596,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:38:52 PM","pid":14596,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:38:52 PM","pid":14596,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:38:52 PM","pid":14596,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:39:02 PM","pid":14664,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:39:02 PM","pid":14664,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:39:02 PM","pid":14664,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:39:02 PM","pid":14664,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:39:02 PM","pid":14664,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:39:55 PM","pid":14751,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:39:55 PM","pid":14751,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:39:55 PM","pid":14751,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:39:55 PM","pid":14751,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:39:55 PM","pid":14751,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:40:12 PM","pid":14789,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:40:12 PM","pid":14789,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:40:12 PM","pid":14789,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:40:12 PM","pid":14789,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:40:12 PM","pid":14789,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:40:26 PM","pid":14824,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:40:26 PM","pid":14824,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:40:26 PM","pid":14824,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:40:26 PM","pid":14824,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:40:26 PM","pid":14824,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:40:38 PM","pid":14865,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:40:38 PM","pid":14865,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:40:38 PM","pid":14865,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:40:38 PM","pid":14865,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:40:38 PM","pid":14865,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:41:10 PM","pid":14900,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:41:10 PM","pid":14900,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:41:10 PM","pid":14900,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:41:10 PM","pid":14900,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:41:10 PM","pid":14900,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:41:27 PM","pid":14934,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:41:27 PM","pid":14934,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:41:27 PM","pid":14934,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:41:27 PM","pid":14934,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:41:27 PM","pid":14934,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:42:07 PM","pid":15007,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:42:07 PM","pid":15007,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:42:07 PM","pid":15007,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:42:07 PM","pid":15007,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:42:07 PM","pid":15007,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:42:16 PM","pid":15096,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:42:16 PM","pid":15096,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:42:16 PM","pid":15096,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:42:16 PM","pid":15096,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:42:16 PM","pid":15096,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:42:21 PM","pid":15131,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:42:21 PM","pid":15131,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:42:21 PM","pid":15131,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:42:21 PM","pid":15131,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:42:21 PM","pid":15131,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:46:34 PM","pid":15247,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:46:34 PM","pid":15247,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:46:34 PM","pid":15247,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:46:34 PM","pid":15247,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:46:34 PM","pid":15247,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":30,"time":"05/05/2025, 01:46:45 PM","pid":15388,"hostname":"DWCM-iMac.local","description":"Station test added successfully"}
+{"level":30,"time":"05/05/2025, 01:46:45 PM","pid":15388,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:46:45 PM","pid":15388,"hostname":"DWCM-iMac.local","description":"MQTT client error: server-test-1822a569 (Station: test)"}
+{"level":30,"time":"05/05/2025, 01:47:01 PM","pid":15566,"hostname":"DWCM-iMac.local","description":"Station test added successfully"}
+{"level":30,"time":"05/05/2025, 01:47:01 PM","pid":15566,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:47:01 PM","pid":15566,"hostname":"DWCM-iMac.local","description":"MQTT client error: server-test-10dfa096 (Station: test)"}
+{"level":30,"time":"05/05/2025, 01:47:02 PM","pid":16305,"hostname":"DWCM-iMac.local","description":"Station test added successfully"}
+{"level":30,"time":"05/05/2025, 01:47:02 PM","pid":16305,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:47:02 PM","pid":16305,"hostname":"DWCM-iMac.local","description":"MQTT client error: server-test-beff9d1a (Station: test)"}
+{"level":50,"time":"05/05/2025, 01:47:10 PM","pid":16594,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:47:10 PM","pid":16594,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:47:10 PM","pid":16594,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:47:10 PM","pid":16594,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:47:10 PM","pid":16594,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:48:02 PM","pid":16775,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:48:02 PM","pid":16775,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:48:02 PM","pid":16775,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:48:02 PM","pid":16775,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:48:02 PM","pid":16775,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:48:46 PM","pid":16905,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:48:46 PM","pid":16905,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:48:46 PM","pid":16905,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:48:46 PM","pid":16905,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:48:46 PM","pid":16905,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:48:53 PM","pid":16943,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:48:53 PM","pid":16943,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:48:53 PM","pid":16943,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:48:53 PM","pid":16943,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:48:53 PM","pid":16943,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:49:07 PM","pid":16976,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:49:07 PM","pid":16976,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:49:07 PM","pid":16976,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:49:07 PM","pid":16976,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:49:07 PM","pid":16976,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:49:11 PM","pid":17009,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:49:11 PM","pid":17009,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:49:11 PM","pid":17009,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:49:11 PM","pid":17009,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:49:11 PM","pid":17009,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:50:12 PM","pid":17062,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:50:12 PM","pid":17062,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:50:12 PM","pid":17062,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:50:12 PM","pid":17062,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:50:12 PM","pid":17062,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:50:47 PM","pid":17102,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:50:47 PM","pid":17102,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:50:47 PM","pid":17102,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:50:47 PM","pid":17102,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:50:47 PM","pid":17102,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:52:26 PM","pid":17204,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:52:26 PM","pid":17204,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:52:26 PM","pid":17204,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:52:26 PM","pid":17204,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:52:26 PM","pid":17204,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:52:52 PM","pid":17251,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:52:52 PM","pid":17251,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:52:52 PM","pid":17251,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:52:52 PM","pid":17251,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:52:52 PM","pid":17251,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 01:54:41 PM","pid":19833,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 01:54:41 PM","pid":19833,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 01:54:41 PM","pid":19833,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 01:54:41 PM","pid":19833,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 01:54:41 PM","pid":19833,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 02:02:04 PM","pid":20277,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 02:02:04 PM","pid":20277,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 02:02:04 PM","pid":20277,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 02:02:04 PM","pid":20277,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 02:02:04 PM","pid":20277,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 02:02:37 PM","pid":20498,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 02:02:37 PM","pid":20498,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 02:02:37 PM","pid":20498,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 02:02:37 PM","pid":20498,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 02:02:37 PM","pid":20498,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 02:02:50 PM","pid":20770,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 02:02:50 PM","pid":20770,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 02:02:50 PM","pid":20770,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 02:02:50 PM","pid":20770,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 02:02:50 PM","pid":20770,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 02:03:55 PM","pid":20770,"hostname":"DWCM-iMac.local","description":"[POST] /api/station/certificate/root/:17 >> 500: \nInvalid `database_config_1.default.rootCertificate.findUnique()` invocation in\n/Users/regee/Documents/GitHub/kloudtrack/server/dist/modules/station/certificate/certificate.controller.js:228:73\n\n  225 if (!id) {\n  226     throw new error_1.AppError(\"Certificate ID is required\", 400);\n  227 }\n→ 228 const certificate = await database_config_1.default.rootCertificate.findUnique({\n        where: {\n      +   id: Int\n        }\n      })\n\nArgument `id` is missing."}
+{"level":50,"time":"05/05/2025, 02:04:22 PM","pid":20898,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 02:04:22 PM","pid":20898,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 02:04:22 PM","pid":20898,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 02:04:22 PM","pid":20898,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 02:04:22 PM","pid":20898,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 02:04:49 PM","pid":20898,"hostname":"DWCM-iMac.local","description":"[POST] /api/station/certificate/root/:17 >> 500: \nInvalid `database_config_1.default.rootCertificate.findUnique()` invocation in\n/Users/regee/Documents/GitHub/kloudtrack/server/dist/modules/station/certificate/certificate.controller.js:226:73\n\n  223 if (!id) {\n  224     throw new error_1.AppError(\"Certificate ID is required\", 400);\n  225 }\n→ 226 const certificate = await database_config_1.default.rootCertificate.findUnique({\n        where: {\n      +   id: Int\n        }\n      })\n\nArgument `id` is missing."}
+{"level":50,"time":"05/05/2025, 02:05:31 PM","pid":20950,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 02:05:31 PM","pid":20950,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 02:05:31 PM","pid":20950,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 02:05:31 PM","pid":20950,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 02:05:31 PM","pid":20950,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 02:05:33 PM","pid":20950,"hostname":"DWCM-iMac.local","description":"[POST] /api/station/certificate/root/:17 >> 500: \nInvalid `database_config_1.default.rootCertificate.findUnique()` invocation in\n/Users/regee/Documents/GitHub/kloudtrack/server/dist/modules/station/certificate/certificate.controller.js:226:73\n\n  223 if (!id) {\n  224     throw new error_1.AppError(\"Certificate ID is required\", 400);\n  225 }\n→ 226 const certificate = await database_config_1.default.rootCertificate.findUnique({\n        where: {\n      +   id: Int\n        }\n      })\n\nArgument `id` is missing."}
+{"level":50,"time":"05/05/2025, 02:05:59 PM","pid":21078,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 02:05:59 PM","pid":21078,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 02:05:59 PM","pid":21078,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 02:05:59 PM","pid":21078,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 02:05:59 PM","pid":21078,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 02:07:57 PM","pid":21078,"hostname":"DWCM-iMac.local","description":"[POST] /api/station/certificate/root/:17 >> 500: \nInvalid `database_config_1.default.rootCertificate.findUnique()` invocation in\n/Users/regee/Documents/GitHub/kloudtrack/server/dist/modules/station/certificate/certificate.controller.js:226:73\n\n  223 if (!id) {\n  224     throw new error_1.AppError(\"Certificate ID is required\", 400);\n  225 }\n→ 226 const certificate = await database_config_1.default.rootCertificate.findUnique({\n        where: {\n      +   id: Int\n        }\n      })\n\nArgument `id` is missing."}
+{"level":50,"time":"05/05/2025, 02:09:08 PM","pid":21270,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 02:09:08 PM","pid":21270,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 02:09:08 PM","pid":21270,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 02:09:08 PM","pid":21270,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 02:09:08 PM","pid":21270,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 02:09:09 PM","pid":22060,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 02:09:09 PM","pid":22060,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 02:09:09 PM","pid":22060,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 02:09:09 PM","pid":22060,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 02:09:09 PM","pid":22060,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 02:15:29 PM","pid":22435,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 02:15:29 PM","pid":22435,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 02:15:29 PM","pid":22435,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 02:15:29 PM","pid":22435,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 02:15:29 PM","pid":22435,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 02:21:09 PM","pid":22781,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 02:21:09 PM","pid":22781,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 02:21:09 PM","pid":22781,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 02:21:09 PM","pid":22781,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 02:21:09 PM","pid":22781,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 02:41:02 PM","pid":23441,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 02:41:02 PM","pid":23441,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 02:41:02 PM","pid":23441,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 02:41:02 PM","pid":23441,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 02:41:02 PM","pid":23441,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 02:41:04 PM","pid":24256,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 02:41:04 PM","pid":24256,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 02:41:04 PM","pid":24256,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 02:41:04 PM","pid":24256,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 02:41:04 PM","pid":24256,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:05:13 PM","pid":25065,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:05:13 PM","pid":25065,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:05:13 PM","pid":25065,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:05:13 PM","pid":25065,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:05:13 PM","pid":25065,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:05:21 PM","pid":25161,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:05:21 PM","pid":25161,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:05:21 PM","pid":25161,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:05:21 PM","pid":25161,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:05:21 PM","pid":25161,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:08:32 PM","pid":25301,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:08:32 PM","pid":25301,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:08:32 PM","pid":25301,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:08:32 PM","pid":25301,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:08:32 PM","pid":25301,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:08:46 PM","pid":25370,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:08:46 PM","pid":25370,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:08:46 PM","pid":25370,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:08:46 PM","pid":25370,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:08:46 PM","pid":25370,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:10:10 PM","pid":25504,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:10:10 PM","pid":25504,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:10:10 PM","pid":25504,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:10:10 PM","pid":25504,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:10:10 PM","pid":25504,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:10:45 PM","pid":25594,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:10:45 PM","pid":25594,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:10:45 PM","pid":25594,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:10:45 PM","pid":25594,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:10:45 PM","pid":25594,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:11:10 PM","pid":25644,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:11:10 PM","pid":25644,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:11:10 PM","pid":25644,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:11:10 PM","pid":25644,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:11:10 PM","pid":25644,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:11:13 PM","pid":25644,"hostname":"DWCM-iMac.local","description":"[POST] /api/station/certificate/root >> 500: Cannot read properties of undefined (reading 'certificateText')"}
+{"level":50,"time":"05/05/2025, 03:11:27 PM","pid":25644,"hostname":"DWCM-iMac.local","description":"[POST] /api/station/certificate/root >> 500: Cannot read properties of undefined (reading 'certificateText')"}
+{"level":50,"time":"05/05/2025, 03:11:30 PM","pid":25644,"hostname":"DWCM-iMac.local","description":"[POST] /api/station/certificate/root >> 500: Cannot read properties of undefined (reading 'certificateText')"}
+{"level":50,"time":"05/05/2025, 03:12:04 PM","pid":25813,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:12:04 PM","pid":25813,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:12:04 PM","pid":25813,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:12:04 PM","pid":25813,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:12:04 PM","pid":25813,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:13:01 PM","pid":25860,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:13:01 PM","pid":25860,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:13:01 PM","pid":25860,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:13:01 PM","pid":25860,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:13:01 PM","pid":25860,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:13:16 PM","pid":25897,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:13:16 PM","pid":25897,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:13:16 PM","pid":25897,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:13:16 PM","pid":25897,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:13:16 PM","pid":25897,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:14:06 PM","pid":25969,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:14:06 PM","pid":25969,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:14:06 PM","pid":25969,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:14:06 PM","pid":25969,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:14:06 PM","pid":25969,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:19:30 PM","pid":26172,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:19:30 PM","pid":26172,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:19:30 PM","pid":26172,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:19:30 PM","pid":26172,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:19:30 PM","pid":26172,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:19:57 PM","pid":26236,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:19:57 PM","pid":26236,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:19:57 PM","pid":26236,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:19:57 PM","pid":26236,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:19:57 PM","pid":26236,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:21:33 PM","pid":26310,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:21:33 PM","pid":26310,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:21:33 PM","pid":26310,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:21:33 PM","pid":26310,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:21:33 PM","pid":26310,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:21:39 PM","pid":26374,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:21:39 PM","pid":26374,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:21:39 PM","pid":26374,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:21:39 PM","pid":26374,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:21:39 PM","pid":26374,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:26:13 PM","pid":26603,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:26:13 PM","pid":26603,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:26:13 PM","pid":26603,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:26:13 PM","pid":26603,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:26:13 PM","pid":26603,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:26:18 PM","pid":26603,"hostname":"DWCM-iMac.local","description":"[POST] /api/station/certificate/root >> 500: Cannot read properties of undefined (reading 'certificateText')"}
+{"level":50,"time":"05/05/2025, 03:26:52 PM","pid":26720,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:26:52 PM","pid":26720,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:26:52 PM","pid":26720,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:26:52 PM","pid":26720,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:26:52 PM","pid":26720,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:27:21 PM","pid":26779,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:27:21 PM","pid":26779,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:27:21 PM","pid":26779,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:27:21 PM","pid":26779,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:27:21 PM","pid":26779,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:27:32 PM","pid":26779,"hostname":"DWCM-iMac.local","description":"[POST] /api/station/certificate/root >> 500: Cannot read properties of undefined (reading 'certificateText')"}
+{"level":50,"time":"05/05/2025, 03:30:36 PM","pid":26891,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:30:36 PM","pid":26891,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:30:36 PM","pid":26891,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:30:36 PM","pid":26891,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:30:36 PM","pid":26891,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:42:59 PM","pid":27344,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:42:59 PM","pid":27344,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:42:59 PM","pid":27344,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:42:59 PM","pid":27344,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:42:59 PM","pid":27344,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:44:17 PM","pid":27382,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:44:17 PM","pid":27382,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:44:17 PM","pid":27382,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:44:17 PM","pid":27382,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:44:17 PM","pid":27382,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:44:22 PM","pid":27440,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:44:22 PM","pid":27440,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:44:22 PM","pid":27440,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:44:22 PM","pid":27440,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:44:22 PM","pid":27440,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":30,"time":"05/05/2025, 03:45:45 PM","pid":27653,"hostname":"DWCM-iMac.local","description":"Station test added successfully"}
+{"level":30,"time":"05/05/2025, 03:45:45 PM","pid":27653,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:45:45 PM","pid":27653,"hostname":"DWCM-iMac.local","description":"MQTT client error: server-test-df08d524 (Station: test)"}
+{"level":50,"time":"05/05/2025, 03:45:47 PM","pid":27736,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:45:47 PM","pid":27736,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:45:47 PM","pid":27736,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:45:47 PM","pid":27736,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:45:47 PM","pid":27736,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:46:11 PM","pid":27771,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:46:11 PM","pid":27771,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:46:11 PM","pid":27771,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:46:11 PM","pid":27771,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:46:11 PM","pid":27771,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:46:42 PM","pid":27824,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:46:42 PM","pid":27824,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:46:42 PM","pid":27824,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:46:42 PM","pid":27824,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:46:42 PM","pid":27824,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:47:45 PM","pid":27945,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:47:45 PM","pid":27945,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:47:45 PM","pid":27945,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:47:45 PM","pid":27945,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:47:45 PM","pid":27945,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:47:52 PM","pid":28026,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:47:52 PM","pid":28026,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:47:52 PM","pid":28026,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:47:52 PM","pid":28026,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:47:52 PM","pid":28026,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:49:25 PM","pid":28026,"hostname":"DWCM-iMac.local","description":"[PUT] /api/station/certificate/root/18 >> 500: Cannot read properties of undefined (reading 'certificateText')"}
+{"level":50,"time":"05/05/2025, 03:49:51 PM","pid":28167,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:49:51 PM","pid":28167,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:49:51 PM","pid":28167,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:49:51 PM","pid":28167,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:49:51 PM","pid":28167,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:50:54 PM","pid":28192,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:50:54 PM","pid":28192,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:50:54 PM","pid":28192,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:50:54 PM","pid":28192,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:50:54 PM","pid":28192,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:51:58 PM","pid":28211,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:51:58 PM","pid":28211,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:51:58 PM","pid":28211,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:51:58 PM","pid":28211,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:51:58 PM","pid":28211,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:54:51 PM","pid":28378,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:54:51 PM","pid":28378,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:54:51 PM","pid":28378,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:54:51 PM","pid":28378,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:54:51 PM","pid":28378,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:54:52 PM","pid":29169,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:54:52 PM","pid":29169,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:54:52 PM","pid":29169,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:54:52 PM","pid":29169,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:54:52 PM","pid":29169,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:56:33 PM","pid":29431,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:56:33 PM","pid":29431,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:56:33 PM","pid":29431,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:56:33 PM","pid":29431,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:56:33 PM","pid":29431,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:56:49 PM","pid":29527,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:56:49 PM","pid":29527,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:56:49 PM","pid":29527,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:56:49 PM","pid":29527,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:56:49 PM","pid":29527,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:56:59 PM","pid":29561,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:56:59 PM","pid":29561,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:56:59 PM","pid":29561,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:56:59 PM","pid":29561,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:56:59 PM","pid":29561,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 03:57:09 PM","pid":29579,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 03:57:09 PM","pid":29579,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 03:57:09 PM","pid":29579,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 03:57:09 PM","pid":29579,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 03:57:09 PM","pid":29579,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:02:21 PM","pid":29802,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:02:21 PM","pid":29802,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:02:21 PM","pid":29802,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:02:21 PM","pid":29802,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:02:21 PM","pid":29802,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:02:51 PM","pid":29820,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:02:51 PM","pid":29820,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:02:51 PM","pid":29820,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:02:51 PM","pid":29820,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:02:51 PM","pid":29820,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:03:16 PM","pid":29842,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:03:16 PM","pid":29842,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:03:16 PM","pid":29842,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:03:16 PM","pid":29842,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:03:16 PM","pid":29842,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:03:20 PM","pid":29873,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:03:20 PM","pid":29873,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:03:20 PM","pid":29873,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:03:20 PM","pid":29873,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:03:20 PM","pid":29873,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:03:42 PM","pid":29907,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:03:42 PM","pid":29907,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:03:42 PM","pid":29907,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:03:42 PM","pid":29907,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:03:42 PM","pid":29907,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:04:41 PM","pid":29935,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:04:41 PM","pid":29935,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:04:41 PM","pid":29935,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:04:41 PM","pid":29935,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:04:41 PM","pid":29935,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:04:48 PM","pid":29998,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:04:48 PM","pid":29998,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:04:48 PM","pid":29998,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:04:48 PM","pid":29998,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:04:48 PM","pid":29998,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:04:56 PM","pid":30030,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:04:56 PM","pid":30030,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:04:56 PM","pid":30030,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:04:56 PM","pid":30030,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:04:56 PM","pid":30030,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:05:08 PM","pid":30047,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:05:08 PM","pid":30047,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:05:08 PM","pid":30047,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:05:08 PM","pid":30047,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:05:08 PM","pid":30047,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:06:26 PM","pid":30066,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:06:26 PM","pid":30066,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:06:26 PM","pid":30066,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:06:26 PM","pid":30066,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:06:26 PM","pid":30066,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:07:20 PM","pid":30100,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:07:20 PM","pid":30100,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:07:20 PM","pid":30100,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:07:20 PM","pid":30100,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:07:20 PM","pid":30100,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:07:29 PM","pid":30114,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:07:29 PM","pid":30114,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:07:29 PM","pid":30114,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:07:29 PM","pid":30114,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:07:29 PM","pid":30114,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:08:46 PM","pid":30260,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:08:46 PM","pid":30260,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:08:46 PM","pid":30260,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:08:46 PM","pid":30260,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:08:46 PM","pid":30260,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:08:48 PM","pid":31066,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:08:48 PM","pid":31066,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:08:48 PM","pid":31066,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:08:48 PM","pid":31066,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:08:48 PM","pid":31066,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:09:14 PM","pid":31253,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:09:14 PM","pid":31253,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:09:14 PM","pid":31253,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:09:14 PM","pid":31253,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:09:14 PM","pid":31253,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:09:16 PM","pid":32036,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:09:16 PM","pid":32036,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:09:16 PM","pid":32036,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:09:16 PM","pid":32036,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:09:16 PM","pid":32036,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:11:07 PM","pid":32325,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:11:07 PM","pid":32325,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:11:07 PM","pid":32325,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:11:07 PM","pid":32325,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:11:07 PM","pid":32325,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:11:09 PM","pid":32408,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:11:09 PM","pid":32408,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:11:09 PM","pid":32408,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:11:09 PM","pid":32408,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:11:09 PM","pid":32408,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:11:18 PM","pid":32440,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:11:18 PM","pid":32440,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:11:18 PM","pid":32440,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:11:18 PM","pid":32440,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:11:18 PM","pid":32440,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:11:26 PM","pid":32475,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:11:26 PM","pid":32475,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:11:26 PM","pid":32475,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:11:26 PM","pid":32475,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:11:26 PM","pid":32475,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:11:30 PM","pid":32507,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:11:30 PM","pid":32507,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:11:30 PM","pid":32507,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:11:30 PM","pid":32507,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:11:30 PM","pid":32507,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:15:22 PM","pid":32691,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:15:22 PM","pid":32691,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:15:22 PM","pid":32691,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:15:22 PM","pid":32691,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:15:22 PM","pid":32691,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:15:31 PM","pid":32747,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:15:31 PM","pid":32747,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:15:31 PM","pid":32747,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:15:31 PM","pid":32747,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:15:31 PM","pid":32747,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:15:38 PM","pid":32781,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:15:38 PM","pid":32781,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:15:38 PM","pid":32781,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:15:38 PM","pid":32781,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:15:38 PM","pid":32781,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:15:44 PM","pid":32814,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:15:44 PM","pid":32814,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:15:44 PM","pid":32814,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:15:45 PM","pid":32814,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:15:45 PM","pid":32814,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:20:48 PM","pid":33022,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:20:48 PM","pid":33022,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:20:48 PM","pid":33022,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:20:48 PM","pid":33022,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:20:48 PM","pid":33022,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:23:43 PM","pid":33149,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:23:43 PM","pid":33149,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:23:43 PM","pid":33149,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:23:43 PM","pid":33149,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:23:43 PM","pid":33149,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:25:53 PM","pid":33222,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:25:53 PM","pid":33222,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:25:53 PM","pid":33222,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:25:53 PM","pid":33222,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:25:53 PM","pid":33222,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:26:45 PM","pid":33315,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:26:45 PM","pid":33315,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:26:45 PM","pid":33315,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:26:45 PM","pid":33315,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:26:45 PM","pid":33315,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:27:03 PM","pid":33363,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:27:03 PM","pid":33363,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:27:03 PM","pid":33363,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:27:03 PM","pid":33363,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:27:03 PM","pid":33363,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:27:05 PM","pid":33402,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:27:05 PM","pid":33402,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:27:05 PM","pid":33402,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:27:05 PM","pid":33402,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:27:05 PM","pid":33402,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:27:33 PM","pid":33459,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:27:33 PM","pid":33459,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:27:33 PM","pid":33459,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:27:33 PM","pid":33459,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:27:33 PM","pid":33459,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:27:53 PM","pid":33497,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:27:53 PM","pid":33497,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:27:53 PM","pid":33497,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:27:53 PM","pid":33497,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:27:53 PM","pid":33497,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:28:19 PM","pid":33546,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:28:19 PM","pid":33546,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:28:19 PM","pid":33546,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:28:19 PM","pid":33546,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:28:19 PM","pid":33546,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:37:25 PM","pid":33907,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:37:25 PM","pid":33907,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:37:25 PM","pid":33907,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:37:25 PM","pid":33907,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:37:25 PM","pid":33907,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:37:42 PM","pid":33966,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:37:42 PM","pid":33966,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:37:42 PM","pid":33966,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:37:42 PM","pid":33966,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:37:42 PM","pid":33966,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:38:10 PM","pid":34034,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:38:10 PM","pid":34034,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:38:10 PM","pid":34034,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:38:10 PM","pid":34034,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:38:10 PM","pid":34034,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:43:38 PM","pid":34385,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:43:38 PM","pid":34385,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:43:38 PM","pid":34385,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:43:38 PM","pid":34385,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:43:38 PM","pid":34385,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:49:15 PM","pid":34697,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:49:15 PM","pid":34697,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:49:15 PM","pid":34697,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:49:15 PM","pid":34697,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:49:15 PM","pid":34697,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:53:02 PM","pid":34974,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:53:02 PM","pid":34974,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:53:02 PM","pid":34974,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:53:02 PM","pid":34974,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:53:02 PM","pid":34974,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:53:55 PM","pid":35056,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:53:55 PM","pid":35056,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:53:55 PM","pid":35056,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:53:55 PM","pid":35056,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:53:55 PM","pid":35056,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:54:22 PM","pid":35102,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:54:22 PM","pid":35102,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:54:22 PM","pid":35102,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:54:22 PM","pid":35102,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:54:22 PM","pid":35102,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:55:50 PM","pid":35232,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:55:50 PM","pid":35232,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:55:50 PM","pid":35232,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:55:50 PM","pid":35232,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:55:50 PM","pid":35232,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:56:17 PM","pid":35297,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:56:17 PM","pid":35297,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:56:17 PM","pid":35297,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:56:17 PM","pid":35297,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:56:17 PM","pid":35297,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:56:25 PM","pid":35334,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:56:25 PM","pid":35334,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:56:25 PM","pid":35334,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:56:25 PM","pid":35334,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:56:25 PM","pid":35334,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:56:27 PM","pid":35392,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:56:27 PM","pid":35392,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:56:27 PM","pid":35392,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:56:27 PM","pid":35392,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:56:27 PM","pid":35392,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:56:36 PM","pid":35429,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:56:36 PM","pid":35429,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:56:36 PM","pid":35429,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:56:36 PM","pid":35429,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:56:36 PM","pid":35429,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:56:40 PM","pid":35461,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:56:40 PM","pid":35461,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:56:40 PM","pid":35461,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:56:40 PM","pid":35461,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:56:40 PM","pid":35461,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:57:00 PM","pid":35502,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:57:00 PM","pid":35502,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:57:00 PM","pid":35502,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:57:00 PM","pid":35502,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:57:00 PM","pid":35502,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:58:12 PM","pid":35570,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:58:12 PM","pid":35570,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:58:12 PM","pid":35570,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:58:12 PM","pid":35570,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:58:12 PM","pid":35570,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 04:58:14 PM","pid":35630,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 04:58:14 PM","pid":35630,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 04:58:14 PM","pid":35630,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 04:58:14 PM","pid":35630,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 04:58:14 PM","pid":35630,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 05:06:02 PM","pid":35888,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 05:06:02 PM","pid":35888,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 05:06:02 PM","pid":35888,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 05:06:02 PM","pid":35888,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 05:06:02 PM","pid":35888,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 05:06:28 PM","pid":35888,"hostname":"DWCM-iMac.local","description":"[POST] /api/station >> 500: \nInvalid `database_config_1.default.station.create()` invocation in\n/Users/regee/Documents/GitHub/kloudtrack/server/dist/modules/station/metadata/metadata.controller.js:29:64\n\n  26 // * CREATE STATION\n  27 exports.createStation = (0, error_handler_middleware_1.asyncHandler)(async (req, res) => {\n  28     const data = req.body;\n→ 29     const newStation = await database_config_1.default.station.create(\nUnique constraint failed on the fields: (`station_name`)"}
+{"level":50,"time":"05/05/2025, 05:06:39 PM","pid":35888,"hostname":"DWCM-iMac.local","description":"[POST] /api/station >> 500: \nInvalid `database_config_1.default.station.create()` invocation in\n/Users/regee/Documents/GitHub/kloudtrack/server/dist/modules/station/metadata/metadata.controller.js:29:64\n\n  26 // * CREATE STATION\n  27 exports.createStation = (0, error_handler_middleware_1.asyncHandler)(async (req, res) => {\n  28     const data = req.body;\n→ 29     const newStation = await database_config_1.default.station.create(\nUnique constraint failed on the fields: (`station_name`)"}
+{"level":50,"time":"05/05/2025, 05:07:18 PM","pid":35957,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 05:07:18 PM","pid":35957,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 05:07:18 PM","pid":35957,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 05:07:18 PM","pid":35957,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 05:07:18 PM","pid":35957,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 05:08:09 PM","pid":35996,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 05:08:09 PM","pid":35996,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 05:08:09 PM","pid":35996,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 05:08:09 PM","pid":35996,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 05:08:09 PM","pid":35996,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}
+{"level":50,"time":"05/05/2025, 05:09:15 PM","pid":36124,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT connection for station test:"}
+{"level":50,"time":"05/05/2025, 05:09:15 PM","pid":36124,"hostname":"DWCM-iMac.local","description":"Failed to add station test:"}
+{"level":30,"time":"05/05/2025, 05:09:15 PM","pid":36124,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/05/2025, 05:09:15 PM","pid":36124,"hostname":"DWCM-iMac.local","description":"Failed to initialize MQTT service: Error: Invalid \"keyPath\" option supplied."}
+{"level":40,"time":"05/05/2025, 05:09:15 PM","pid":36124,"hostname":"DWCM-iMac.local","description":"Server will continue running without MQTT functionality"}

@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.setupMqttService = void 0;
-const mqtt_config_1 = require("../../config/mqtt.config");
+const station_config_1 = require("../../config/station.config");
 const logger_1 = __importDefault(require("../utils/logger"));
 const mqtt_service_1 = require("./mqtt.service");
 const mqttService = (0, mqtt_service_1.createMultiStationMqttService)();
@@ -13,7 +13,7 @@ const setupMqttService = async () => {
     // stations.map((station) => {
     //   mqttService.addStation(createStationConfig(station.stationName));
     // });
-    mqttService.addStation((0, mqtt_config_1.createStationConfig)("test"));
+    mqttService.addStation((0, station_config_1.createStationConfig)("test"));
     await mqttService.connectAll();
     // mqttService.subscribe("kloudtrack/KTB61815AC/command", (message) => {
     //   console.log(message);
@@ -21,7 +21,7 @@ const setupMqttService = async () => {
     // mqttService.publish("kloudtrack/KTB61815AC/command", {
     //   command: "status",
     // });
-    // // mqttService.subscribe("kloudtrack/KTB61815AC/data", (message) => {
+    //  mqttService.subscribe("kloudtrack/KTB61815AC/data", (message) => {
     //   console.log(message);
     // });
     mqttService.on("message", async ({ stationId, topic, message }) => {

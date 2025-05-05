@@ -9,10 +9,6 @@ import { asyncHandler } from "../../../core/middlewares/error-handler.middleware
 import { AppError } from "../../../core/utils/error";
 import { validateStationExists } from "../station.helper";
 import {
-  CERTIFICATE_DIR,
-  CERTIFICATE_TYPES,
-} from "../../../config/certificate.config";
-import {
   getCertificateFingerPrint,
   upload,
   validateCertificate,
@@ -20,6 +16,7 @@ import {
 } from "./certificate.helper";
 import { formatVersion, normalizeVersion } from "./certificate.utils";
 import { sanitizePathComponent } from "../../../core/utils/sanitizer";
+import { CERTIFICATE_DIR, CERTIFICATE_TYPES } from "./certificate.constant";
 
 // * GET ROOT CERTIFICATE
 export const getRootCertificate = asyncHandler(
@@ -62,8 +59,7 @@ export const createRootCertificate = asyncHandler(
     const existingCertificate = await prisma.rootCertificate.findFirst({
       where: { status: "ACTIVE" },
     });
-
-    if (req.body.certificateText) {
+    if (req.body && req.body.certificateText) {
       const { certificateText, version = "CA1" } = req.body;
 
       if (!validateCertificate(certificateText)) {
@@ -78,9 +74,7 @@ export const createRootCertificate = asyncHandler(
 
       const fileName = `AmazonRoot${formatVersion(normalizedVersion)}.pem`;
       const filePath = path.join(CERTIFICATE_DIR, fileName);
-
       await writeCertificateToFile(certificateText, filePath);
-
       const fingerprint = getCertificateFingerPrint(certificateText);
 
       if (existingCertificate) {
@@ -130,7 +124,6 @@ export const createRootCertificate = asyncHandler(
       const filePath = req.file.path;
 
       const certificateText = fs.readFileSync(filePath, "utf8");
-
       if (!validateCertificate(certificateText)) {
         if (fs.existsSync(filePath)) {
           fs.unlinkSync(filePath);
@@ -177,7 +170,6 @@ export const updateRootCertificate = asyncHandler(
     if (!id) {
       throw new AppError("Certificate ID is required", 400);
     }
-
     const existingCertificate = await prisma.rootCertificate.findUnique({
       where: { id: +id },
     });
@@ -185,8 +177,7 @@ export const updateRootCertificate = asyncHandler(
     if (!existingCertificate) {
       throw new AppError("Root certificate not found", 404);
     }
-
-    if (req.body.certificateText) {
+    if (req.body && req.body.certificateText) {
       const { certificateText, version } = req.body;
 
       if (!validateCertificate(certificateText)) {
@@ -232,9 +223,9 @@ export const updateRootCertificate = asyncHandler(
         "Amazon Root CA certificate updated successfully"
       );
     }
+
     // * FILE CERTIFICATE UPLOAD
     const uploadRootCA = upload.single(CERTIFICATE_TYPES.ROOT_CA);
-
     return uploadRootCA(req, res, async (err) => {
       if (err) {
         throw new AppError(err.message, 400);
@@ -242,7 +233,7 @@ export const updateRootCertificate = asyncHandler(
 
       if (!req.file) {
         throw new AppError(
-          "Root CA certificate file or certificate text is required for update",
+          "Root CA certificate file or certificate text is required",
           400
         );
       }
@@ -252,7 +243,6 @@ export const updateRootCertificate = asyncHandler(
         ? normalizeVersion(version)
         : existingCertificate.version;
       const filePath = req.file.path;
-
       const certificateText = fs.readFileSync(filePath, "utf8");
       if (!validateCertificate(certificateText)) {
         if (fs.existsSync(filePath)) {
@@ -292,11 +282,7 @@ export const updateRootCertificate = asyncHandler(
 // * DELETE ROOT CERTIFICATE
 export const deleteRootCertificate = asyncHandler(
   async (req: Request, res: Response) => {
-    const { id } = req.params;
-
-    if (!id) {
-      throw new AppError("Certificate ID is required", 400);
-    }
+    const id = +req.params.id;
 
     const existingCertificate = await prisma.rootCertificate.findUnique({
       where: { id: +id },
@@ -311,7 +297,7 @@ export const deleteRootCertificate = asyncHandler(
     }
 
     await prisma.rootCertificate.delete({
-      where: { id: parseInt(id) },
+      where: { id: id },
     });
 
     return sendResponse(
@@ -462,7 +448,7 @@ export const uploadCertificate = asyncHandler(
         );
       }
       const namePart = sanitizePathComponent(
-        station.stationName.substring(0, 5).toUpperCase()
+        station.stationType.substring(0, 5).toUpperCase()
       );
 
       const stationDir = path.join(
@@ -536,7 +522,7 @@ export const uploadCertificate = asyncHandler(
     });
 
     const namePart = sanitizePathComponent(
-      station.stationName.substring(0, 5).toUpperCase()
+      station.stationType.substring(0, 5).toUpperCase()
     );
 
     const certFieldName = `${namePart}_${sanitizedSerial}-${CERTIFICATE_TYPES.CERTIFICATE}`;
@@ -663,7 +649,7 @@ export const updateCertificate = asyncHandler(
       }
 
       const namePart = sanitizePathComponent(
-        station.stationName.substring(0, 5).toUpperCase()
+        station.stationType.substring(0, 5).toUpperCase()
       );
 
       const sanitizedSerial = sanitizePathComponent(station.serialCode);
@@ -728,7 +714,7 @@ export const updateCertificate = asyncHandler(
     const { certificateId, certificateArn, status } = req.body;
 
     const namePart = sanitizePathComponent(
-      station.stationName.substring(0, 5).toUpperCase()
+      station.stationType.substring(0, 5).toUpperCase()
     );
     const sanitizedSerial = sanitizePathComponent(station.serialCode);
 
@@ -855,7 +841,7 @@ export const deleteCertificate = asyncHandler(
     });
 
     const namePart = sanitizePathComponent(
-      station.stationName.substring(0, 5).toUpperCase()
+      station.stationType.substring(0, 5).toUpperCase()
     );
     const sanitizedSerial = sanitizePathComponent(station.serialCode);
 

@@ -57,7 +57,7 @@ export const updateStation = asyncHandler(
     return sendResponse(
       res,
       updatedStation,
-      204,
+      200,
       "Station created succesfully"
     );
   }

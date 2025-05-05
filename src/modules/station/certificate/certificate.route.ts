@@ -15,11 +15,8 @@ import { validateRequest } from "../../../core/middlewares/validation.middleware
 import {
   activateRootCertificateSchema,
   createRootCertificateSchema,
-  deleteCertificateSchema,
   deleteRootCertificateSchema,
-  getCertificateByStationIdSchema,
-  getRootCertificateSchema,
-  listRootCertificatesSchema,
+  stationIdSchema,
   updateCertificateSchema,
   updateRootCertificateSchema,
   uploadCertificateSchema,
@@ -31,6 +28,10 @@ const rootCertificateRoute: string = "/root";
 const certificateRoute: string = "/:stationId";
 
 // *** AMAZON ROOT CERTIFICATE ***
+// Get all root certificate
+router.get(rootCertificateRoute, listRootCertificates);
+// Get Root Certificate
+router.get(`${rootCertificateRoute}/:id`, getRootCertificate);
 // Upload Root Certificate
 router.post(
   rootCertificateRoute,
@@ -49,23 +50,11 @@ router.delete(
   validateRequest(deleteRootCertificateSchema),
   deleteRootCertificate
 );
-// Get Root Certificate
-router.get(
-  `${rootCertificateRoute}/:id`,
-  validateRequest(getRootCertificateSchema),
-  getRootCertificate
-);
 // Activate Root Certificate
 router.post(
   `${rootCertificateRoute}/:id`,
   validateRequest(activateRootCertificateSchema),
   activateRootCertificate
-);
-// Get all root certificate
-router.post(
-  rootCertificateRoute,
-  validateRequest(listRootCertificatesSchema),
-  listRootCertificates
 );
 
 // *** CERTIFICATE PER STATIONS ***
@@ -84,13 +73,13 @@ router.put(
 // Delete Certificate
 router.delete(
   certificateRoute,
-  validateRequest(deleteCertificateSchema),
+  validateRequest(stationIdSchema),
   deleteCertificate
 );
 // Get Certificate by Station ID
 router.get(
   certificateRoute,
-  validateRequest(getCertificateByStationIdSchema),
+  validateRequest(stationIdSchema),
   getCertificateByStationId
 );
 

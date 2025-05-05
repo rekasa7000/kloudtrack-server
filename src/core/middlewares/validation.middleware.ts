@@ -5,11 +5,24 @@ import { AppError } from "../utils/error";
 export const validateRequest = (schema: AnyZodObject) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await schema.parseAsync({
-        body: req.body,
-        query: req.query,
-        params: req.params,
-      });
+      const contentType = req.headers["content-type"];
+      const isMultipartFormData =
+        contentType && contentType.includes("multipart/form-data");
+
+      if (isMultipartFormData) {
+        await schema.partial({ body: true }).parseAsync({
+          body: req.body,
+          query: req.query,
+          params: req.params,
+        });
+      } else {
+        await schema.parseAsync({
+          body: req.body,
+          query: req.query,
+          params: req.params,
+        });
+      }
+
       return next();
     } catch (error) {
       if (error instanceof ZodError) {
@@ -17,6 +30,7 @@ export const validateRequest = (schema: AnyZodObject) => {
           path: err.path.join("."),
           message: err.message,
         }));
+
         return next(
           new AppError(
             `Validation error: ${JSON.stringify(errorMessages)}`,

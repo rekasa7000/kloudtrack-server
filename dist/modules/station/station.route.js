@@ -1,16 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const station_controller_1 = require("./station.controller");
+const certificate_route_1 = __importDefault(require("./certificate/certificate.route"));
+const metadata_route_1 = __importDefault(require("./metadata/metadata.route"));
 const router = (0, express_1.Router)();
-// ALL STATIONS
-router.get("/", station_controller_1.getAllStations);
-// CREATE STATION
-router.post("/", station_controller_1.createStation);
-// UPDATE STATION
-router.put("/:id", station_controller_1.updateStation);
-// DELETE STATION
-router.delete("/:id", station_controller_1.deleteStation);
-// GET STATION BY ID
-router.get("/:id", station_controller_1.getStationById);
+router.use("/", metadata_route_1.default);
+router.use("/certificate", certificate_route_1.default);
 exports.default = router;
