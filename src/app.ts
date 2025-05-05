@@ -7,6 +7,7 @@ import { errorHandler } from "./core/middlewares/error-handler.middleware";
 import logger from "./core/utils/logger";
 import apiRoutes from "./route";
 import { AppError } from "./core/utils/error";
+import { initializeTelemetryService } from "./modules/station/telemetry/telemetry.setup";
 
 const app = express();
 

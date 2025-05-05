@@ -40,6 +40,15 @@ enum ProblemStatus {
   @@map("problem_status_enum")
 }
 
+enum CommandStatus {
+  PENDING
+  DELIVERED
+  EXECUTED
+  FAILED
+
+  @@map("command_status_enum")
+}
+
 model User {
   id             Int       @id @default(autoincrement()) @map("user_id")
   userName       String    @unique @map("user_name")
@@ -97,6 +106,7 @@ model Station {
   certificate     StationCertificate?
   createdAt       DateTime            @default(now()) @map("created_at")
   updatedAt       DateTime?           @updatedAt @map("updated_at")
+  Command         Command[]
 
   @@map("stations")
 }
@@ -146,6 +156,19 @@ model SensorData {
   createdAt      DateTime @map("created_at")
 
   @@map("sensor_data")
+}
+
+model Command {
+  id         Int       @id @default(autoincrement()) @map("command_id")
+  stationId  Int       @map("station_id")
+  command    Json      @map("command")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  executedAt DateTime? @map("executed_at")
+
+  station Station @relation(fields: [stationId], references: [id])
+
+  @@map("commands")
 }
 
 model ProblemReport {
