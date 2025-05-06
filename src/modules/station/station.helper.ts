@@ -1,5 +1,5 @@
 import { Station } from "@prisma/client";
-import { StationLookup } from "./station.type";
+import { StationLookup } from "./station.types";
 import prisma from "../../config/database.config";
 import { AppError } from "../../core/utils/error";
 

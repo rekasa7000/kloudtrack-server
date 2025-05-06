@@ -23,14 +23,14 @@ export const getCertificateFingerPrint = (content: string): string => {
 
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
-    const serial = req.body.serial;
-
     if (
       file.fieldname === CERTIFICATE_TYPES.PRIVATE_KEY ||
       file.fieldname === CERTIFICATE_TYPES.CERTIFICATE ||
       file.fieldname.endsWith(".pem.key") ||
       file.fieldname.endsWith(".pem.crt")
     ) {
+      const serial = req.body.serial;
+
       const stationDir = path.join(CERTIFICATE_DIR, serial);
 
       if (!fs.existsSync(stationDir)) {

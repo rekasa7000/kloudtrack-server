@@ -62,8 +62,12 @@ exports.createRootCertificate = (0, error_handler_middleware_1.asyncHandler)(asy
                 data: { status: "INACTIVE" },
             });
         }
+        if (!req.user) {
+            throw new error_1.AppError("Not authenticated", 400);
+        }
         const rootCertificate = await database_config_1.default.rootCertificate.create({
             data: {
+                uploadedByUserId: req.user.id,
                 path: filePath,
                 version: normalizedVersion,
                 status: "ACTIVE",
@@ -79,10 +83,10 @@ exports.createRootCertificate = (0, error_handler_middleware_1.asyncHandler)(asy
     const uploadRootCA = certificate_helper_1.upload.single(certificate_constant_1.CERTIFICATE_TYPES.ROOT_CA);
     return uploadRootCA(req, res, async (err) => {
         if (err) {
-            throw new error_1.AppError(err.message, 400);
+            throw new error_1.AppError(err, 400);
         }
         if (!req.file) {
-            throw new error_1.AppError("Root CA certificate file or certificate text is required", 400);
+            throw new error_1.AppError("Root CA certificate file is required", 400);
         }
         const { version = "CA1" } = req.body;
         const normalizedVersion = (0, certificate_utils_1.normalizeVersion)(version);
@@ -101,8 +105,12 @@ exports.createRootCertificate = (0, error_handler_middleware_1.asyncHandler)(asy
                 data: { status: "INACTIVE" },
             });
         }
+        if (!req.user) {
+            throw new error_1.AppError("Not authenticated", 400);
+        }
         const rootCertificate = await database_config_1.default.rootCertificate.create({
             data: {
+                uploadedByUserId: req.user.id,
                 path: filePath,
                 version: normalizedVersion,
                 status: "ACTIVE",
@@ -162,7 +170,7 @@ exports.updateRootCertificate = (0, error_handler_middleware_1.asyncHandler)(asy
     const uploadRootCA = certificate_helper_1.upload.single(certificate_constant_1.CERTIFICATE_TYPES.ROOT_CA);
     return uploadRootCA(req, res, async (err) => {
         if (err) {
-            throw new error_1.AppError(err.message, 400);
+            throw new error_1.AppError(err, 400);
         }
         if (!req.file) {
             throw new error_1.AppError("Root CA certificate file or certificate text is required", 400);
@@ -314,8 +322,12 @@ exports.uploadCertificate = (0, error_handler_middleware_1.asyncHandler)(async (
         expiresAt.setFullYear(expiresAt.getFullYear() + 1);
         const certPathRelative = `/certificates/${sanitizedSerial}/${certFileName}`;
         const keyPathRelative = `/certificates/${sanitizedSerial}/${keyFileName}`;
+        if (!req.user) {
+            throw new error_1.AppError("Not authenticated", 400);
+        }
         const createdCertificate = await database_config_1.default.stationCertificate.create({
             data: {
+                uploadedByUserId: req.user.id,
                 stationId: station.id,
                 certPath: certPathRelative,
                 keyPath: keyPathRelative,
@@ -378,8 +390,12 @@ exports.uploadCertificate = (0, error_handler_middleware_1.asyncHandler)(async (
         expiresAt.setFullYear(expiresAt.getFullYear() + 1);
         const certPathRelative = `/certificates/${namePart}_${sanitizedSerial}/${certFieldName}`;
         const keyPathRelative = `/certificates/${namePart}_${sanitizedSerial}/${keyFieldName}`;
+        if (!req.user) {
+            throw new error_1.AppError("Not authenticated", 400);
+        }
         const createdCertificate = await database_config_1.default.stationCertificate.create({
             data: {
+                uploadedByUserId: req.user.id,
                 stationId: station.id,
                 certPath: certPathRelative,
                 keyPath: keyPathRelative,

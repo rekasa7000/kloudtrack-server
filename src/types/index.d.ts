@@ -2,12 +2,12 @@ interface MqttStation {
   keyPath: string;
   certPath: string;
   caPath: string;
-  clientId: string;
+  stationName: string;
   host: string;
   port?: number;
   protocol?: "mqtts" | "wss" | undefined;
   reconnectPeriod?: number;
-  stationId: string;
+  stationId: number;
 }
 
 interface StationData {

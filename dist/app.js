@@ -14,6 +14,9 @@ const app = (0, express_1.default)();
 app.use(cors_middleware_1.customCors);
 app.options(/(.*)/, (0, cors_1.default)(cors_middleware_1.corsOptions));
 app.use(express_1.default.json());
+app.use(express_1.default.urlencoded({
+    extended: true,
+}));
 // routes
 app.use("/", route_1.default);
 // 404 handler

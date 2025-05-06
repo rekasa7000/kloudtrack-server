@@ -30,3 +30,11 @@ export interface StationLookup {
   stationId?: number;
   stationName?: string;
 }
+
+export interface StationConfig {
+  stationId: number;
+  stationName: string;
+  certPath: string;
+  keyPath: string;
+  caPath: string;
+}

@@ -2,82 +2,66 @@ import { PrismaClient } from "@prisma/client";
 import logger from "../../../core/utils/logger";
 import mqttService from "./telemetry.mqtt";
 import { saveTelemetryData, WeatherTelemetry } from "./telemetry.service";
-import { createStationConfig } from "../../../config/station.config";
+import { createStationConfig } from "./telemetry.config";
 
 const prisma = new PrismaClient();
 
-/**
- * Initialize the MQTT service for telemetry data collection
- */
-export async function initializeTelemetryService(): Promise<void> {
+export const initializeTelemetryService = async (): Promise<void> => {
   try {
-    // Get all active stations from the database
     const stations = await prisma.station.findMany({
       where: {
-        active: true,
+        isActive: true,
       },
       include: {
-        certificates: true,
+        certificate: true,
       },
     });
+
+    const rootCertificate = await prisma.rootCertificate.findFirst({
+      where: { status: "ACTIVE" },
+    });
+
+    if (!rootCertificate) {
+      logger.warn(`Root Certificate not found.`);
+      return;
+    }
 
     logger.info(`Setting up MQTT for ${stations.length} active stations`);
 
-    // Add each station to the MQTT service
     for (const station of stations) {
-      // Skip stations without certificates
-      if (!station.certificates || station.certificates.length === 0) {
-        logger.warn(
-          `Station ${station.stationId} has no certificates. Skipping.`
-        );
+      if (!station.certificate) {
+        logger.warn(`Station ${station.id} has no certificates. Skipping.`);
         continue;
       }
 
-      // Use the latest certificate
-      const latestCert = station.certificates.reduce((latest, cert) => {
-        return latest.createdAt > cert.createdAt ? latest : cert;
-      });
-
-      // Create station config from certificate data
       const config = createStationConfig({
-        stationId: station.stationId,
-        clientId: latestCert.clientId,
-        certPath: latestCert.certPath,
-        keyPath: latestCert.keyPath,
-        caPath: latestCert.caPath,
+        stationId: station.id,
+        stationName: station.stationName,
+        certPath: station.certificate.certPath,
+        keyPath: station.certificate.keyPath,
+        caPath: rootCertificate.path,
       });
 
-      // Add station to MQTT service
       mqttService.addStation(config);
 
-      logger.info(`Added station ${station.stationId} to MQTT service`);
+      logger.info(`Added station ${station.stationName} to MQTT service`);
     }
 
-    // Connect all stations
     await mqttService.connectAll();
     logger.info("All stations connected to MQTT service");
 
-    // Subscribe to telemetry topics for all stations
     mqttService.on("message", processIncomingMessage);
 
-    // Subscribe to specific telemetry topics
     stations.forEach((station) => {
-      // Subscribe to telemetry data topic
       mqttService.subscribe(
-        `devices/${station.stationId}/data`,
+        `devices/${station.id}/data`,
         telemetryHandler,
-        station.stationId
+        station.id
       );
 
-      // Subscribe to wildcard for all device data for this station
-      mqttService.subscribe(
-        `devices/+/data`,
-        telemetryHandler,
-        station.stationId
-      );
+      mqttService.subscribe(`devices/+/data`, telemetryHandler, station.id);
     });
 
-    // Setup reconnection handlers
     mqttService.on("reconnect", (stationId) => {
       logger.info(`MQTT client for station ${stationId} reconnecting`);
     });
@@ -95,35 +79,27 @@ export async function initializeTelemetryService(): Promise<void> {
     logger.error("Failed to initialize telemetry service:", error);
     throw error;
   }
-}
+};
 
-/**
- * Process incoming MQTT messages
- */
-function processIncomingMessage({
+const processIncomingMessage = ({
   topic,
   message,
   stationId,
 }: {
   topic: string;
   message: any;
-  stationId: string;
-}): void {
-  // Check if this is a telemetry data message
+  stationId: number;
+}): void => {
   if (topic.includes("/data")) {
     telemetryHandler(message, stationId);
   }
-}
+};
 
-/**
- * Handle telemetry data from weather stations
- */
-async function telemetryHandler(
+const telemetryHandler = async (
   message: any,
-  stationId: string
-): Promise<void> {
+  stationId: number
+): Promise<void> => {
   try {
-    // Validate message format
     if (!message || !message.weather) {
       logger.warn(`Invalid telemetry data format from station ${stationId}`);
       return;
@@ -131,29 +107,26 @@ async function telemetryHandler(
 
     const weather = message.weather;
 
-    // Create telemetry data object
     const telemetryData: WeatherTelemetry = {
-      stationId: stationId,
-      deviceId: message.deviceId || "unknown",
+      stationId: weather.stationId,
+      recordedAt: weather.recordedAt || new Date(),
       temperature: weather.temperature,
       humidity: weather.humidity,
       pressure: weather.pressure,
       windSpeed: weather.windSpeed,
       windDirection: weather.windDirection,
-      rainfall: weather.rainfall,
-      solarRadiation: weather.solarRadiation,
-      uvIndex: weather.uvIndex,
-      timestamp: new Date(),
+      precipitation: weather.precipitation,
+      lightIntensity: weather.lightIntensity,
+      distance: weather.distance,
     };
 
-    // Save telemetry data to database
     await saveTelemetryData(telemetryData);
 
     logger.debug(`Telemetry data saved for station ${stationId}`);
   } catch (error) {
     logger.error(`Failed to process telemetry data from ${stationId}:`, error);
   }
-}
+};
 
 export default {
   initializeTelemetryService,

@@ -26,11 +26,11 @@ const getCertificateFingerPrint = (content) => {
 exports.getCertificateFingerPrint = getCertificateFingerPrint;
 const storage = multer_1.default.diskStorage({
     destination: (req, file, callback) => {
-        const serial = req.body.serial;
         if (file.fieldname === certificate_constant_1.CERTIFICATE_TYPES.PRIVATE_KEY ||
             file.fieldname === certificate_constant_1.CERTIFICATE_TYPES.CERTIFICATE ||
             file.fieldname.endsWith(".pem.key") ||
             file.fieldname.endsWith(".pem.crt")) {
+            const serial = req.body.serial;
             const stationDir = path_1.default.join(certificate_constant_1.CERTIFICATE_DIR, serial);
             if (!fs_1.default.existsSync(stationDir)) {
                 fs_1.default.mkdirSync(stationDir, { recursive: true });

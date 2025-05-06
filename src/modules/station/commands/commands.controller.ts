@@ -1,22 +1,17 @@
 import { Request, Response } from "express";
 import * as commandsService from "./commands.service";
 import logger from "../../../core/utils/logger";
+import { AppError } from "../../../core/utils/error";
 
-/**
- * Send a command to a station
- * @route POST /api/stations/:stationId/commands
- */
 export async function sendCommand(req: Request, res: Response) {
   try {
-    const { stationId } = req.params;
-    const { command, parameters } = req.body;
+    const stationId = +req.params.stationId;
+    const { command } = req.body;
 
-    // Validate command
     if (!command) {
       return res.status(400).json({ message: "Command is required" });
     }
 
-    // Ensure command is valid
     const validCommands = ["REBOOT", "CONFIGURE", "UPDATE", "STATUS", "CUSTOM"];
     if (!validCommands.includes(command)) {
       return res.status(400).json({
@@ -24,12 +19,15 @@ export async function sendCommand(req: Request, res: Response) {
       });
     }
 
-    // Send command and wait for response
-    const result = await commandsService.sendCommand({
-      stationId,
-      command: command as commandsService.CommandType,
-      parameters,
-    });
+    if (!req.user) {
+      throw new AppError("Not authenticated", 400);
+    }
+
+    const result = await commandsService.sendCommandService(
+      command,
+      req.user.id,
+      stationId
+    );
 
     return res.status(200).json(result);
   } catch (error) {
@@ -41,16 +39,11 @@ export async function sendCommand(req: Request, res: Response) {
   }
 }
 
-/**
- * Get command history for a station
- * @route GET /api/stations/:stationId/commands
- */
 export async function getCommandHistory(req: Request, res: Response) {
   try {
-    const { stationId } = req.params;
+    const stationId = +req.params.stationId;
     const { limit } = req.query;
 
-    // Parse and validate limit
     const recordLimit = limit ? parseInt(limit as string) : 50;
     if (isNaN(recordLimit) || recordLimit < 1) {
       return res.status(400).json({ message: "Invalid limit parameter" });
@@ -70,20 +63,15 @@ export async function getCommandHistory(req: Request, res: Response) {
   }
 }
 
-/**
- * Get a specific command by ID
- * @route GET /api/stations/commands/:commandId
- */
 export async function getCommand(req: Request, res: Response) {
   try {
-    const { commandId } = req.params;
+    const commandId = +req.params.commandId;
 
     const command = await commandsService.getCommandById(commandId);
     return res.status(200).json(command);
   } catch (error) {
     logger.error("Error getting command:", error);
 
-    // Check if it's a "not found" error
     if (error instanceof Error && error.message.includes("not found")) {
       return res.status(404).json({ message: error.message });
     }

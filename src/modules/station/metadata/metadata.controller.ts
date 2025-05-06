@@ -3,7 +3,7 @@ import { asyncHandler } from "../../../core/middlewares/error-handler.middleware
 import { AppError } from "../../../core/utils/error";
 import prisma from "../../../config/database.config";
 import { sendResponse } from "../../../core/utils/response";
-import { StationMetadata } from "../station.type";
+import { StationMetadata } from "../station.types";
 
 // * ALL STATIONS
 export const getAllStations = asyncHandler(

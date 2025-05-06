@@ -2,13 +2,9 @@ import { Request, Response } from "express";
 import * as telemetryService from "./telemetry.service";
 import logger from "../../../core/utils/logger";
 
-/**
- * Get the latest telemetry data for a station
- * @route GET /api/stations/:stationId/telemetry/latest
- */
 export async function getLatestTelemetry(req: Request, res: Response) {
   try {
-    const { stationId } = req.params;
+    const stationId = +req.params.stationId;
     const data = await telemetryService.getLatestTelemetry(stationId);
 
     if (!data) {
@@ -26,21 +22,16 @@ export async function getLatestTelemetry(req: Request, res: Response) {
   }
 }
 
-/**
- * Get historical telemetry data for a station
- * @route GET /api/stations/:stationId/telemetry/history
- */
 export async function getHistoricalTelemetry(req: Request, res: Response) {
   try {
-    const { stationId } = req.params;
+    const stationId = +req.params.stationId;
     const { startDate, endDate, limit } = req.query;
 
-    // Validate and parse query parameters
     const start = startDate
       ? new Date(startDate as string)
-      : new Date(Date.now() - 24 * 60 * 60 * 1000); // Default: 24h ago
-    const end = endDate ? new Date(endDate as string) : new Date(); // Default: now
-    const recordLimit = limit ? parseInt(limit as string) : 100; // Default: 100 records
+      : new Date(Date.now() - 24 * 60 * 60 * 1000);
+    const end = endDate ? new Date(endDate as string) : new Date();
+    const recordLimit = limit ? parseInt(limit as string) : 100;
 
     if (isNaN(start.getTime()) || isNaN(end.getTime())) {
       return res.status(400).json({ message: "Invalid date format" });
@@ -62,30 +53,23 @@ export async function getHistoricalTelemetry(req: Request, res: Response) {
   }
 }
 
-/**
- * Get aggregated telemetry data (e.g., daily averages)
- * @route GET /api/stations/:stationId/telemetry/aggregated
- */
 export async function getAggregatedTelemetry(req: Request, res: Response) {
   try {
     const { stationId } = req.params;
     const { startDate, endDate, interval } = req.query;
 
-    // Validate and parse query parameters
     const start = startDate
       ? new Date(startDate as string)
-      : new Date(Date.now() - 7 * 24 * 60 * 60 * 1000); // Default: 7 days ago
-    const end = endDate ? new Date(endDate as string) : new Date(); // Default: now
-
+      : new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+    const end = endDate ? new Date(endDate as string) : new Date();
     if (isNaN(start.getTime()) || isNaN(end.getTime())) {
       return res.status(400).json({ message: "Invalid date format" });
     }
 
-    // Validate interval
     const validInterval =
       interval === "hourly" || interval === "daily" || interval === "weekly"
         ? interval
-        : "daily"; // Default to daily if not specified or invalid
+        : "daily";
 
     const data = await telemetryService.getAggregatedTelemetry(
       stationId,

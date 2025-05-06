@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum StationType {
@@ -50,17 +51,27 @@ enum CommandStatus {
 }
 
 model User {
-  id             Int       @id @default(autoincrement()) @map("user_id")
-  userName       String    @unique @map("user_name")
-  firstName      String?   @map("first_name")
-  lastName       String?   @map("last_name")
-  email          String    @unique @map("email")
-  role           Role      @map("role")
-  password       String    @map("password")
-  phone          String?   @map("phone")
-  profilePicture String?   @map("profile_picture")
-  createdAt      DateTime  @default(now()) @map("created_at")
-  updatedAt      DateTime? @updatedAt @map("updated_at")
+  id                Int       @id @default(autoincrement()) @map("user_id")
+  userName          String    @unique @map("user_name")
+  firstName         String?   @map("first_name")
+  lastName          String?   @map("last_name")
+  email             String    @unique @map("email")
+  role              Role      @map("role")
+  password          String    @map("password")
+  phone             String?   @map("phone")
+  profilePicture    String?   @map("profile_picture")
+  organizationId    Int?      @map("organization_id")
+  createdByUserId   Int?      @map("created_by_user_id")
+  passwordChangedAt DateTime? @map("password_changed_at")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime? @updatedAt @map("updated_at")
+
+  organization       Organization?        @relation(fields: [organizationId], references: [id])
+  command            Command[]
+  station            Station[]
+  rootCertificate    RootCertificate[]
+  problemReport      ProblemReport[]
+  stationCertificate StationCertificate[]
 
   @@map("users")
 }
@@ -72,6 +83,10 @@ model Organization {
   displayPicture   String?   @map("display_picture")
   createdAt        DateTime  @default(now()) @map("created_at")
   updatedAt        DateTime? @updatedAt @map("updated_at")
+
+  user    User[]
+  apiKey  ApiKey[]
+  station Station[]
 
   @@map("organizations")
 }
@@ -85,61 +100,76 @@ model ApiKey {
   createdAt      DateTime  @default(now()) @map("created_at")
   updatedAt      DateTime? @updatedAt @map("updated_at")
 
+  organization Organization @relation(fields: [organizationId], references: [id])
+
   @@map("api_keys")
 }
 
 model Station {
-  id              Int                 @id @default(autoincrement()) @map("station_id")
-  stationName     String              @unique @map("station_name")
-  stationType     StationType         @map("station_type")
-  location        Json                @map("location")
-  barangay        String              @map("barangay")
-  city            String              @map("city")
-  province        String              @map("province")
-  country         String              @map("country")
-  serialCode      String              @unique @map("serial_code")
-  elevation       Float?              @map("elevation")
-  stationPicture  String?             @map("station_picture")
-  isActive        Boolean             @map("is_active")
-  activatedAt     DateTime?           @map("activated_at")
-  firmwareVersion String              @map("firmware_version")
-  certificate     StationCertificate?
-  createdAt       DateTime            @default(now()) @map("created_at")
-  updatedAt       DateTime?           @updatedAt @map("updated_at")
-  Command         Command[]
+  id              Int         @id @default(autoincrement()) @map("station_id")
+  organizationId  Int?
+  stationName     String      @unique @map("station_name")
+  stationType     StationType @map("station_type")
+  location        Json        @map("location")
+  barangay        String      @map("barangay")
+  city            String      @map("city")
+  province        String      @map("province")
+  country         String      @map("country")
+  serialCode      String      @unique @map("serial_code")
+  elevation       Float?      @map("elevation")
+  stationPicture  String?     @map("station_picture")
+  isActive        Boolean     @map("is_active")
+  activatedAt     DateTime?   @map("activated_at")
+  firmwareVersion String      @map("firmware_version")
+  createdByUserId Int         @map("created_by_user_id")
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime?   @updatedAt @map("updated_at")
+
+  certificate StationCertificate?
+  command     Command[]
+  telemetry   Telemetry[]
+
+  user         User?         @relation(fields: [createdByUserId], references: [id])
+  organization Organization? @relation(fields: [organizationId], references: [id])
 
   @@map("stations")
 }
 
 model StationCertificate {
-  id          Int               @id @default(autoincrement()) @map("certificate_id")
-  keyPath     String            @map("key_path")
-  certPath    String            @map("cert_path")
-  awsCertId   String?           @map("aws_certificate_id")
-  awsCertArn  String?           @map("aws_certificate_arn")
-  status      CertificateStatus @map("certificate_status")
-  stationId   Int               @unique @map("station_id")
-  fingerprint String?           @map("fingerprint")
-  expiresAt   DateTime?         @map("expires_at")
-  createdAt   DateTime          @default(now()) @map("created_at")
-  updatedAt   DateTime?         @updatedAt @map("updated_at")
-  station     Station?          @relation(fields: [stationId], references: [id])
+  id               Int               @id @default(autoincrement()) @map("certificate_id")
+  keyPath          String            @map("key_path")
+  certPath         String            @map("cert_path")
+  awsCertId        String?           @map("aws_certificate_id")
+  awsCertArn       String?           @map("aws_certificate_arn")
+  status           CertificateStatus @map("certificate_status")
+  stationId        Int               @unique @map("station_id")
+  fingerprint      String?           @map("fingerprint")
+  uploadedByUserId Int               @map("uploaded_by_user_id")
+  expiresAt        DateTime?         @map("expires_at")
+  createdAt        DateTime          @default(now()) @map("created_at")
+  updatedAt        DateTime?         @updatedAt @map("updated_at")
+
+  station Station? @relation(fields: [stationId], references: [id])
+  user    User?    @relation(fields: [uploadedByUserId], references: [id])
 
   @@map("certificates")
 }
 
 model RootCertificate {
-  id        Int               @id @default(autoincrement()) @map("root_certificate_id")
-  path      String            @map("path")
-  version   String            @map("version") //CA1 CA3
-  status    CertificateStatus @map("certificate_status")
-  createdAt DateTime          @default(now()) @map("created_at")
-  updatedAt DateTime?         @updatedAt @map("updated_at")
+  id               Int               @id @default(autoincrement()) @map("root_certificate_id")
+  path             String            @map("path")
+  version          String            @map("version") //CA1 CA3
+  status           CertificateStatus @map("certificate_status")
+  uploadedByUserId Int               @map("uploaded_by_user_id")
+  createdAt        DateTime          @default(now()) @map("created_at")
+  updatedAt        DateTime?         @updatedAt @map("updated_at")
+
+  user User @relation(fields: [uploadedByUserId], references: [id])
 
   @@map("root_certificates")
 }
 
-model SensorData {
+model Telemetry {
   id             Int      @id @default(autoincrement()) @map("sensor_data_id")
   stationId      Int      @map("station_id")
   temperature    Float?   @map("temperature")
@@ -153,20 +183,24 @@ model SensorData {
   distance       Float?   @map("distance")
   lightIntensity Float?   @map("light_intensity")
   recordedAt     DateTime @map("recorded_at")
-  createdAt      DateTime @map("created_at")
+  createdAt      DateTime @default(now()) @map("created_at")
 
-  @@map("sensor_data")
+  station Station @relation(fields: [stationId], references: [id])
+
+  @@map("telemetry")
 }
 
 model Command {
   id         Int       @id @default(autoincrement()) @map("command_id")
   stationId  Int       @map("station_id")
+  issuedBy   Int       @map("issued_by")
   command    Json      @map("command")
   createdAt  DateTime  @default(now()) @map("created_at")
   updatedAt  DateTime  @updatedAt @map("updated_at")
   executedAt DateTime? @map("executed_at")
 
   station Station @relation(fields: [stationId], references: [id])
+  user    User?   @relation(fields: [issuedBy], references: [id])
 
   @@map("commands")
 }
@@ -180,6 +214,8 @@ model ProblemReport {
   status      ProblemStatus @default(OPEN) @map("status")
   createdAt   DateTime      @default(now()) @map("created_at")
   updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  user User? @relation(fields: [issuedBy], references: [id])
 
   @@map("problem_reports")
 }

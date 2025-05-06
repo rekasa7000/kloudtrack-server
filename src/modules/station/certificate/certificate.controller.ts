@@ -83,9 +83,12 @@ export const createRootCertificate = asyncHandler(
           data: { status: "INACTIVE" },
         });
       }
-
+      if (!req.user) {
+        throw new AppError("Not authenticated", 400);
+      }
       const rootCertificate = await prisma.rootCertificate.create({
         data: {
+          uploadedByUserId: req.user.id,
           path: filePath,
           version: normalizedVersion,
           status: "ACTIVE",
@@ -105,18 +108,16 @@ export const createRootCertificate = asyncHandler(
     }
 
     // * FILE CERTIFICATE UPLOAD
+
     const uploadRootCA = upload.single(CERTIFICATE_TYPES.ROOT_CA);
 
     return uploadRootCA(req, res, async (err) => {
       if (err) {
-        throw new AppError(err.message, 400);
+        throw new AppError(err, 400);
       }
 
       if (!req.file) {
-        throw new AppError(
-          "Root CA certificate file or certificate text is required",
-          400
-        );
+        throw new AppError("Root CA certificate file is required", 400);
       }
 
       const { version = "CA1" } = req.body;
@@ -140,8 +141,13 @@ export const createRootCertificate = asyncHandler(
         });
       }
 
+      if (!req.user) {
+        throw new AppError("Not authenticated", 400);
+      }
+
       const rootCertificate = await prisma.rootCertificate.create({
         data: {
+          uploadedByUserId: req.user.id,
           path: filePath,
           version: normalizedVersion,
           status: "ACTIVE",
@@ -228,7 +234,7 @@ export const updateRootCertificate = asyncHandler(
     const uploadRootCA = upload.single(CERTIFICATE_TYPES.ROOT_CA);
     return uploadRootCA(req, res, async (err) => {
       if (err) {
-        throw new AppError(err.message, 400);
+        throw new AppError(err, 400);
       }
 
       if (!req.file) {
@@ -476,8 +482,13 @@ export const uploadCertificate = asyncHandler(
       const certPathRelative = `/certificates/${sanitizedSerial}/${certFileName}`;
       const keyPathRelative = `/certificates/${sanitizedSerial}/${keyFileName}`;
 
+      if (!req.user) {
+        throw new AppError("Not authenticated", 400);
+      }
+
       const createdCertificate = await prisma.stationCertificate.create({
         data: {
+          uploadedByUserId: req.user.id,
           stationId: station.id,
           certPath: certPathRelative,
           keyPath: keyPathRelative,
@@ -502,7 +513,6 @@ export const uploadCertificate = asyncHandler(
     }
 
     // * FILE THING CERTIFICATE UPLOAD
-
     const { serialCode, certificateId, certificateArn } = req.body;
 
     if (!serialCode) {
@@ -568,8 +578,13 @@ export const uploadCertificate = asyncHandler(
       const certPathRelative = `/certificates/${namePart}_${sanitizedSerial}/${certFieldName}`;
       const keyPathRelative = `/certificates/${namePart}_${sanitizedSerial}/${keyFieldName}`;
 
+      if (!req.user) {
+        throw new AppError("Not authenticated", 400);
+      }
+
       const createdCertificate = await prisma.stationCertificate.create({
         data: {
+          uploadedByUserId: req.user.id,
           stationId: station.id,
           certPath: certPathRelative,
           keyPath: keyPathRelative,

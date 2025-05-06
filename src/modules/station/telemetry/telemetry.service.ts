@@ -1,44 +1,47 @@
 import { PrismaClient } from "@prisma/client";
 import logger from "../../../core/utils/logger";
+import { calculateHeatIndex, calculateUvIndex } from "./telemetry.utils";
 
 const prisma = new PrismaClient();
 
-// Define types for telemetry data
 export type WeatherTelemetry = {
-  temperature: number;
-  humidity: number;
-  pressure: number;
-  windSpeed: number;
-  windDirection: number;
-  rainfall?: number;
-  solarRadiation?: number;
-  uvIndex?: number;
-  timestamp?: Date;
-  deviceId?: string;
-  stationId: string;
+  temperature?: number;
+  humidity?: number;
+  pressure?: number;
+  windSpeed?: number;
+  windDirection?: number;
+  precipitation?: number;
+  lightIntensity?: number;
+  uvIntensity?: number;
+  distance?: number;
+  recordedAt?: Date;
+  stationId: number;
 };
 
-/**
- * Save telemetry data to database
- * @param data The weather telemetry data to save
- */
 export async function saveTelemetryData(data: WeatherTelemetry): Promise<void> {
   try {
-    // Save to database using Prisma
+    const heatIndex =
+      data.humidity && data.temperature
+        ? calculateHeatIndex(data.humidity, data.temperature)
+        : null;
+
+    const uvIndex =
+      data.uvIntensity !== undefined ? calculateUvIndex(data.uvIntensity) : 0;
+
     await prisma.telemetry.create({
       data: {
         stationId: data.stationId,
-        deviceId: data.deviceId || "unknown",
-        timestamp: data.timestamp || new Date(),
+        recordedAt: data.recordedAt || new Date(),
         temperature: data.temperature,
         humidity: data.humidity,
         pressure: data.pressure,
         windSpeed: data.windSpeed,
         windDirection: data.windDirection,
-        rainfall: data.rainfall,
-        solarRadiation: data.solarRadiation,
-        uvIndex: data.uvIndex,
-        rawData: JSON.stringify(data),
+        precipitation: data.precipitation,
+        lightIntensity: data.lightIntensity,
+        distance: data.distance,
+        uvIndex: uvIndex,
+        heatIndex: heatIndex,
       },
     });
 
@@ -52,12 +55,8 @@ export async function saveTelemetryData(data: WeatherTelemetry): Promise<void> {
   }
 }
 
-/**
- * Get latest telemetry data for a station
- * @param stationId The station ID to get data for
- */
 export async function getLatestTelemetry(
-  stationId: string
+  stationId: number
 ): Promise<WeatherTelemetry | null> {
   try {
     const latestData = await prisma.telemetry.findFirst({
@@ -65,7 +64,7 @@ export async function getLatestTelemetry(
         stationId: stationId,
       },
       orderBy: {
-        timestamp: "desc",
+        recordedAt: "desc",
       },
     });
 
@@ -75,16 +74,23 @@ export async function getLatestTelemetry(
 
     return {
       stationId: latestData.stationId,
-      deviceId: latestData.deviceId,
-      temperature: latestData.temperature,
-      humidity: latestData.humidity,
-      pressure: latestData.pressure,
-      windSpeed: latestData.windSpeed,
-      windDirection: latestData.windDirection,
-      rainfall: latestData.rainfall || undefined,
-      solarRadiation: latestData.solarRadiation || undefined,
-      uvIndex: latestData.uvIndex || undefined,
-      timestamp: latestData.timestamp,
+      recordedAt: latestData.recordedAt,
+      ...(latestData.temperature && { temperature: latestData.temperature }),
+      ...(latestData.humidity && { humidity: latestData.humidity }),
+      ...(latestData.pressure && { pressure: latestData.pressure }),
+      ...(latestData.windSpeed && { windSpeed: latestData.windSpeed }),
+      ...(latestData.windDirection && {
+        windDirection: latestData.windDirection,
+      }),
+      ...(latestData.precipitation && {
+        precipitation: latestData.precipitation,
+      }),
+      ...(latestData.lightIntensity && {
+        lightIntensity: latestData.lightIntensity,
+      }),
+      ...(latestData.uvIndex && { uvIndex: latestData.uvIndex }),
+      ...(latestData.heatIndex && { heatIndex: latestData.heatIndex }),
+      ...(latestData.distance && { distance: latestData.distance }),
     };
   } catch (error) {
     logger.error(
@@ -95,15 +101,8 @@ export async function getLatestTelemetry(
   }
 }
 
-/**
- * Get historical telemetry data for a station
- * @param stationId The station ID to get data for
- * @param startDate Start date for the query
- * @param endDate End date for the query
- * @param limit Maximum number of records to return
- */
 export async function getHistoricalTelemetry(
-  stationId: string,
+  stationId: number,
   startDate: Date,
   endDate: Date,
   limit: number = 100
@@ -112,29 +111,36 @@ export async function getHistoricalTelemetry(
     const data = await prisma.telemetry.findMany({
       where: {
         stationId: stationId,
-        timestamp: {
+        recordedAt: {
           gte: startDate,
           lte: endDate,
         },
       },
       orderBy: {
-        timestamp: "desc",
+        recordedAt: "desc",
       },
       take: limit,
     });
 
     return data.map((item) => ({
       stationId: item.stationId,
-      deviceId: item.deviceId,
-      temperature: item.temperature,
-      humidity: item.humidity,
-      pressure: item.pressure,
-      windSpeed: item.windSpeed,
-      windDirection: item.windDirection,
-      rainfall: item.rainfall || undefined,
-      solarRadiation: item.solarRadiation || undefined,
-      uvIndex: item.uvIndex || undefined,
-      timestamp: item.timestamp,
+      recordedAt: item.recordedAt,
+      ...(item.temperature && { temperature: item.temperature }),
+      ...(item.humidity && { humidity: item.humidity }),
+      ...(item.pressure && { pressure: item.pressure }),
+      ...(item.windSpeed && { windSpeed: item.windSpeed }),
+      ...(item.windDirection && {
+        windDirection: item.windDirection,
+      }),
+      ...(item.precipitation && {
+        precipitation: item.precipitation,
+      }),
+      ...(item.lightIntensity && {
+        lightIntensity: item.lightIntensity,
+      }),
+      ...(item.uvIndex && { uvIndex: item.uvIndex }),
+      ...(item.heatIndex && { heatIndex: item.heatIndex }),
+      ...(item.distance && { distance: item.distance }),
     }));
   } catch (error) {
     logger.error(
@@ -145,43 +151,31 @@ export async function getHistoricalTelemetry(
   }
 }
 
-/**
- * Get aggregated telemetry data (e.g., daily averages)
- * @param stationId The station ID to get data for
- * @param startDate Start date for the query
- * @param endDate End date for the query
- * @param interval Aggregation interval ('daily', 'hourly', etc.)
- */
 export async function getAggregatedTelemetry(
   stationId: string,
   startDate: Date,
   endDate: Date,
   interval: "hourly" | "daily" | "weekly" = "daily"
 ): Promise<any[]> {
-  // This would be implemented with SQL aggregation
-  // Using Prisma's $queryRaw or a similar approach
-
-  // Example implementation for daily aggregation
   if (interval === "daily") {
     const result = await prisma.$queryRaw`
       SELECT 
-        DATE(timestamp) as date,
+        DATE(recordedAt) as date,
         AVG(temperature) as avgTemperature,
         AVG(humidity) as avgHumidity,
         AVG(pressure) as avgPressure,
         AVG(windSpeed) as avgWindSpeed
-      FROM "Telemetry"
+      FROM "telemetry"
       WHERE "stationId" = ${stationId}
-        AND timestamp >= ${startDate}
-        AND timestamp <= ${endDate}
-      GROUP BY DATE(timestamp)
+        AND recordedAt >= ${startDate}
+        AND recordedAt <= ${endDate}
+      GROUP BY DATE(recordedAt)
       ORDER BY date DESC
     `;
 
     return result as any[];
   }
 
-  // Implement other intervals as needed
   throw new Error(`Aggregation interval '${interval}' not implemented`);
 }
 

@@ -3,39 +3,13 @@ import { EventEmitter } from "events";
 import logger from "../../../core/utils/logger";
 import { saveTelemetryData } from "./telemetry.service";
 
-// Types
-export type MqttStation = {
-  stationId: string;
-  clientId: string;
-  keyPath: string;
-  certPath: string;
-  caPath: string;
-  host: string;
-  port?: number;
-  protocol?: string;
-  reconnectPeriod?: number;
-};
+export type MessageHandler = (message: any, stationId: number) => void;
 
-export type PublishOptions = {
-  qos?: number;
-  retain?: boolean;
-};
-
-export type MessageHandler = (message: any, stationId: string) => void;
-
-export type MqttMessage = {
-  topic: string;
-  message: any;
-  stationId: string;
-};
-
-// Create a connection for a single station
-export function createStationConnection(config: MqttStation) {
+export const createStationConnection = (config: MqttStation) => {
   const device = new awsIot.device({
     keyPath: config.keyPath,
     certPath: config.certPath,
     caPath: config.caPath,
-    clientId: config.clientId,
     host: config.host,
     port: config.port || 8883,
     protocol: config.protocol || "mqtts",
@@ -46,15 +20,13 @@ export function createStationConnection(config: MqttStation) {
   let connected = false;
   const subscriptions = new Map<string, Set<MessageHandler>>();
 
-  // Setup event handlers
   device.on("connect", () => {
     connected = true;
     logger.info(
-      `MQTT client connected: ${config.clientId} (Station: ${config.stationId})`
+      `MQTT client connected: ${config.stationName} (Station: ${config.stationId})`
     );
     eventEmitter.emit("connect", config.stationId);
 
-    // Resubscribe to topics after reconnection
     if (subscriptions.size > 0) {
       subscriptions.forEach((_, topic) => {
         device.subscribe(topic);
@@ -65,14 +37,14 @@ export function createStationConnection(config: MqttStation) {
   device.on("close", () => {
     connected = false;
     logger.info(
-      `MQTT client disconnected: ${config.clientId} (Station: ${config.stationId})`
+      `MQTT client disconnected: ${config.stationName} (Station: ${config.stationId})`
     );
     eventEmitter.emit("disconnect", config.stationId);
   });
 
   device.on("reconnect", () => {
     logger.info(
-      `MQTT client reconnecting: ${config.clientId} (Station: ${config.stationId})`
+      `MQTT client reconnecting: ${config.stationName} (Station: ${config.stationId})`
     );
     eventEmitter.emit("reconnect", config.stationId);
   });
@@ -80,14 +52,14 @@ export function createStationConnection(config: MqttStation) {
   device.on("offline", () => {
     connected = false;
     logger.info(
-      `MQTT client offline: ${config.clientId} (Station: ${config.stationId})`
+      `MQTT client offline: ${config.stationName} (Station: ${config.stationId})`
     );
     eventEmitter.emit("offline", config.stationId);
   });
 
   device.on("error", (error) => {
     logger.error(
-      `MQTT client error: ${config.clientId} (Station: ${config.stationId})`,
+      `MQTT client error: ${config.stationName} (Station: ${config.stationId})`,
       error
     );
     eventEmitter.emit("error", error, config.stationId);
@@ -101,7 +73,6 @@ export function createStationConnection(config: MqttStation) {
         message
       );
 
-      // Extract deviceId from topic if available
       const topicParts = topic.split("/");
       if (topicParts.length >= 2) {
         const deviceId = topicParts[1];
@@ -110,7 +81,6 @@ export function createStationConnection(config: MqttStation) {
 
       message.stationId = config.stationId;
 
-      // Notify subscribers for this exact topic
       const subscribers = subscriptions.get(topic);
       if (subscribers) {
         subscribers.forEach((callback) => {
@@ -125,7 +95,6 @@ export function createStationConnection(config: MqttStation) {
         });
       }
 
-      // Check for wildcard matches
       subscriptions.forEach((subscriberCallbacks, subscribedTopic) => {
         if (
           topicMatchesWildcard(topic, subscribedTopic) &&
@@ -144,7 +113,6 @@ export function createStationConnection(config: MqttStation) {
         }
       });
 
-      // Emit message event
       eventEmitter.emit("message", {
         topic,
         message,
@@ -163,11 +131,10 @@ export function createStationConnection(config: MqttStation) {
     }
   });
 
-  // Helper function for wildcard topic matching
-  function topicMatchesWildcard(
+  const topicMatchesWildcard = (
     actualTopic: string,
     wildcardTopic: string
-  ): boolean {
+  ): boolean => {
     const wildcardParts = wildcardTopic.split("/");
     const actualParts = actualTopic.split("/");
 
@@ -190,9 +157,8 @@ export function createStationConnection(config: MqttStation) {
     }
 
     return true;
-  }
+  };
 
-  // Station API
   return {
     config,
     eventEmitter,
@@ -316,12 +282,11 @@ export function createStationConnection(config: MqttStation) {
       return Array.from(devices);
     },
   };
-}
+};
 
-// Create the multi-station MQTT service
-export function createMqttService() {
+export const createMqttService = () => {
   const stations = new Map<
-    string,
+    number,
     ReturnType<typeof createStationConnection>
   >();
   const eventEmitter = new EventEmitter();
@@ -339,7 +304,6 @@ export function createMqttService() {
         const station = createStationConnection(config);
         stations.set(config.stationId, station);
 
-        // Forward station events to service event emitter
         station.eventEmitter.on("connect", (stationId) => {
           eventEmitter.emit("connect", stationId);
         });
@@ -371,7 +335,7 @@ export function createMqttService() {
       }
     },
 
-    removeStation: (stationId: string): void => {
+    removeStation: (stationId: number): void => {
       const station = stations.get(stationId);
       if (!station) {
         logger.warn(`Station ${stationId} not found. Cannot remove.`);
@@ -383,16 +347,16 @@ export function createMqttService() {
       logger.info(`Station ${stationId} removed successfully`);
     },
 
-    getStation: (stationId: string) => stations.get(stationId),
+    getStation: (stationId: number) => stations.get(stationId),
 
     getStationIds: () => Array.from(stations.keys()),
 
-    isConnected: (stationId: string): boolean => {
+    isConnected: (stationId: number): boolean => {
       const station = stations.get(stationId);
       return station ? station.isConnected() : false;
     },
 
-    connect: async (stationId: string): Promise<void> => {
+    connect: async (stationId: number): Promise<void> => {
       const station = stations.get(stationId);
       if (!station) {
         throw new Error(`Station ${stationId} not found`);
@@ -414,7 +378,7 @@ export function createMqttService() {
       await Promise.all(connections);
     },
 
-    disconnect: (stationId: string): void => {
+    disconnect: (stationId: number): void => {
       const station = stations.get(stationId);
       if (station) {
         station.disconnect();
@@ -428,7 +392,7 @@ export function createMqttService() {
     subscribe: (
       topic: string,
       callback: MessageHandler,
-      stationId?: string
+      stationId?: number
     ): void => {
       if (stationId) {
         const station = stations.get(stationId);
@@ -446,7 +410,7 @@ export function createMqttService() {
     unsubscribe: (
       topic: string,
       callback?: MessageHandler,
-      stationId?: string
+      stationId?: number
     ): void => {
       if (stationId) {
         const station = stations.get(stationId);
@@ -465,7 +429,7 @@ export function createMqttService() {
       topic: string,
       message: any,
       options: PublishOptions = {},
-      stationId?: string
+      stationId?: number
     ): Promise<void> => {
       if (stationId) {
         const station = stations.get(stationId);
@@ -496,7 +460,7 @@ export function createMqttService() {
       eventEmitter.off(event, listener);
     },
 
-    getConnectedDevices: (stationId?: string): Record<string, string[]> => {
+    getConnectedDevices: (stationId?: number): Record<string, string[]> => {
       const result: Record<string, string[]> = {};
 
       if (stationId) {
@@ -513,10 +477,7 @@ export function createMqttService() {
       return result;
     },
   };
-}
+};
 
-// Singleton instance for the application
 export const mqttService = createMqttService();
-
-// Export the singleton for use throughout the application
 export default mqttService;
