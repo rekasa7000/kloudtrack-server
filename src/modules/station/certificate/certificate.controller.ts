@@ -3,7 +3,7 @@ import fs from "fs";
 import crypto from "crypto";
 import prisma from "../../../config/database.config";
 
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { sendResponse } from "../../../core/utils/response";
 import { asyncHandler } from "../../../core/middlewares/error-handler.middleware";
 import { AppError } from "../../../core/utils/error";

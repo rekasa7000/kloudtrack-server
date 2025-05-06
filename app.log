@@ -115,3 +115,43 @@
 {"level":30,"time":"05/06/2025, 05:06:29 PM","pid":24985,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
 {"level":40,"time":"05/06/2025, 05:06:31 PM","pid":24985,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
 {"level":30,"time":"05/06/2025, 05:06:31 PM","pid":24985,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/06/2025, 06:19:45 PM","pid":1780,"hostname":"rekasa","description":"Server running on port 3000"}
+{"level":40,"time":"05/06/2025, 06:19:46 PM","pid":1780,"hostname":"rekasa","description":"Root Certificate not found."}
+{"level":30,"time":"05/06/2025, 06:19:46 PM","pid":1780,"hostname":"rekasa","description":"Application services initialized successfully"}
+{"level":30,"time":"05/06/2025, 06:19:47 PM","pid":15144,"hostname":"rekasa","description":"Server running on port 3000"}
+{"level":40,"time":"05/06/2025, 06:19:48 PM","pid":15144,"hostname":"rekasa","description":"Root Certificate not found."}
+{"level":30,"time":"05/06/2025, 06:19:48 PM","pid":15144,"hostname":"rekasa","description":"Application services initialized successfully"}
+{"level":30,"time":"05/06/2025, 06:21:56 PM","pid":7660,"hostname":"rekasa","description":"Server running on port 3000"}
+{"level":40,"time":"05/06/2025, 06:21:57 PM","pid":7660,"hostname":"rekasa","description":"Root Certificate not found."}
+{"level":30,"time":"05/06/2025, 06:21:57 PM","pid":7660,"hostname":"rekasa","description":"Application services initialized successfully"}
+{"level":30,"time":"05/06/2025, 06:21:59 PM","pid":18640,"hostname":"rekasa","description":"Server running on port 3000"}
+{"level":40,"time":"05/06/2025, 06:22:00 PM","pid":18640,"hostname":"rekasa","description":"Root Certificate not found."}
+{"level":30,"time":"05/06/2025, 06:22:00 PM","pid":18640,"hostname":"rekasa","description":"Application services initialized successfully"}
+{"level":30,"time":"05/06/2025, 06:25:13 PM","pid":4804,"hostname":"rekasa","description":"Server running on port 3000"}
+{"level":40,"time":"05/06/2025, 06:25:15 PM","pid":4804,"hostname":"rekasa","description":"Root Certificate not found."}
+{"level":30,"time":"05/06/2025, 06:25:15 PM","pid":4804,"hostname":"rekasa","description":"Application services initialized successfully"}
+{"level":30,"time":"05/06/2025, 06:25:16 PM","pid":8824,"hostname":"rekasa","description":"Server running on port 3000"}
+{"level":40,"time":"05/06/2025, 06:25:18 PM","pid":8824,"hostname":"rekasa","description":"Root Certificate not found."}
+{"level":30,"time":"05/06/2025, 06:25:18 PM","pid":8824,"hostname":"rekasa","description":"Application services initialized successfully"}
+{"level":30,"time":"05/06/2025, 06:29:15 PM","pid":15144,"hostname":"rekasa","description":"Server running on port 3000"}
+{"level":40,"time":"05/06/2025, 06:29:16 PM","pid":15144,"hostname":"rekasa","description":"Root Certificate not found."}
+{"level":30,"time":"05/06/2025, 06:29:16 PM","pid":15144,"hostname":"rekasa","description":"Application services initialized successfully"}
+{"level":30,"time":"05/06/2025, 06:29:18 PM","pid":8880,"hostname":"rekasa","description":"Server running on port 3000"}
+{"level":40,"time":"05/06/2025, 06:29:19 PM","pid":8880,"hostname":"rekasa","description":"Root Certificate not found."}
+{"level":30,"time":"05/06/2025, 06:29:19 PM","pid":8880,"hostname":"rekasa","description":"Application services initialized successfully"}
+{"level":30,"time":"05/06/2025, 06:32:09 PM","pid":18996,"hostname":"rekasa","description":"Server running on port 3000"}
+{"level":40,"time":"05/06/2025, 06:32:10 PM","pid":18996,"hostname":"rekasa","description":"Root Certificate not found."}
+{"level":30,"time":"05/06/2025, 06:32:10 PM","pid":18996,"hostname":"rekasa","description":"Application services initialized successfully"}
+{"level":30,"time":"05/06/2025, 06:56:34 PM","pid":15204,"hostname":"rekasa","description":"Server running on port 3000"}
+{"level":40,"time":"05/06/2025, 06:56:36 PM","pid":15204,"hostname":"rekasa","description":"Root Certificate not found."}
+{"level":30,"time":"05/06/2025, 06:56:36 PM","pid":15204,"hostname":"rekasa","description":"Application services initialized successfully"}
+{"level":30,"time":"05/06/2025, 06:56:48 PM","pid":5268,"hostname":"rekasa","description":"Server running on port 3000"}
+{"level":40,"time":"05/06/2025, 06:56:51 PM","pid":5268,"hostname":"rekasa","description":"Root Certificate not found."}
+{"level":30,"time":"05/06/2025, 06:56:51 PM","pid":5268,"hostname":"rekasa","description":"Application services initialized successfully"}
+{"level":50,"time":"05/06/2025, 06:57:41 PM","pid":5268,"hostname":"rekasa","description":"[POST] /api/station/certificate/root >> 400: Expected double-quoted property name in JSON at position 186"}
+{"level":30,"time":"05/06/2025, 06:58:16 PM","pid":18228,"hostname":"rekasa","description":"Server running on port 3000"}
+{"level":40,"time":"05/06/2025, 06:58:17 PM","pid":18228,"hostname":"rekasa","description":"Root Certificate not found."}
+{"level":30,"time":"05/06/2025, 06:58:17 PM","pid":18228,"hostname":"rekasa","description":"Application services initialized successfully"}
+{"level":30,"time":"05/06/2025, 06:58:42 PM","pid":17904,"hostname":"rekasa","description":"Server running on port 3000"}
+{"level":40,"time":"05/06/2025, 06:58:43 PM","pid":17904,"hostname":"rekasa","description":"Root Certificate not found."}
+{"level":30,"time":"05/06/2025, 06:58:43 PM","pid":17904,"hostname":"rekasa","description":"Application services initialized successfully"}

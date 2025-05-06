@@ -24,3 +24,9 @@ interface PublishOptions {
   qos?: 0 | 1 | 2;
   retain?: boolean;
 }
+
+interface TokenPayload {
+  userId: number;
+  iat: number;
+  exp: number;
+}

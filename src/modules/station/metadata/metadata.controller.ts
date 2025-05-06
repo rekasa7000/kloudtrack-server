@@ -31,9 +31,14 @@ export const createStation = asyncHandler(
   async (req: Request, res: Response) => {
     const data: StationMetadata = req.body;
 
+    if (!req.user) {
+      throw new AppError("Not authenticated", 400);
+    }
+
     const newStation = await prisma.station.create({
       data: {
         ...data,
+        createdByUserId: req.user.id,
       },
     });
 

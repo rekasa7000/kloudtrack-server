@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import { AppError } from "../utils/error";
 import prisma from "../../config/database.config";
 import config from "../../config/environment.config";
+import { extractToken } from "../utils/auth";
 
 declare global {
   namespace Express {
@@ -17,33 +18,13 @@ declare global {
   }
 }
 
-export const generateToken = (userId: number, res: Response) => {
-  const token = jwt.sign({ userId }, config.JWT_SECRET, { expiresIn: "7d" });
-
-  res.cookie("zorb-jwt", token, {
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-    httpOnly: true,
-    sameSite: "strict",
-    secure: process.env.NODE_ENV !== "development",
-  });
-
-  return token;
-};
-
 export const protect = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
-    let token;
-
-    if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith("Bearer")
-    ) {
-      token = req.headers.authorization.split(" ")[1];
-    }
+    const token = extractToken(req);
 
     if (!token) {
       return next(
@@ -51,14 +32,10 @@ export const protect = async (
       );
     }
 
-    const decoded = jwt.verify(token, config.JWT_SECRET) as {
-      id: number;
-      iat: number;
-      exp: number;
-    };
+    const decoded = jwt.verify(token, config.JWT_SECRET) as TokenPayload;
 
     const currentUser = await prisma.user.findUnique({
-      where: { id: decoded.id },
+      where: { id: decoded.userId },
       select: {
         id: true,
         email: true,
@@ -88,7 +65,12 @@ export const protect = async (
       }
     }
 
-    req.user = currentUser;
+    req.user = {
+      id: currentUser.id,
+      email: currentUser.email,
+      role: currentUser.role,
+    };
+
     next();
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) {
@@ -104,7 +86,7 @@ export const protect = async (
 };
 
 export const restrictTo = (...roles: string[]) => {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, res: Response, next: NextFunction): void => {
     if (!req.user) {
       return next(new AppError("You are not logged in", 401));
     }

@@ -12,11 +12,8 @@ const app = express();
 app.use(customCors);
 app.options(/(.*)/, cors(corsOptions));
 app.use(express.json());
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-);
+app.use(express.urlencoded({ extended: true }));
+
 // routes
 app.use("/", apiRoutes);
 
