@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { AppError } from "../utils/error";
 import prisma from "../../config/database.config";
 import config from "../../config/environment.config";
-import { extractToken } from "../utils/auth";
+import { extractToken } from "../services/auth.service";
 
 declare global {
   namespace Express {

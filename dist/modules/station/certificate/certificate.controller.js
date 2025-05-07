@@ -80,48 +80,42 @@ exports.createRootCertificate = (0, error_handler_middleware_1.asyncHandler)(asy
         }, 201, "Amazon Root CA certificate created successfully");
     }
     // * FILE CERTIFICATE UPLOAD
-    const uploadRootCA = certificate_helper_1.upload.single(certificate_constant_1.CERTIFICATE_TYPES.ROOT_CA);
-    return uploadRootCA(req, res, async (err) => {
-        if (err) {
-            throw new error_1.AppError(err, 400);
+    if (!req.file) {
+        throw new error_1.AppError("Root CA certificate file is required", 400);
+    }
+    const { version = "CA1" } = req.body;
+    const normalizedVersion = (0, certificate_utils_1.normalizeVersion)(version);
+    const filePath = req.file.path;
+    const certificateText = fs_1.default.readFileSync(filePath, "utf8");
+    if (!(0, certificate_helper_1.validateCertificate)(certificateText)) {
+        if (fs_1.default.existsSync(filePath)) {
+            fs_1.default.unlinkSync(filePath);
         }
-        if (!req.file) {
-            throw new error_1.AppError("Root CA certificate file is required", 400);
-        }
-        const { version = "CA1" } = req.body;
-        const normalizedVersion = (0, certificate_utils_1.normalizeVersion)(version);
-        const filePath = req.file.path;
-        const certificateText = fs_1.default.readFileSync(filePath, "utf8");
-        if (!(0, certificate_helper_1.validateCertificate)(certificateText)) {
-            if (fs_1.default.existsSync(filePath)) {
-                fs_1.default.unlinkSync(filePath);
-            }
-            throw new error_1.AppError("Invalid certificate format", 400);
-        }
-        const fingerprint = (0, certificate_helper_1.getCertificateFingerPrint)(certificateText);
-        if (existingCertificate) {
-            await database_config_1.default.rootCertificate.updateMany({
-                where: { status: "ACTIVE" },
-                data: { status: "INACTIVE" },
-            });
-        }
-        if (!req.user) {
-            throw new error_1.AppError("Not authenticated", 400);
-        }
-        const rootCertificate = await database_config_1.default.rootCertificate.create({
-            data: {
-                uploadedByUserId: req.user.id,
-                path: filePath,
-                version: normalizedVersion,
-                status: "ACTIVE",
-            },
+        throw new error_1.AppError("Invalid certificate format", 400);
+    }
+    const fingerprint = (0, certificate_helper_1.getCertificateFingerPrint)(certificateText);
+    if (existingCertificate) {
+        await database_config_1.default.rootCertificate.updateMany({
+            where: { status: "ACTIVE" },
+            data: { status: "INACTIVE" },
         });
-        return (0, response_1.sendResponse)(res, {
-            id: rootCertificate.id,
-            version: (0, certificate_utils_1.formatVersion)(rootCertificate.version),
-            fingerprint,
-        }, 201, "Amazon Root CA certificate uploaded successfully");
+    }
+    if (!req.user) {
+        throw new error_1.AppError("Not authenticated", 400);
+    }
+    const rootCertificate = await database_config_1.default.rootCertificate.create({
+        data: {
+            uploadedByUserId: req.user.id,
+            path: filePath,
+            version: normalizedVersion,
+            status: "ACTIVE",
+        },
     });
+    return (0, response_1.sendResponse)(res, {
+        id: rootCertificate.id,
+        version: (0, certificate_utils_1.formatVersion)(rootCertificate.version),
+        fingerprint,
+    }, 201, "Amazon Root CA certificate uploaded successfully");
 });
 // * UPDATE ROOT CERTIFICATE
 exports.updateRootCertificate = (0, error_handler_middleware_1.asyncHandler)(async (req, res) => {
@@ -166,44 +160,37 @@ exports.updateRootCertificate = (0, error_handler_middleware_1.asyncHandler)(asy
             version: (0, certificate_utils_1.formatVersion)(updatedCertificate.version),
         }, 200, "Amazon Root CA certificate updated successfully");
     }
-    // * FILE CERTIFICATE UPLOAD
-    const uploadRootCA = certificate_helper_1.upload.single(certificate_constant_1.CERTIFICATE_TYPES.ROOT_CA);
-    return uploadRootCA(req, res, async (err) => {
-        if (err) {
-            throw new error_1.AppError(err, 400);
+    if (!req.file) {
+        throw new error_1.AppError("Root CA certificate file or certificate text is required", 400);
+    }
+    const { version } = req.body;
+    const normalizedVersion = version
+        ? (0, certificate_utils_1.normalizeVersion)(version)
+        : existingCertificate.version;
+    const filePath = req.file.path;
+    const certificateText = fs_1.default.readFileSync(filePath, "utf8");
+    if (!(0, certificate_helper_1.validateCertificate)(certificateText)) {
+        if (fs_1.default.existsSync(filePath)) {
+            fs_1.default.unlinkSync(filePath);
         }
-        if (!req.file) {
-            throw new error_1.AppError("Root CA certificate file or certificate text is required", 400);
-        }
-        const { version } = req.body;
-        const normalizedVersion = version
-            ? (0, certificate_utils_1.normalizeVersion)(version)
-            : existingCertificate.version;
-        const filePath = req.file.path;
-        const certificateText = fs_1.default.readFileSync(filePath, "utf8");
-        if (!(0, certificate_helper_1.validateCertificate)(certificateText)) {
-            if (fs_1.default.existsSync(filePath)) {
-                fs_1.default.unlinkSync(filePath);
-            }
-            throw new error_1.AppError("Invalid certificate format", 400);
-        }
-        if (fs_1.default.existsSync(existingCertificate.path) &&
-            existingCertificate.path !== filePath) {
-            fs_1.default.unlinkSync(existingCertificate.path);
-        }
-        const updatedCertificate = await database_config_1.default.rootCertificate.update({
-            where: { id: +id },
-            data: {
-                path: filePath,
-                version: normalizedVersion,
-                updatedAt: new Date(),
-            },
-        });
-        return (0, response_1.sendResponse)(res, {
-            id: updatedCertificate.id,
-            version: (0, certificate_utils_1.formatVersion)(updatedCertificate.version),
-        }, 200, "Amazon Root CA certificate updated successfully");
+        throw new error_1.AppError("Invalid certificate format", 400);
+    }
+    if (fs_1.default.existsSync(existingCertificate.path) &&
+        existingCertificate.path !== filePath) {
+        fs_1.default.unlinkSync(existingCertificate.path);
+    }
+    const updatedCertificate = await database_config_1.default.rootCertificate.update({
+        where: { id: +id },
+        data: {
+            path: filePath,
+            version: normalizedVersion,
+            updatedAt: new Date(),
+        },
     });
+    return (0, response_1.sendResponse)(res, {
+        id: updatedCertificate.id,
+        version: (0, certificate_utils_1.formatVersion)(updatedCertificate.version),
+    }, 200, "Amazon Root CA certificate updated successfully");
 });
 // * DELETE ROOT CERTIFICATE
 exports.deleteRootCertificate = (0, error_handler_middleware_1.asyncHandler)(async (req, res) => {
@@ -369,53 +356,47 @@ exports.uploadCertificate = (0, error_handler_middleware_1.asyncHandler)(async (
         { name: certFieldName, maxCount: 1 },
         { name: keyFieldName, maxCount: 1 },
     ];
-    const uploadFiles = certificate_helper_1.upload.fields(uploadFields);
-    uploadFiles(req, res, async (err) => {
-        if (err) {
-            throw new error_1.AppError(err.message, 400);
-        }
-        const files = req.files;
-        if (!files[certFieldName] || !files[keyFieldName]) {
-            throw new error_1.AppError("Both certificate and private key files are required", 400);
-        }
-        if (existingCert) {
-            throw new error_1.AppError(`Certificate for station ${station.stationName} already exists`, 409);
-        }
-        const certificateFile = fs_1.default.readFileSync(files[certFieldName][0].path);
-        const fingerprint = crypto_1.default
-            .createHash("sha256")
-            .update(certificateFile)
-            .digest("hex");
-        const expiresAt = new Date();
-        expiresAt.setFullYear(expiresAt.getFullYear() + 1);
-        const certPathRelative = `/certificates/${namePart}_${sanitizedSerial}/${certFieldName}`;
-        const keyPathRelative = `/certificates/${namePart}_${sanitizedSerial}/${keyFieldName}`;
-        if (!req.user) {
-            throw new error_1.AppError("Not authenticated", 400);
-        }
-        const createdCertificate = await database_config_1.default.stationCertificate.create({
-            data: {
-                uploadedByUserId: req.user.id,
-                stationId: station.id,
-                certPath: certPathRelative,
-                keyPath: keyPathRelative,
-                awsCertId: certificateId || null,
-                awsCertArn: certificateArn || null,
-                status: "ACTIVE",
-                expiresAt,
-                fingerprint,
-            },
-        });
-        return (0, response_1.sendResponse)(res, {
-            id: createdCertificate.id,
-            stationId: createdCertificate.stationId,
-            certificatePath: certPathRelative,
-            privateKeyPath: keyPathRelative,
-            certificateFileName: certFieldName,
-            privateKeyFileName: keyFieldName,
-            status: createdCertificate.status,
-            expiresAt: createdCertificate.expiresAt,
-        });
+    const files = req.files;
+    if (!files[certFieldName] || !files[keyFieldName]) {
+        throw new error_1.AppError("Both certificate and private key files are required", 400);
+    }
+    if (existingCert) {
+        throw new error_1.AppError(`Certificate for station ${station.stationName} already exists`, 409);
+    }
+    const certificateFile = fs_1.default.readFileSync(files[certFieldName][0].path);
+    const fingerprint = crypto_1.default
+        .createHash("sha256")
+        .update(certificateFile)
+        .digest("hex");
+    const expiresAt = new Date();
+    expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+    const certPathRelative = `/certificates/${namePart}_${sanitizedSerial}/${certFieldName}`;
+    const keyPathRelative = `/certificates/${namePart}_${sanitizedSerial}/${keyFieldName}`;
+    if (!req.user) {
+        throw new error_1.AppError("Not authenticated", 400);
+    }
+    const createdCertificate = await database_config_1.default.stationCertificate.create({
+        data: {
+            uploadedByUserId: req.user.id,
+            stationId: station.id,
+            certPath: certPathRelative,
+            keyPath: keyPathRelative,
+            awsCertId: certificateId || null,
+            awsCertArn: certificateArn || null,
+            status: "ACTIVE",
+            expiresAt,
+            fingerprint,
+        },
+    });
+    return (0, response_1.sendResponse)(res, {
+        id: createdCertificate.id,
+        stationId: createdCertificate.stationId,
+        certificatePath: certPathRelative,
+        privateKeyPath: keyPathRelative,
+        certificateFileName: certFieldName,
+        privateKeyFileName: keyFieldName,
+        status: createdCertificate.status,
+        expiresAt: createdCertificate.expiresAt,
     });
 });
 // * UPDATE THING CERTIFICATE
@@ -503,62 +484,56 @@ exports.updateCertificate = (0, error_handler_middleware_1.asyncHandler)(async (
         { name: certFieldName, maxCount: 1 },
         { name: keyFieldName, maxCount: 1 },
     ];
-    const uploadFiles = certificate_helper_1.upload.fields(uploadFields);
-    uploadFiles(req, res, async (err) => {
-        if (err) {
-            throw new error_1.AppError(err.message, 400);
+    const files = req.files;
+    if (!files[certFieldName] &&
+        !files[keyFieldName] &&
+        !certificateId &&
+        !certificateArn &&
+        !status) {
+        throw new error_1.AppError("At least one field is required for update", 400);
+    }
+    const updateData = {};
+    if (status) {
+        if (!["ACTIVE", "INACTIVE", "REVOKED"].includes(status)) {
+            throw new error_1.AppError("Invalid status value. Must be ACTIVE, INACTIVE, or REVOKED", 400);
         }
-        const files = req.files;
-        if (!files[certFieldName] &&
-            !files[keyFieldName] &&
-            !certificateId &&
-            !certificateArn &&
-            !status) {
-            throw new error_1.AppError("At least one field is required for update", 400);
-        }
-        const updateData = {};
-        if (status) {
-            if (!["ACTIVE", "INACTIVE", "REVOKED"].includes(status)) {
-                throw new error_1.AppError("Invalid status value. Must be ACTIVE, INACTIVE, or REVOKED", 400);
-            }
-            updateData.status = status;
-        }
-        if (certificateId) {
-            updateData.certificateId = certificateId;
-        }
-        if (certificateArn) {
-            updateData.certificateArn = certificateArn;
-        }
-        if (files[certFieldName]) {
-            const certificateFile = fs_1.default.readFileSync(files[certFieldName][0].path);
-            updateData.fingerprint = crypto_1.default
-                .createHash("sha256")
-                .update(certificateFile)
-                .digest("hex");
-            const expiresAt = new Date();
-            expiresAt.setFullYear(expiresAt.getFullYear() + 1);
-            updateData.expiresAt = expiresAt;
-        }
-        const updatedCertificate = await database_config_1.default.stationCertificate.update({
-            where: { stationId: station.id },
-            data: updateData,
-        });
-        return (0, response_1.sendResponse)(res, {
-            id: updatedCertificate.id,
-            stationId: updatedCertificate.stationId,
-            status: updatedCertificate.status,
-            certificateId: updatedCertificate.awsCertId,
-            certificateArn: updatedCertificate.awsCertArn,
-            expiresAt: updatedCertificate.expiresAt,
-            certificatePath: updatedCertificate.certPath,
-            privateKeyPath: updatedCertificate.keyPath,
-            updated: {
-                certificate: !!files[certFieldName],
-                privateKey: !!files[keyFieldName],
-                metadata: !!(certificateId || certificateArn || status),
-            },
-        }, 200, `Certificate for thing ${station.stationName} updated successfully`);
+        updateData.status = status;
+    }
+    if (certificateId) {
+        updateData.certificateId = certificateId;
+    }
+    if (certificateArn) {
+        updateData.certificateArn = certificateArn;
+    }
+    if (files[certFieldName]) {
+        const certificateFile = fs_1.default.readFileSync(files[certFieldName][0].path);
+        updateData.fingerprint = crypto_1.default
+            .createHash("sha256")
+            .update(certificateFile)
+            .digest("hex");
+        const expiresAt = new Date();
+        expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+        updateData.expiresAt = expiresAt;
+    }
+    const updatedCertificate = await database_config_1.default.stationCertificate.update({
+        where: { stationId: station.id },
+        data: updateData,
     });
+    return (0, response_1.sendResponse)(res, {
+        id: updatedCertificate.id,
+        stationId: updatedCertificate.stationId,
+        status: updatedCertificate.status,
+        certificateId: updatedCertificate.awsCertId,
+        certificateArn: updatedCertificate.awsCertArn,
+        expiresAt: updatedCertificate.expiresAt,
+        certificatePath: updatedCertificate.certPath,
+        privateKeyPath: updatedCertificate.keyPath,
+        updated: {
+            certificate: !!files[certFieldName],
+            privateKey: !!files[keyFieldName],
+            metadata: !!(certificateId || certificateArn || status),
+        },
+    }, 200, `Certificate for thing ${station.stationName} updated successfully`);
 });
 // * DELETE CERTIFICATE
 exports.deleteCertificate = (0, error_handler_middleware_1.asyncHandler)(async (req, res) => {

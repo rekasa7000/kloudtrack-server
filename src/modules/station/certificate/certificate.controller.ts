@@ -10,7 +10,6 @@ import { AppError } from "../../../core/utils/error";
 import { validateStationExists } from "../station.helper";
 import {
   getCertificateFingerPrint,
-  upload,
   validateCertificate,
   writeCertificateToFile,
 } from "./certificate.helper";
@@ -108,63 +107,54 @@ export const createRootCertificate = asyncHandler(
     }
 
     // * FILE CERTIFICATE UPLOAD
+    if (!req.file) {
+      throw new AppError("Root CA certificate file is required", 400);
+    }
 
-    const uploadRootCA = upload.single(CERTIFICATE_TYPES.ROOT_CA);
+    const { version = "CA1" } = req.body;
+    const normalizedVersion = normalizeVersion(version);
+    const filePath = req.file.path;
 
-    return uploadRootCA(req, res, async (err) => {
-      if (err) {
-        throw new AppError(err, 400);
+    const certificateText = fs.readFileSync(filePath, "utf8");
+    if (!validateCertificate(certificateText)) {
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
       }
+      throw new AppError("Invalid certificate format", 400);
+    }
 
-      if (!req.file) {
-        throw new AppError("Root CA certificate file is required", 400);
-      }
+    const fingerprint = getCertificateFingerPrint(certificateText);
 
-      const { version = "CA1" } = req.body;
-      const normalizedVersion = normalizeVersion(version);
-      const filePath = req.file.path;
-
-      const certificateText = fs.readFileSync(filePath, "utf8");
-      if (!validateCertificate(certificateText)) {
-        if (fs.existsSync(filePath)) {
-          fs.unlinkSync(filePath);
-        }
-        throw new AppError("Invalid certificate format", 400);
-      }
-
-      const fingerprint = getCertificateFingerPrint(certificateText);
-
-      if (existingCertificate) {
-        await prisma.rootCertificate.updateMany({
-          where: { status: "ACTIVE" },
-          data: { status: "INACTIVE" },
-        });
-      }
-
-      if (!req.user) {
-        throw new AppError("Not authenticated", 400);
-      }
-
-      const rootCertificate = await prisma.rootCertificate.create({
-        data: {
-          uploadedByUserId: req.user.id,
-          path: filePath,
-          version: normalizedVersion,
-          status: "ACTIVE",
-        },
+    if (existingCertificate) {
+      await prisma.rootCertificate.updateMany({
+        where: { status: "ACTIVE" },
+        data: { status: "INACTIVE" },
       });
+    }
 
-      return sendResponse(
-        res,
-        {
-          id: rootCertificate.id,
-          version: formatVersion(rootCertificate.version),
-          fingerprint,
-        },
-        201,
-        "Amazon Root CA certificate uploaded successfully"
-      );
+    if (!req.user) {
+      throw new AppError("Not authenticated", 400);
+    }
+
+    const rootCertificate = await prisma.rootCertificate.create({
+      data: {
+        uploadedByUserId: req.user.id,
+        path: filePath,
+        version: normalizedVersion,
+        status: "ACTIVE",
+      },
     });
+
+    return sendResponse(
+      res,
+      {
+        id: rootCertificate.id,
+        version: formatVersion(rootCertificate.version),
+        fingerprint,
+      },
+      201,
+      "Amazon Root CA certificate uploaded successfully"
+    );
   }
 );
 
@@ -230,58 +220,50 @@ export const updateRootCertificate = asyncHandler(
       );
     }
 
-    // * FILE CERTIFICATE UPLOAD
-    const uploadRootCA = upload.single(CERTIFICATE_TYPES.ROOT_CA);
-    return uploadRootCA(req, res, async (err) => {
-      if (err) {
-        throw new AppError(err, 400);
-      }
-
-      if (!req.file) {
-        throw new AppError(
-          "Root CA certificate file or certificate text is required",
-          400
-        );
-      }
-
-      const { version } = req.body;
-      const normalizedVersion = version
-        ? normalizeVersion(version)
-        : existingCertificate.version;
-      const filePath = req.file.path;
-      const certificateText = fs.readFileSync(filePath, "utf8");
-      if (!validateCertificate(certificateText)) {
-        if (fs.existsSync(filePath)) {
-          fs.unlinkSync(filePath);
-        }
-        throw new AppError("Invalid certificate format", 400);
-      }
-
-      if (
-        fs.existsSync(existingCertificate.path) &&
-        existingCertificate.path !== filePath
-      ) {
-        fs.unlinkSync(existingCertificate.path);
-      }
-      const updatedCertificate = await prisma.rootCertificate.update({
-        where: { id: +id },
-        data: {
-          path: filePath,
-          version: normalizedVersion,
-          updatedAt: new Date(),
-        },
-      });
-
-      return sendResponse(
-        res,
-        {
-          id: updatedCertificate.id,
-          version: formatVersion(updatedCertificate.version),
-        },
-        200,
-        "Amazon Root CA certificate updated successfully"
+    if (!req.file) {
+      throw new AppError(
+        "Root CA certificate file or certificate text is required",
+        400
       );
+    }
+
+    const { version } = req.body;
+    const normalizedVersion = version
+      ? normalizeVersion(version)
+      : existingCertificate.version;
+    const filePath = req.file.path;
+    const certificateText = fs.readFileSync(filePath, "utf8");
+    if (!validateCertificate(certificateText)) {
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+      throw new AppError("Invalid certificate format", 400);
+    }
+
+    if (
+      fs.existsSync(existingCertificate.path) &&
+      existingCertificate.path !== filePath
+    ) {
+      fs.unlinkSync(existingCertificate.path);
+    }
+    const updatedCertificate = await prisma.rootCertificate.update({
+      where: { id: +id },
+      data: {
+        path: filePath,
+        version: normalizedVersion,
+        updatedAt: new Date(),
+      },
     });
+
+    return sendResponse(
+      res,
+      {
+        id: updatedCertificate.id,
+        version: formatVersion(updatedCertificate.version),
+      },
+      200,
+      "Amazon Root CA certificate updated successfully"
+    );
   }
 );
 
@@ -543,69 +525,61 @@ export const uploadCertificate = asyncHandler(
       { name: keyFieldName, maxCount: 1 },
     ];
 
-    const uploadFiles = upload.fields(uploadFields);
+    const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
-    uploadFiles(req, res, async (err) => {
-      if (err) {
-        throw new AppError(err.message, 400);
-      }
+    if (!files[certFieldName] || !files[keyFieldName]) {
+      throw new AppError(
+        "Both certificate and private key files are required",
+        400
+      );
+    }
 
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+    if (existingCert) {
+      throw new AppError(
+        `Certificate for station ${station.stationName} already exists`,
+        409
+      );
+    }
 
-      if (!files[certFieldName] || !files[keyFieldName]) {
-        throw new AppError(
-          "Both certificate and private key files are required",
-          400
-        );
-      }
+    const certificateFile = fs.readFileSync(files[certFieldName][0].path);
+    const fingerprint = crypto
+      .createHash("sha256")
+      .update(certificateFile)
+      .digest("hex");
 
-      if (existingCert) {
-        throw new AppError(
-          `Certificate for station ${station.stationName} already exists`,
-          409
-        );
-      }
+    const expiresAt = new Date();
+    expiresAt.setFullYear(expiresAt.getFullYear() + 1);
 
-      const certificateFile = fs.readFileSync(files[certFieldName][0].path);
-      const fingerprint = crypto
-        .createHash("sha256")
-        .update(certificateFile)
-        .digest("hex");
+    const certPathRelative = `/certificates/${namePart}_${sanitizedSerial}/${certFieldName}`;
+    const keyPathRelative = `/certificates/${namePart}_${sanitizedSerial}/${keyFieldName}`;
 
-      const expiresAt = new Date();
-      expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+    if (!req.user) {
+      throw new AppError("Not authenticated", 400);
+    }
 
-      const certPathRelative = `/certificates/${namePart}_${sanitizedSerial}/${certFieldName}`;
-      const keyPathRelative = `/certificates/${namePart}_${sanitizedSerial}/${keyFieldName}`;
+    const createdCertificate = await prisma.stationCertificate.create({
+      data: {
+        uploadedByUserId: req.user.id,
+        stationId: station.id,
+        certPath: certPathRelative,
+        keyPath: keyPathRelative,
+        awsCertId: certificateId || null,
+        awsCertArn: certificateArn || null,
+        status: "ACTIVE",
+        expiresAt,
+        fingerprint,
+      },
+    });
 
-      if (!req.user) {
-        throw new AppError("Not authenticated", 400);
-      }
-
-      const createdCertificate = await prisma.stationCertificate.create({
-        data: {
-          uploadedByUserId: req.user.id,
-          stationId: station.id,
-          certPath: certPathRelative,
-          keyPath: keyPathRelative,
-          awsCertId: certificateId || null,
-          awsCertArn: certificateArn || null,
-          status: "ACTIVE",
-          expiresAt,
-          fingerprint,
-        },
-      });
-
-      return sendResponse(res, {
-        id: createdCertificate.id,
-        stationId: createdCertificate.stationId,
-        certificatePath: certPathRelative,
-        privateKeyPath: keyPathRelative,
-        certificateFileName: certFieldName,
-        privateKeyFileName: keyFieldName,
-        status: createdCertificate.status,
-        expiresAt: createdCertificate.expiresAt,
-      });
+    return sendResponse(res, {
+      id: createdCertificate.id,
+      stationId: createdCertificate.stationId,
+      certificatePath: certPathRelative,
+      privateKeyPath: keyPathRelative,
+      certificateFileName: certFieldName,
+      privateKeyFileName: keyFieldName,
+      status: createdCertificate.status,
+      expiresAt: createdCertificate.expiresAt,
     });
   }
 );
@@ -750,82 +724,74 @@ export const updateCertificate = asyncHandler(
       { name: keyFieldName, maxCount: 1 },
     ];
 
-    const uploadFiles = upload.fields(uploadFields);
+    const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+    if (
+      !files[certFieldName] &&
+      !files[keyFieldName] &&
+      !certificateId &&
+      !certificateArn &&
+      !status
+    ) {
+      throw new AppError("At least one field is required for update", 400);
+    }
 
-    uploadFiles(req, res, async (err) => {
-      if (err) {
-        throw new AppError(err.message, 400);
+    const updateData: any = {};
+
+    if (status) {
+      if (!["ACTIVE", "INACTIVE", "REVOKED"].includes(status)) {
+        throw new AppError(
+          "Invalid status value. Must be ACTIVE, INACTIVE, or REVOKED",
+          400
+        );
       }
+      updateData.status = status;
+    }
 
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (
-        !files[certFieldName] &&
-        !files[keyFieldName] &&
-        !certificateId &&
-        !certificateArn &&
-        !status
-      ) {
-        throw new AppError("At least one field is required for update", 400);
-      }
+    if (certificateId) {
+      updateData.certificateId = certificateId;
+    }
 
-      const updateData: any = {};
+    if (certificateArn) {
+      updateData.certificateArn = certificateArn;
+    }
 
-      if (status) {
-        if (!["ACTIVE", "INACTIVE", "REVOKED"].includes(status)) {
-          throw new AppError(
-            "Invalid status value. Must be ACTIVE, INACTIVE, or REVOKED",
-            400
-          );
-        }
-        updateData.status = status;
-      }
+    if (files[certFieldName]) {
+      const certificateFile = fs.readFileSync(files[certFieldName][0].path);
+      updateData.fingerprint = crypto
+        .createHash("sha256")
+        .update(certificateFile)
+        .digest("hex");
 
-      if (certificateId) {
-        updateData.certificateId = certificateId;
-      }
+      const expiresAt = new Date();
+      expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+      updateData.expiresAt = expiresAt;
+    }
 
-      if (certificateArn) {
-        updateData.certificateArn = certificateArn;
-      }
-
-      if (files[certFieldName]) {
-        const certificateFile = fs.readFileSync(files[certFieldName][0].path);
-        updateData.fingerprint = crypto
-          .createHash("sha256")
-          .update(certificateFile)
-          .digest("hex");
-
-        const expiresAt = new Date();
-        expiresAt.setFullYear(expiresAt.getFullYear() + 1);
-        updateData.expiresAt = expiresAt;
-      }
-
-      const updatedCertificate = await prisma.stationCertificate.update({
-        where: { stationId: station.id },
-        data: updateData,
-      });
-
-      return sendResponse(
-        res,
-        {
-          id: updatedCertificate.id,
-          stationId: updatedCertificate.stationId,
-          status: updatedCertificate.status,
-          certificateId: updatedCertificate.awsCertId,
-          certificateArn: updatedCertificate.awsCertArn,
-          expiresAt: updatedCertificate.expiresAt,
-          certificatePath: updatedCertificate.certPath,
-          privateKeyPath: updatedCertificate.keyPath,
-          updated: {
-            certificate: !!files[certFieldName],
-            privateKey: !!files[keyFieldName],
-            metadata: !!(certificateId || certificateArn || status),
-          },
-        },
-        200,
-        `Certificate for thing ${station.stationName} updated successfully`
-      );
+    const updatedCertificate = await prisma.stationCertificate.update({
+      where: { stationId: station.id },
+      data: updateData,
     });
+
+    return sendResponse(
+      res,
+      {
+        id: updatedCertificate.id,
+        stationId: updatedCertificate.stationId,
+        status: updatedCertificate.status,
+        certificateId: updatedCertificate.awsCertId,
+        certificateArn: updatedCertificate.awsCertArn,
+        expiresAt: updatedCertificate.expiresAt,
+        certificatePath: updatedCertificate.certPath,
+        privateKeyPath: updatedCertificate.keyPath,
+        updated: {
+          certificate: !!files[certFieldName],
+          privateKey: !!files[keyFieldName],
+          metadata: !!(certificateId || certificateArn || status),
+        },
+      },
+      200,
+      `Certificate for thing ${station.stationName} updated successfully`
+    );
   }
 );
 

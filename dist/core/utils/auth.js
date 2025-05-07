@@ -8,7 +8,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const environment_config_1 = __importDefault(require("../../config/environment.config"));
 const generateToken = (userId, res) => {
     const token = jsonwebtoken_1.default.sign({ userId }, environment_config_1.default.JWT_SECRET, { expiresIn: "7d" });
-    res.cookie("kloudtrack-jwt", token, {
+    res.cookie("zorb-jwt", token, {
         maxAge: 30 * 24 * 60 * 60 * 1000, //30 dayums
         httpOnly: true,
         sameSite: "strict",

@@ -8,6 +8,9 @@ export const validateRequest = (schema: AnyZodObject) => {
       const contentType = req.headers["content-type"];
       const isMultipartFormData =
         contentType && contentType.includes("multipart/form-data");
+
+      console.log(req.body);
+      console.log(req.file);
       if (isMultipartFormData) {
         await schema.partial({ body: true }).parseAsync({
           body: req.body,

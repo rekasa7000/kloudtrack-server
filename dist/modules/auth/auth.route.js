@@ -1,9 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const error_handler_middleware_1 = require("../../core/middlewares/error-handler.middleware");
+const auth_controller_1 = require("./auth.controller");
+const auth_middleware_1 = require("../../core/middlewares/auth.middleware");
+const validation_middleware_1 = require("../../core/middlewares/validation.middleware");
+const auth_schema_1 = require("./auth.schema");
 const router = (0, express_1.Router)();
-router.post("/signin", (0, error_handler_middleware_1.asyncHandler)(async (req, res, next) => {
-    res.json("Hello world");
-}));
+router.post("/login", (0, validation_middleware_1.validateRequest)(auth_schema_1.SignInSchema), auth_controller_1.login);
+router.get("/check-auth", auth_middleware_1.protect, auth_controller_1.checkAuth);
 exports.default = router;

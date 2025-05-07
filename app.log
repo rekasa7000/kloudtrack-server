@@ -155,3 +155,132 @@
 {"level":30,"time":"05/06/2025, 06:58:42 PM","pid":17904,"hostname":"rekasa","description":"Server running on port 3000"}
 {"level":40,"time":"05/06/2025, 06:58:43 PM","pid":17904,"hostname":"rekasa","description":"Root Certificate not found."}
 {"level":30,"time":"05/06/2025, 06:58:43 PM","pid":17904,"hostname":"rekasa","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 10:12:48 AM","pid":2691,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 10:12:49 AM","pid":2691,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 10:12:49 AM","pid":2691,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 10:12:49 AM","pid":3646,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 10:12:51 AM","pid":3646,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 10:12:51 AM","pid":3646,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 11:30:07 AM","pid":1383,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 11:30:08 AM","pid":1383,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 11:30:08 AM","pid":1383,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 11:30:29 AM","pid":3134,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 11:30:30 AM","pid":3134,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 11:30:30 AM","pid":3134,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":50,"time":"05/07/2025, 11:30:53 AM","pid":3134,"hostname":"DWCM-iMac.local","description":"[POST] /api/auth/login >> 500: Cannot destructure property 'email' of 'req.body' as it is undefined."}
+{"level":30,"time":"05/07/2025, 11:32:04 AM","pid":3260,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 11:32:05 AM","pid":3260,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 11:32:05 AM","pid":3260,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 11:32:09 AM","pid":3305,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 11:32:10 AM","pid":3305,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 11:32:10 AM","pid":3305,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 11:32:10 AM","pid":3305,"hostname":"DWCM-iMac.local","description":"undefined - User authenticated"}
+{"level":30,"time":"05/07/2025, 11:32:45 AM","pid":3419,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 11:32:46 AM","pid":3419,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 11:32:46 AM","pid":3419,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":50,"time":"05/07/2025, 11:33:28 AM","pid":3419,"hostname":"DWCM-iMac.local","description":"[POST] /api/auth/login >> 500: secretOrPrivateKey must have a value"}
+{"level":30,"time":"05/07/2025, 11:34:56 AM","pid":3584,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 11:34:58 AM","pid":3584,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 11:34:58 AM","pid":3584,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 11:34:58 AM","pid":5058,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 11:34:59 AM","pid":5058,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 11:34:59 AM","pid":5058,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 11:35:58 AM","pid":5058,"hostname":"DWCM-iMac.local","description":"superadmin@example.com - User authenticated"}
+{"level":30,"time":"05/07/2025, 11:37:47 AM","pid":5405,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 11:37:48 AM","pid":5405,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 11:37:48 AM","pid":5405,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 11:38:15 AM","pid":5600,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 11:38:17 AM","pid":5600,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 11:38:17 AM","pid":5600,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 11:38:17 AM","pid":7099,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 11:38:18 AM","pid":7099,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 11:38:18 AM","pid":7099,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 11:38:54 AM","pid":7298,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 11:38:57 AM","pid":7298,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 11:38:57 AM","pid":7298,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 11:38:59 AM","pid":7340,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 11:39:00 AM","pid":7340,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 11:39:00 AM","pid":7340,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 11:39:02 AM","pid":7382,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 11:39:04 AM","pid":7382,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 11:39:04 AM","pid":7382,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 11:39:18 AM","pid":7511,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 11:39:20 AM","pid":7511,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 11:39:20 AM","pid":7511,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 12:23:07 PM","pid":8026,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 12:23:08 PM","pid":8026,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 12:23:08 PM","pid":8026,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 04:01:43 PM","pid":1793,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/07/2025, 04:01:45 PM","pid":3311,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 04:01:46 PM","pid":3311,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 04:01:46 PM","pid":3311,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 04:02:24 PM","pid":3574,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 04:02:25 PM","pid":3574,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 04:02:25 PM","pid":3574,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 04:03:03 PM","pid":3787,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/07/2025, 04:03:05 PM","pid":5358,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 04:03:06 PM","pid":5358,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 04:03:06 PM","pid":5358,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 04:03:27 PM","pid":5521,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 04:03:28 PM","pid":5521,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 04:03:28 PM","pid":5521,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 04:03:29 PM","pid":7024,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 04:03:30 PM","pid":7024,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 04:03:30 PM","pid":7024,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 04:05:48 PM","pid":7348,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 04:05:49 PM","pid":7348,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 04:05:49 PM","pid":7348,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 04:21:00 PM","pid":8296,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 04:21:01 PM","pid":8296,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 04:21:01 PM","pid":8296,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 04:21:53 PM","pid":8503,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 04:21:54 PM","pid":8503,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 04:21:54 PM","pid":8503,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 04:26:15 PM","pid":8759,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 04:26:16 PM","pid":8759,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 04:26:16 PM","pid":8759,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 04:26:21 PM","pid":8809,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 04:26:23 PM","pid":8809,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 04:26:23 PM","pid":8809,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 04:27:24 PM","pid":8853,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 04:27:25 PM","pid":8853,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 04:27:25 PM","pid":8853,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 04:27:49 PM","pid":8899,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 04:27:50 PM","pid":8899,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 04:27:50 PM","pid":8899,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 04:28:19 PM","pid":8989,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 04:28:20 PM","pid":8989,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 04:28:20 PM","pid":8989,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 04:28:22 PM","pid":9029,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 04:28:23 PM","pid":9029,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 04:28:23 PM","pid":9029,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 04:28:46 PM","pid":9077,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 04:28:48 PM","pid":9077,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 04:28:48 PM","pid":9077,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 04:28:53 PM","pid":9121,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 04:28:54 PM","pid":9121,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 04:28:54 PM","pid":9121,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 04:31:43 PM","pid":9306,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 04:31:44 PM","pid":9306,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 04:31:44 PM","pid":9306,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 04:33:48 PM","pid":9504,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 04:33:50 PM","pid":9504,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 04:33:50 PM","pid":9504,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 04:33:56 PM","pid":9554,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 04:33:57 PM","pid":9554,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 04:33:57 PM","pid":9554,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 04:34:36 PM","pid":9697,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 04:34:37 PM","pid":9697,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 04:34:37 PM","pid":9697,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 05:04:25 PM","pid":10295,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 05:04:26 PM","pid":10295,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 05:04:26 PM","pid":10295,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 05:04:27 PM","pid":10338,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 05:04:28 PM","pid":10338,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 05:04:28 PM","pid":10338,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 05:05:08 PM","pid":10379,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 05:05:09 PM","pid":10379,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 05:05:09 PM","pid":10379,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/07/2025, 05:05:09 PM","pid":10419,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/07/2025, 05:05:10 PM","pid":10419,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/07/2025, 05:05:10 PM","pid":10419,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}

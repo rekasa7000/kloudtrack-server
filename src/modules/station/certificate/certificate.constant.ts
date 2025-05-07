@@ -10,5 +10,5 @@ export const CERTIFICATE_DIR =
 export const CERTIFICATE_TYPES = {
   PRIVATE_KEY: "private.pem.key",
   CERTIFICATE: "certificate.pem.key",
-  ROOT_CA: ".pem",
+  ROOT_CA: "AmazonRootCA1.pem",
 };

@@ -60,13 +60,15 @@ model User {
   password          String    @map("password")
   phone             String?   @map("phone")
   profilePicture    String?   @map("profile_picture")
-  organizationId    Int?      @map("organization_id")
   createdByUserId   Int?      @map("created_by_user_id")
   passwordChangedAt DateTime? @map("password_changed_at")
   createdAt         DateTime  @default(now()) @map("created_at")
   updatedAt         DateTime? @updatedAt @map("updated_at")
 
-  organization       Organization?        @relation(fields: [organizationId], references: [id])
+  createdBy         User?              @relation("UserCreatedBy", fields: [createdByUserId], references: [id])
+  createdUsers      User[]             @relation("UserCreatedBy")
+  userOrganizations UserOrganization[]
+
   command            Command[]
   station            Station[]
   rootCertificate    RootCertificate[]
@@ -84,11 +86,26 @@ model Organization {
   createdAt        DateTime  @default(now()) @map("created_at")
   updatedAt        DateTime? @updatedAt @map("updated_at")
 
-  user    User[]
-  apiKey  ApiKey[]
-  station Station[]
+  userOrganizations UserOrganization[]
+  apiKey            ApiKey[]
+  station           Station[]
 
   @@map("organizations")
+}
+
+model UserOrganization {
+  id             Int       @id @default(autoincrement()) @map("user_organization_id")
+  userId         Int       @map("user_id")
+  organizationId Int       @map("organization_id")
+  isAdmin        Boolean   @default(false) @map("is_admin")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime? @updatedAt @map("updated_at")
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizationId])
+  @@map("user_organizations")
 }
 
 model ApiKey {
