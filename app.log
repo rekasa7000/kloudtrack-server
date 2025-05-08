@@ -284,3 +284,243 @@
 {"level":30,"time":"05/07/2025, 05:05:09 PM","pid":10419,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
 {"level":40,"time":"05/07/2025, 05:05:10 PM","pid":10419,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
 {"level":30,"time":"05/07/2025, 05:05:10 PM","pid":10419,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 08:50:24 AM","pid":2037,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 08:50:25 AM","pid":2037,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 08:50:25 AM","pid":2037,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 08:50:26 AM","pid":3540,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 08:50:27 AM","pid":3540,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 08:50:27 AM","pid":3540,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 08:52:45 AM","pid":3883,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 08:52:47 AM","pid":3883,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 08:52:47 AM","pid":3883,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 09:12:04 AM","pid":4168,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 09:12:05 AM","pid":4168,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 09:12:05 AM","pid":4168,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 09:12:52 AM","pid":4250,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 09:12:53 AM","pid":4250,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 09:12:53 AM","pid":4250,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 09:25:35 AM","pid":4378,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 09:25:36 AM","pid":4378,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 09:25:36 AM","pid":4378,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 09:26:30 AM","pid":4433,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 09:26:31 AM","pid":4433,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 09:26:31 AM","pid":4433,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 09:30:49 AM","pid":4772,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 09:30:50 AM","pid":4772,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 09:30:50 AM","pid":4772,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 09:30:52 AM","pid":4925,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 09:30:53 AM","pid":4925,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 09:30:53 AM","pid":4925,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 09:31:29 AM","pid":4978,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 09:31:29 AM","pid":4978,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 09:31:29 AM","pid":4978,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 09:48:42 AM","pid":5377,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 09:48:43 AM","pid":5377,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 09:48:43 AM","pid":5377,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 10:23:41 AM","pid":5850,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 10:23:42 AM","pid":5850,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 10:23:42 AM","pid":5850,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":50,"time":"05/08/2025, 10:24:11 AM","pid":5850,"hostname":"DWCM-iMac.local","description":"[POST] /api/station/certificate/root >> 500: Invalid CertificateType"}
+{"level":30,"time":"05/08/2025, 10:40:48 AM","pid":6236,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 10:40:50 AM","pid":6236,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 10:40:50 AM","pid":6236,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 10:41:06 AM","pid":6349,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 10:41:07 AM","pid":6349,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 10:41:07 AM","pid":6349,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":50,"time":"05/08/2025, 10:41:15 AM","pid":6349,"hostname":"DWCM-iMac.local","description":"[POST] /api/station/certificate/root >> 500: Invalid Certificate Type"}
+{"level":30,"time":"05/08/2025, 10:41:39 AM","pid":6439,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/08/2025, 10:41:41 AM","pid":6439,"hostname":"DWCM-iMac.local","description":"[POST] /api/station/certificate/root >> 500: Invalid Certificate Type"}
+{"level":40,"time":"05/08/2025, 10:41:41 AM","pid":6439,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 10:41:41 AM","pid":6439,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 10:42:42 AM","pid":6492,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 10:42:44 AM","pid":6492,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 10:42:44 AM","pid":6492,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 10:43:01 AM","pid":6626,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 10:43:02 AM","pid":6626,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 10:43:02 AM","pid":6626,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 10:43:09 AM","pid":6676,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 10:43:10 AM","pid":6676,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 10:43:10 AM","pid":6676,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":50,"time":"05/08/2025, 10:43:14 AM","pid":6676,"hostname":"DWCM-iMac.local","description":"[POST] /api/station/certificate/root >> 500: Invalid Certificate Type"}
+{"level":30,"time":"05/08/2025, 10:46:42 AM","pid":6799,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 10:46:43 AM","pid":6799,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 10:46:43 AM","pid":6799,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 11:45:45 AM","pid":7670,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 11:45:46 AM","pid":7670,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 11:45:46 AM","pid":7670,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 11:46:03 AM","pid":7714,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 11:46:05 AM","pid":7714,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 11:46:05 AM","pid":7714,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 11:46:09 AM","pid":7758,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 11:46:10 AM","pid":7758,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 11:46:10 AM","pid":7758,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 11:46:23 AM","pid":7910,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 11:46:24 AM","pid":7910,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 11:46:24 AM","pid":7910,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 11:46:37 AM","pid":7982,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 11:46:38 AM","pid":7982,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 11:46:38 AM","pid":7982,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 11:46:52 AM","pid":8056,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 11:46:53 AM","pid":8056,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 11:46:53 AM","pid":8056,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 01:04:59 PM","pid":9194,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 01:05:01 PM","pid":9194,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 01:05:01 PM","pid":9194,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 01:05:05 PM","pid":9242,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 01:05:07 PM","pid":9242,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 01:05:07 PM","pid":9242,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 01:05:45 PM","pid":9288,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 01:05:46 PM","pid":9288,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 01:05:46 PM","pid":9288,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 01:05:59 PM","pid":9330,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 01:06:00 PM","pid":9330,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 01:06:00 PM","pid":9330,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 01:08:07 PM","pid":9440,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 01:08:08 PM","pid":9440,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 01:08:08 PM","pid":9440,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 01:09:59 PM","pid":9508,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 01:10:01 PM","pid":9508,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 01:10:01 PM","pid":9508,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 01:10:10 PM","pid":9553,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 01:10:11 PM","pid":9553,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 01:10:11 PM","pid":9553,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 01:10:22 PM","pid":9553,"hostname":"DWCM-iMac.local","description":"superadmin@example.com - User authenticated"}
+{"level":30,"time":"05/08/2025, 01:11:37 PM","pid":9674,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 01:11:38 PM","pid":9674,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 01:11:38 PM","pid":9674,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 01:12:22 PM","pid":9804,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 01:12:23 PM","pid":9804,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 01:12:23 PM","pid":9804,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/08/2025, 01:16:00 PM","pid":9969,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":40,"time":"05/08/2025, 01:16:01 PM","pid":9969,"hostname":"DWCM-iMac.local","description":"Root Certificate not found."}
+{"level":30,"time":"05/08/2025, 01:16:01 PM","pid":9969,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":50,"time":"05/08/2025, 01:18:34 PM","pid":9969,"hostname":"DWCM-iMac.local","description":"[POST] /api/station/certificate/root >> 400: Expected double-quoted property name in JSON at position 106"}
+{"level":30,"time":"05/08/2025, 01:20:42 PM","pid":10171,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 01:20:42 PM","pid":10208,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 01:20:43 PM","pid":10208,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 01:22:37 PM","pid":10310,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 01:22:39 PM","pid":11796,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 01:22:40 PM","pid":11796,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 01:23:36 PM","pid":11979,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 01:27:01 PM","pid":12204,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 01:27:17 PM","pid":12311,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 01:29:02 PM","pid":12421,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 01:29:03 PM","pid":12421,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 01:30:07 PM","pid":12550,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 01:30:08 PM","pid":12550,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 01:31:26 PM","pid":12626,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 01:31:28 PM","pid":12626,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 01:31:29 PM","pid":12638,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 01:31:31 PM","pid":12638,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 01:32:07 PM","pid":12652,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 01:32:09 PM","pid":12652,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 01:32:49 PM","pid":12711,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 01:32:51 PM","pid":12711,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 02:37:24 PM","pid":13991,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 02:37:25 PM","pid":13991,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 02:37:26 PM","pid":15495,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 02:37:27 PM","pid":15495,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 02:37:29 PM","pid":15631,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 02:37:30 PM","pid":15631,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 02:37:33 PM","pid":15638,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 02:37:34 PM","pid":15638,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 02:42:54 PM","pid":17908,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 02:42:56 PM","pid":17908,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 02:53:23 PM","pid":18087,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 02:53:25 PM","pid":18087,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:02:31 PM","pid":18363,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:02:32 PM","pid":18363,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:03:39 PM","pid":18506,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:03:40 PM","pid":18506,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:03:51 PM","pid":18606,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:03:52 PM","pid":18606,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:03:59 PM","pid":18616,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:04:00 PM","pid":18616,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:05:10 PM","pid":18640,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:05:11 PM","pid":18640,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:30:46 PM","pid":19105,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:30:47 PM","pid":19105,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:41:00 PM","pid":19451,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:41:01 PM","pid":19451,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:41:02 PM","pid":20954,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:42:10 PM","pid":21227,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/08/2025, 03:42:17 PM","pid":21227,"hostname":"DWCM-iMac.local","description":"[POST] /api/station/certificate/root >> 500: The \"path\" argument must be of type string or an instance of Buffer or URL. Received undefined"}
+{"level":30,"time":"05/08/2025, 03:43:34 PM","pid":21444,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:43:47 PM","pid":21493,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:43:49 PM","pid":21493,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:47:52 PM","pid":21697,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:47:54 PM","pid":21697,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:47:57 PM","pid":21709,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:47:58 PM","pid":21709,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:47:59 PM","pid":21749,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:48:00 PM","pid":21749,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:48:02 PM","pid":21754,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:48:03 PM","pid":21754,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:48:10 PM","pid":21848,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:48:11 PM","pid":21848,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:48:12 PM","pid":23312,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:48:13 PM","pid":23312,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:48:28 PM","pid":23467,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:48:29 PM","pid":23467,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:49:05 PM","pid":23559,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:49:07 PM","pid":23559,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:50:39 PM","pid":23669,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:50:40 PM","pid":23669,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:51:17 PM","pid":23690,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:51:18 PM","pid":23690,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:55:42 PM","pid":23882,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:55:44 PM","pid":23882,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:55:54 PM","pid":23966,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:56:03 PM","pid":24058,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:56:04 PM","pid":24058,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:56:29 PM","pid":24081,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:56:30 PM","pid":24081,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:56:42 PM","pid":24101,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:56:44 PM","pid":24140,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:56:55 PM","pid":24188,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:56:57 PM","pid":24188,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:57:08 PM","pid":24205,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:57:09 PM","pid":24205,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 03:57:42 PM","pid":24254,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 03:57:43 PM","pid":24254,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 04:02:12 PM","pid":24389,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 04:02:13 PM","pid":24389,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 04:47:24 PM","pid":24999,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 04:47:25 PM","pid":24999,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 04:50:15 PM","pid":25083,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 04:50:17 PM","pid":25083,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 04:51:30 PM","pid":25145,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 04:51:31 PM","pid":25145,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 04:52:58 PM","pid":25228,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 04:52:59 PM","pid":25228,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 04:53:08 PM","pid":25242,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 04:53:10 PM","pid":25242,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 04:54:54 PM","pid":25256,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 04:54:55 PM","pid":25256,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 04:54:59 PM","pid":25265,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 04:55:00 PM","pid":25265,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 04:55:44 PM","pid":25404,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 04:55:45 PM","pid":25404,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 04:55:46 PM","pid":26891,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 04:55:47 PM","pid":26891,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 04:56:36 PM","pid":27037,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 04:56:50 PM","pid":27085,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 04:56:51 PM","pid":27085,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 04:57:56 PM","pid":27225,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 04:57:57 PM","pid":27225,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 04:58:21 PM","pid":27395,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 04:58:23 PM","pid":27395,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 04:58:34 PM","pid":27490,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 04:58:36 PM","pid":27490,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 04:58:36 PM","pid":28495,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 04:58:37 PM","pid":28495,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 04:58:42 PM","pid":29102,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 04:59:08 PM","pid":29155,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 04:59:09 PM","pid":29155,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 04:59:41 PM","pid":29285,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 04:59:43 PM","pid":29285,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/08/2025, 05:04:58 PM","pid":29545,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":50,"time":"05/08/2025, 05:05:02 PM","pid":29545,"hostname":"DWCM-iMac.local","description":"[PUT] /api/station/certificate/1 >> 500: \nInvalid `database_config_1.default.stationCertificate.update()` invocation in\n/Users/regee/Documents/GitHub/kloudtrack/server/dist/modules/station/certificate/certificate.controller.js:450:87\n\n  447 if (Object.keys(updateData).length === 0) {\n  448     throw new error_1.AppError(\"No Updates Provided\", 400);\n  449 }\n→ 450 const updatedCertificate = await database_config_1.default.stationCertificate.update({\n        where: {\n          stationId: 1\n        },\n        data: {\n          fingerprint: \"c6938932cc734272e535ed3f3240ca1f27f45091a5adba0b55b75880bda3087e\",\n          expirationDate: new Date(\"2026-05-08T09:05:02.944Z\"),\n          ~~~~~~~~~~~~~~\n      ?   keyPath?: String | StringFieldUpdateOperationsInput,\n      ?   certPath?: String | StringFieldUpdateOperationsInput,\n      ?   awsCertId?: String | NullableStringFieldUpdateOperationsInput | Null,\n      ?   awsCertArn?: String | NullableStringFieldUpdateOperationsInput | Null,\n      ?   status?: CertificateStatus | EnumCertificateStatusFieldUpdateOperationsInput,\n      ?   expiresAt?: DateTime | NullableDateTimeFieldUpdateOperationsInput | Null,\n      ?   createdAt?: DateTime | DateTimeFieldUpdateOperationsInput,\n      ?   updatedAt?: DateTime | NullableDateTimeFieldUpdateOperationsInput | Null,\n      ?   station?: StationUpdateOneWithoutCertificateNestedInput,\n      ?   user?: UserUpdateOneWithoutStationCertificateNestedInput\n        }\n      })\n\nUnknown argument `expirationDate`. Available options are marked with ?."}
+{"level":30,"time":"05/08/2025, 05:06:40 PM","pid":29633,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 05:06:57 PM","pid":29690,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/08/2025, 05:06:58 PM","pid":29690,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}

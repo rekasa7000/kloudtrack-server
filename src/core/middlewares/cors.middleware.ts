@@ -55,5 +55,3 @@ export const corsOptions: cors.CorsOptions = {
   allowedHeaders: ["Content-Type", "Authorization", corsConfig.apiKeyHeader],
   maxAge: 1000 * 60 * 60 * 24,
 };
-
-const app = express();

@@ -8,7 +8,7 @@ const client_1 = require("@prisma/client");
 const logger_1 = __importDefault(require("../../../core/utils/logger"));
 const telemetry_mqtt_1 = __importDefault(require("./telemetry.mqtt"));
 const telemetry_service_1 = require("./telemetry.service");
-const telemetry_config_1 = require("./telemetry.config");
+const station_config_1 = require("../station.config");
 const prisma = new client_1.PrismaClient();
 const initializeTelemetryService = async () => {
     try {
@@ -33,13 +33,14 @@ const initializeTelemetryService = async () => {
                 logger_1.default.warn(`Station ${station.id} has no certificates. Skipping.`);
                 continue;
             }
-            const config = (0, telemetry_config_1.createStationConfig)({
+            const config = (0, station_config_1.createStationConfig)({
                 stationId: station.id,
                 stationName: station.stationName,
                 certPath: station.certificate.certPath,
                 keyPath: station.certificate.keyPath,
                 caPath: rootCertificate.path,
             });
+            console.log(config);
             telemetry_mqtt_1.default.addStation(config);
             logger_1.default.info(`Added station ${station.stationName} to MQTT service`);
         }

@@ -13,13 +13,14 @@ import {
   stationIdSchema,
   updateStationSchema,
 } from "./metadata.schema";
+import { protect } from "../../../core/middlewares/auth.middleware";
 
 const router = Router();
 
 // ALL STATIONS
 router.get("/", validateRequest(getAllStationsSchema), getAllStations);
 // CREATE STATION
-router.post("/", validateRequest(createStationSchema), createStation);
+router.post("/", protect, validateRequest(createStationSchema), createStation);
 // UPDATE STATION
 router.put("/:id", validateRequest(updateStationSchema), updateStation);
 // DELETE STATION

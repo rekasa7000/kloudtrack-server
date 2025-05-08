@@ -6,6 +6,7 @@ import { saveTelemetryData } from "./telemetry.service";
 export type MessageHandler = (message: any, stationId: number) => void;
 
 export const createStationConnection = (config: MqttStation) => {
+  console.log(config.keyPath);
   const device = new awsIot.device({
     keyPath: config.keyPath,
     certPath: config.certPath,
@@ -330,7 +331,7 @@ export const createMqttService = () => {
 
         logger.info(`Station ${config.stationId} added successfully`);
       } catch (error) {
-        logger.error(`Failed to add station ${config.stationId}:`, error);
+        logger.error(`Failed to add station ${config.stationName}: ${error}`);
         throw error;
       }
     },

@@ -3,7 +3,7 @@ import fs from "fs";
 import crypto from "crypto";
 import prisma from "../../../config/database.config";
 
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { sendResponse } from "../../../core/utils/response";
 import { asyncHandler } from "../../../core/middlewares/error-handler.middleware";
 import { AppError } from "../../../core/utils/error";
@@ -12,7 +12,7 @@ import {
   getCertificateFingerPrint,
   validateCertificate,
   writeCertificateToFile,
-} from "./certificate.helper";
+} from "./certificate.utils";
 import { formatVersion, normalizeVersion } from "./certificate.utils";
 import { sanitizePathComponent } from "../../../core/utils/sanitizer";
 import { CERTIFICATE_DIR, CERTIFICATE_TYPES } from "./certificate.constant";
@@ -85,6 +85,7 @@ export const createRootCertificate = asyncHandler(
       if (!req.user) {
         throw new AppError("Not authenticated", 400);
       }
+
       const rootCertificate = await prisma.rootCertificate.create({
         data: {
           uploadedByUserId: req.user.id,
@@ -113,9 +114,11 @@ export const createRootCertificate = asyncHandler(
 
     const { version = "CA1" } = req.body;
     const normalizedVersion = normalizeVersion(version);
-    const filePath = req.file.path;
+    const fileName = `AmazonRoot${formatVersion(normalizedVersion)}.pem`;
+    const filePath = path.join(CERTIFICATE_DIR, fileName);
 
     const certificateText = fs.readFileSync(filePath, "utf8");
+
     if (!validateCertificate(certificateText)) {
       if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
@@ -461,8 +464,8 @@ export const uploadCertificate = asyncHandler(
       const expiresAt = new Date();
       expiresAt.setFullYear(expiresAt.getFullYear() + 1);
 
-      const certPathRelative = `/certificates/${sanitizedSerial}/${certFileName}`;
-      const keyPathRelative = `/certificates/${sanitizedSerial}/${keyFileName}`;
+      const certPathRelative = `/certificates/${namePart}_${sanitizedSerial}/${certFileName}`;
+      const keyPathRelative = `/certificates/${namePart}_${sanitizedSerial}/${keyFileName}`;
 
       if (!req.user) {
         throw new AppError("Not authenticated", 400);
@@ -519,11 +522,6 @@ export const uploadCertificate = asyncHandler(
 
     const certFieldName = `${namePart}_${sanitizedSerial}-${CERTIFICATE_TYPES.CERTIFICATE}`;
     const keyFieldName = `${namePart}_${sanitizedSerial}-${CERTIFICATE_TYPES.PRIVATE_KEY}`;
-
-    const uploadFields: { name: string; maxCount: number }[] = [
-      { name: certFieldName, maxCount: 1 },
-      { name: keyFieldName, maxCount: 1 },
-    ];
 
     const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
@@ -659,7 +657,7 @@ export const updateCertificate = asyncHandler(
 
         const expiresAt = new Date();
         expiresAt.setFullYear(expiresAt.getFullYear() + 1);
-        updateData.expirationDate = expiresAt;
+        updateData.expiresAt = expiresAt;
       }
 
       if (privateKeyContent) {

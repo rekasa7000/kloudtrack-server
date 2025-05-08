@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import logger from "../../../core/utils/logger";
 import mqttService from "./telemetry.mqtt";
 import { saveTelemetryData, WeatherTelemetry } from "./telemetry.service";
-import { createStationConfig } from "./telemetry.config";
+import { createStationConfig } from "../station.config";
 
 const prisma = new PrismaClient();
 
@@ -42,6 +42,7 @@ export const initializeTelemetryService = async (): Promise<void> => {
         caPath: rootCertificate.path,
       });
 
+      console.log(config);
       mqttService.addStation(config);
 
       logger.info(`Added station ${station.stationName} to MQTT service`);

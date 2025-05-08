@@ -3,18 +3,41 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.handleS3Upload = exports.upload = void 0;
+exports.upload = void 0;
 const fs_1 = __importDefault(require("fs"));
 const multer_1 = __importDefault(require("multer"));
+const multer_s3_1 = __importDefault(require("multer-s3"));
 const path_1 = __importDefault(require("path"));
 const certificate_constant_1 = require("./certificate.constant");
 const environment_config_1 = __importDefault(require("../../../config/environment.config"));
-const error_handler_middleware_1 = require("../../../core/middlewares/error-handler.middleware");
 const aws_config_1 = require("../../../config/aws.config");
 const storage = environment_config_1.default.NODE_ENV === "production"
-    ? multer_1.default.memoryStorage()
+    ? (0, multer_s3_1.default)({
+        s3: aws_config_1.s3Client,
+        bucket: aws_config_1.S3_BUCKET_NAME,
+        key: (req, file, callback) => {
+            const serial = req.body.serial;
+            if (file.originalname.endsWith(certificate_constant_1.CERTIFICATE_TYPES.PRIVATE_KEY) ||
+                file.originalname.endsWith(certificate_constant_1.CERTIFICATE_TYPES.CERTIFICATE)) {
+                const stationDir = `certificates/${serial}`;
+                const fileName = file.originalname.includes(".pem.")
+                    ? file.originalname
+                    : `${file.originalname}.pem`;
+                callback(null, `${stationDir}/${fileName}`);
+            }
+            else if (file.originalname.endsWith(certificate_constant_1.CERTIFICATE_TYPES.ROOT_CA)) {
+                const version = req.body.version || "CA1";
+                const fileName = `AmazonRoot${version}.pem`;
+                callback(null, `certificates/${fileName}`);
+            }
+            else {
+                callback(new Error("Invalid Certificate Type"), "");
+            }
+        },
+        contentType: multer_s3_1.default.AUTO_CONTENT_TYPE,
+    })
     : multer_1.default.diskStorage({
-        destination: (req, file, callback) => {
+        destination: async (req, file, callback) => {
             const serial = req.body.serial;
             if (file.originalname.endsWith(certificate_constant_1.CERTIFICATE_TYPES.PRIVATE_KEY) ||
                 file.originalname.endsWith(certificate_constant_1.CERTIFICATE_TYPES.CERTIFICATE)) {
@@ -64,35 +87,4 @@ exports.upload = (0, multer_1.default)({
             return callback(new Error("Only PEM format certificates are allowed"));
         }
     },
-});
-exports.handleS3Upload = (0, error_handler_middleware_1.asyncHandler)(async (req, res, next) => {
-    if (!req.file) {
-        return next();
-    }
-    const file = req.file;
-    const serial = req.body.serial;
-    let s3Key = "";
-    if (file.originalname.endsWith(certificate_constant_1.CERTIFICATE_TYPES.PRIVATE_KEY) ||
-        file.originalname.endsWith(certificate_constant_1.CERTIFICATE_TYPES.CERTIFICATE)) {
-        const fileName = file.originalname.includes(".pem.")
-            ? file.originalname
-            : `${file.originalname}.pem`;
-        s3Key = `certificates/${serial}/${fileName}`;
-    }
-    else if (file.originalname.includes(certificate_constant_1.CERTIFICATE_TYPES.ROOT_CA)) {
-        const version = req.body.version || "CA1";
-        const fileName = `AmazonRoot${version}.pem`;
-        s3Key = `certificates/${fileName}`;
-    }
-    const uploadParams = {
-        Bucket: aws_config_1.S3_BUCKET_NAME,
-        Key: s3Key,
-        Body: req.file.buffer,
-        ContentType: req.file.mimetype,
-    };
-    const result = await s3.upload(uploadParams).promise();
-    // Add the S3 file location to the request object for further processing
-    req.fileLocation = result.Location;
-    req.s3Key = s3Key;
-    next();
 });

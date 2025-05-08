@@ -14,5 +14,5 @@ exports.CERTIFICATE_DIR = environment_config_1.default.NODE_ENV === "production"
 exports.CERTIFICATE_TYPES = {
     PRIVATE_KEY: "private.pem.key",
     CERTIFICATE: "certificate.pem.key",
-    ROOT_CA: "AmazonRootCA1.pem",
+    ROOT_CA: ".pem",
 };

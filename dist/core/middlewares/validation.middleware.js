@@ -8,22 +8,25 @@ const validateRequest = (schema) => {
         try {
             const contentType = req.headers["content-type"];
             const isMultipartFormData = contentType && contentType.includes("multipart/form-data");
-            console.log(req.body);
-            console.log(req.file);
+            const validationObject = {
+                body: req.body,
+                query: req.query,
+                params: req.params,
+            };
             if (isMultipartFormData) {
-                await schema.partial({ body: true }).parseAsync({
-                    body: req.body,
-                    query: req.query,
-                    params: req.params,
-                });
+                if (req.file) {
+                    validationObject.body.file = req.file;
+                }
+                if (req.files) {
+                    if (Array.isArray(req.files)) {
+                        validationObject.body.files = req.files;
+                    }
+                    else {
+                        validationObject.body.files = req.files;
+                    }
+                }
             }
-            else {
-                await schema.parseAsync({
-                    body: req.body,
-                    query: req.query,
-                    params: req.params,
-                });
-            }
+            await schema.parseAsync(validationObject);
             return next();
         }
         catch (error) {

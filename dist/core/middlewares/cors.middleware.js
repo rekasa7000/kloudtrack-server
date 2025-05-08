@@ -1,10 +1,6 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.corsOptions = exports.customCors = void 0;
-const express_1 = __importDefault(require("express"));
 const corsConfig = {
     allowedOrigins: ["http://localhost:5173"],
     allowApiKeyOrigins: true,
@@ -45,4 +41,3 @@ exports.corsOptions = {
     allowedHeaders: ["Content-Type", "Authorization", corsConfig.apiKeyHeader],
     maxAge: 1000 * 60 * 60 * 24,
 };
-const app = (0, express_1.default)();

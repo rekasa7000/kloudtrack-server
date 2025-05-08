@@ -41,6 +41,7 @@ const awsIot = __importStar(require("aws-iot-device-sdk"));
 const events_1 = require("events");
 const logger_1 = __importDefault(require("../../../core/utils/logger"));
 const createStationConnection = (config) => {
+    console.log(config.keyPath);
     const device = new awsIot.device({
         keyPath: config.keyPath,
         certPath: config.certPath,
@@ -269,7 +270,7 @@ const createMqttService = () => {
                 logger_1.default.info(`Station ${config.stationId} added successfully`);
             }
             catch (error) {
-                logger_1.default.error(`Failed to add station ${config.stationId}:`, error);
+                logger_1.default.error(`Failed to add station ${config.stationName}: ${error}`);
                 throw error;
             }
         },

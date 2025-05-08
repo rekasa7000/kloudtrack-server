@@ -12,8 +12,8 @@ const response_1 = require("../../../core/utils/response");
 const error_handler_middleware_1 = require("../../../core/middlewares/error-handler.middleware");
 const error_1 = require("../../../core/utils/error");
 const station_helper_1 = require("../station.helper");
-const certificate_helper_1 = require("./certificate.helper");
 const certificate_utils_1 = require("./certificate.utils");
+const certificate_utils_2 = require("./certificate.utils");
 const sanitizer_1 = require("../../../core/utils/sanitizer");
 const certificate_constant_1 = require("./certificate.constant");
 // * GET ROOT CERTIFICATE
@@ -33,7 +33,7 @@ exports.getRootCertificate = (0, error_handler_middleware_1.asyncHandler)(async 
     const rootCA = fs_1.default.readFileSync(rootCAPath, "utf8");
     return (0, response_1.sendResponse)(res, {
         id: rootCertificate.id,
-        version: (0, certificate_utils_1.formatVersion)(rootCertificate.version),
+        version: (0, certificate_utils_2.formatVersion)(rootCertificate.version),
         status: rootCertificate.status,
         rootCA,
     }, 200, "Amazon root certificate fetched successfully");
@@ -45,17 +45,17 @@ exports.createRootCertificate = (0, error_handler_middleware_1.asyncHandler)(asy
     });
     if (req.body && req.body.certificateText) {
         const { certificateText, version = "CA1" } = req.body;
-        if (!(0, certificate_helper_1.validateCertificate)(certificateText)) {
+        if (!(0, certificate_utils_1.validateCertificate)(certificateText)) {
             throw new error_1.AppError("Invalid certificate format", 400);
         }
         if (!fs_1.default.existsSync(certificate_constant_1.CERTIFICATE_DIR)) {
             fs_1.default.mkdirSync(certificate_constant_1.CERTIFICATE_DIR, { recursive: true });
         }
-        const normalizedVersion = (0, certificate_utils_1.normalizeVersion)(version);
-        const fileName = `AmazonRoot${(0, certificate_utils_1.formatVersion)(normalizedVersion)}.pem`;
+        const normalizedVersion = (0, certificate_utils_2.normalizeVersion)(version);
+        const fileName = `AmazonRoot${(0, certificate_utils_2.formatVersion)(normalizedVersion)}.pem`;
         const filePath = path_1.default.join(certificate_constant_1.CERTIFICATE_DIR, fileName);
-        await (0, certificate_helper_1.writeCertificateToFile)(certificateText, filePath);
-        const fingerprint = (0, certificate_helper_1.getCertificateFingerPrint)(certificateText);
+        await (0, certificate_utils_1.writeCertificateToFile)(certificateText, filePath);
+        const fingerprint = (0, certificate_utils_1.getCertificateFingerPrint)(certificateText);
         if (existingCertificate) {
             await database_config_1.default.rootCertificate.updateMany({
                 where: { status: "ACTIVE" },
@@ -75,7 +75,7 @@ exports.createRootCertificate = (0, error_handler_middleware_1.asyncHandler)(asy
         });
         return (0, response_1.sendResponse)(res, {
             id: rootCertificate.id,
-            version: (0, certificate_utils_1.formatVersion)(rootCertificate.version),
+            version: (0, certificate_utils_2.formatVersion)(rootCertificate.version),
             fingerprint,
         }, 201, "Amazon Root CA certificate created successfully");
     }
@@ -84,16 +84,17 @@ exports.createRootCertificate = (0, error_handler_middleware_1.asyncHandler)(asy
         throw new error_1.AppError("Root CA certificate file is required", 400);
     }
     const { version = "CA1" } = req.body;
-    const normalizedVersion = (0, certificate_utils_1.normalizeVersion)(version);
-    const filePath = req.file.path;
+    const normalizedVersion = (0, certificate_utils_2.normalizeVersion)(version);
+    const fileName = `AmazonRoot${(0, certificate_utils_2.formatVersion)(normalizedVersion)}.pem`;
+    const filePath = path_1.default.join(certificate_constant_1.CERTIFICATE_DIR, fileName);
     const certificateText = fs_1.default.readFileSync(filePath, "utf8");
-    if (!(0, certificate_helper_1.validateCertificate)(certificateText)) {
+    if (!(0, certificate_utils_1.validateCertificate)(certificateText)) {
         if (fs_1.default.existsSync(filePath)) {
             fs_1.default.unlinkSync(filePath);
         }
         throw new error_1.AppError("Invalid certificate format", 400);
     }
-    const fingerprint = (0, certificate_helper_1.getCertificateFingerPrint)(certificateText);
+    const fingerprint = (0, certificate_utils_1.getCertificateFingerPrint)(certificateText);
     if (existingCertificate) {
         await database_config_1.default.rootCertificate.updateMany({
             where: { status: "ACTIVE" },
@@ -113,7 +114,7 @@ exports.createRootCertificate = (0, error_handler_middleware_1.asyncHandler)(asy
     });
     return (0, response_1.sendResponse)(res, {
         id: rootCertificate.id,
-        version: (0, certificate_utils_1.formatVersion)(rootCertificate.version),
+        version: (0, certificate_utils_2.formatVersion)(rootCertificate.version),
         fingerprint,
     }, 201, "Amazon Root CA certificate uploaded successfully");
 });
@@ -131,22 +132,22 @@ exports.updateRootCertificate = (0, error_handler_middleware_1.asyncHandler)(asy
     }
     if (req.body && req.body.certificateText) {
         const { certificateText, version } = req.body;
-        if (!(0, certificate_helper_1.validateCertificate)(certificateText)) {
+        if (!(0, certificate_utils_1.validateCertificate)(certificateText)) {
             throw new error_1.AppError("Invalid certificate format", 400);
         }
         if (!fs_1.default.existsSync(certificate_constant_1.CERTIFICATE_DIR)) {
             fs_1.default.mkdirSync(certificate_constant_1.CERTIFICATE_DIR, { recursive: true });
         }
         const normalizedVersion = version
-            ? (0, certificate_utils_1.normalizeVersion)(version)
+            ? (0, certificate_utils_2.normalizeVersion)(version)
             : existingCertificate.version;
-        const fileName = `AmazonRoot${(0, certificate_utils_1.formatVersion)(normalizedVersion)}.pem`;
+        const fileName = `AmazonRoot${(0, certificate_utils_2.formatVersion)(normalizedVersion)}.pem`;
         const filePath = path_1.default.join(certificate_constant_1.CERTIFICATE_DIR, fileName);
         if (fs_1.default.existsSync(existingCertificate.path) &&
             existingCertificate.path !== filePath) {
             fs_1.default.unlinkSync(existingCertificate.path);
         }
-        await (0, certificate_helper_1.writeCertificateToFile)(certificateText, filePath);
+        await (0, certificate_utils_1.writeCertificateToFile)(certificateText, filePath);
         const updatedCertificate = await database_config_1.default.rootCertificate.update({
             where: { id: +id },
             data: {
@@ -157,7 +158,7 @@ exports.updateRootCertificate = (0, error_handler_middleware_1.asyncHandler)(asy
         });
         return (0, response_1.sendResponse)(res, {
             id: updatedCertificate.id,
-            version: (0, certificate_utils_1.formatVersion)(updatedCertificate.version),
+            version: (0, certificate_utils_2.formatVersion)(updatedCertificate.version),
         }, 200, "Amazon Root CA certificate updated successfully");
     }
     if (!req.file) {
@@ -165,11 +166,11 @@ exports.updateRootCertificate = (0, error_handler_middleware_1.asyncHandler)(asy
     }
     const { version } = req.body;
     const normalizedVersion = version
-        ? (0, certificate_utils_1.normalizeVersion)(version)
+        ? (0, certificate_utils_2.normalizeVersion)(version)
         : existingCertificate.version;
     const filePath = req.file.path;
     const certificateText = fs_1.default.readFileSync(filePath, "utf8");
-    if (!(0, certificate_helper_1.validateCertificate)(certificateText)) {
+    if (!(0, certificate_utils_1.validateCertificate)(certificateText)) {
         if (fs_1.default.existsSync(filePath)) {
             fs_1.default.unlinkSync(filePath);
         }
@@ -189,7 +190,7 @@ exports.updateRootCertificate = (0, error_handler_middleware_1.asyncHandler)(asy
     });
     return (0, response_1.sendResponse)(res, {
         id: updatedCertificate.id,
-        version: (0, certificate_utils_1.formatVersion)(updatedCertificate.version),
+        version: (0, certificate_utils_2.formatVersion)(updatedCertificate.version),
     }, 200, "Amazon Root CA certificate updated successfully");
 });
 // * DELETE ROOT CERTIFICATE
@@ -231,7 +232,7 @@ exports.activateRootCertificate = (0, error_handler_middleware_1.asyncHandler)(a
     });
     return (0, response_1.sendResponse)(res, {
         id: activatedCertificate.id,
-        version: (0, certificate_utils_1.formatVersion)(activatedCertificate.version),
+        version: (0, certificate_utils_2.formatVersion)(activatedCertificate.version),
         status: activatedCertificate.status,
     }, 200, "Amazon Root CA certificate activated successfully");
 });
@@ -242,7 +243,7 @@ exports.listRootCertificates = (0, error_handler_middleware_1.asyncHandler)(asyn
     });
     const formattedCertificates = certificates.map((cert) => ({
         ...cert,
-        version: (0, certificate_utils_1.formatVersion)(cert.version),
+        version: (0, certificate_utils_2.formatVersion)(cert.version),
     }));
     return (0, response_1.sendResponse)(res, formattedCertificates, 200, "Root certificates fetched successfully");
 });
@@ -302,13 +303,13 @@ exports.uploadCertificate = (0, error_handler_middleware_1.asyncHandler)(async (
         const keyFileName = `${namePart}_${sanitizedSerial}-${certificate_constant_1.CERTIFICATE_TYPES.PRIVATE_KEY}`;
         const certPath = path_1.default.join(stationDir, certFileName);
         const keyPath = path_1.default.join(stationDir, keyFileName);
-        await (0, certificate_helper_1.writeCertificateToFile)(certificateContent, certPath);
-        await (0, certificate_helper_1.writeCertificateToFile)(privateKeyContent, keyPath);
-        const fingerprint = (0, certificate_helper_1.getCertificateFingerPrint)(certificateContent);
+        await (0, certificate_utils_1.writeCertificateToFile)(certificateContent, certPath);
+        await (0, certificate_utils_1.writeCertificateToFile)(privateKeyContent, keyPath);
+        const fingerprint = (0, certificate_utils_1.getCertificateFingerPrint)(certificateContent);
         const expiresAt = new Date();
         expiresAt.setFullYear(expiresAt.getFullYear() + 1);
-        const certPathRelative = `/certificates/${sanitizedSerial}/${certFileName}`;
-        const keyPathRelative = `/certificates/${sanitizedSerial}/${keyFileName}`;
+        const certPathRelative = `/certificates/${namePart}_${sanitizedSerial}/${certFileName}`;
+        const keyPathRelative = `/certificates/${namePart}_${sanitizedSerial}/${keyFileName}`;
         if (!req.user) {
             throw new error_1.AppError("Not authenticated", 400);
         }
@@ -352,10 +353,6 @@ exports.uploadCertificate = (0, error_handler_middleware_1.asyncHandler)(async (
     const namePart = (0, sanitizer_1.sanitizePathComponent)(station.stationType.substring(0, 5).toUpperCase());
     const certFieldName = `${namePart}_${sanitizedSerial}-${certificate_constant_1.CERTIFICATE_TYPES.CERTIFICATE}`;
     const keyFieldName = `${namePart}_${sanitizedSerial}-${certificate_constant_1.CERTIFICATE_TYPES.PRIVATE_KEY}`;
-    const uploadFields = [
-        { name: certFieldName, maxCount: 1 },
-        { name: keyFieldName, maxCount: 1 },
-    ];
     const files = req.files;
     if (!files[certFieldName] || !files[keyFieldName]) {
         throw new error_1.AppError("Both certificate and private key files are required", 400);
@@ -437,15 +434,15 @@ exports.updateCertificate = (0, error_handler_middleware_1.asyncHandler)(async (
         }
         if (certificateContent) {
             const certPath = path_1.default.join(process.cwd(), certPathRelative);
-            await (0, certificate_helper_1.writeCertificateToFile)(certificateContent, certPath);
-            updateData.fingerprint = (0, certificate_helper_1.getCertificateFingerPrint)(certificateContent);
+            await (0, certificate_utils_1.writeCertificateToFile)(certificateContent, certPath);
+            updateData.fingerprint = (0, certificate_utils_1.getCertificateFingerPrint)(certificateContent);
             const expiresAt = new Date();
             expiresAt.setFullYear(expiresAt.getFullYear() + 1);
-            updateData.expirationDate = expiresAt;
+            updateData.expiresAt = expiresAt;
         }
         if (privateKeyContent) {
             const keyPath = path_1.default.join(process.cwd(), keyPathRelative);
-            await (0, certificate_helper_1.writeCertificateToFile)(privateKeyContent, keyPath);
+            await (0, certificate_utils_1.writeCertificateToFile)(privateKeyContent, keyPath);
         }
         if (Object.keys(updateData).length === 0) {
             throw new error_1.AppError("No Updates Provided", 400);
