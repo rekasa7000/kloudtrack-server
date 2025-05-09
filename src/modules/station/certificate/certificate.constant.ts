@@ -9,6 +9,6 @@ export const CERTIFICATE_DIR =
     : path.join(__dirname, "../../../../certificates");
 export const CERTIFICATE_TYPES = {
   PRIVATE_KEY: "private.pem.key",
-  CERTIFICATE: "certificate.pem.key",
+  CERTIFICATE: "certificate.pem.crt",
   ROOT_CA: ".pem",
 };

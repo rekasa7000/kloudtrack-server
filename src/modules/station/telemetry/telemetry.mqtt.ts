@@ -1,12 +1,10 @@
 import * as awsIot from "aws-iot-device-sdk";
 import { EventEmitter } from "events";
 import logger from "../../../core/utils/logger";
-import { saveTelemetryData } from "./telemetry.service";
 
 export type MessageHandler = (message: any, stationId: number) => void;
 
 export const createStationConnection = (config: MqttStation) => {
-  console.log(config.keyPath);
   const device = new awsIot.device({
     keyPath: config.keyPath,
     certPath: config.certPath,
@@ -40,14 +38,14 @@ export const createStationConnection = (config: MqttStation) => {
     logger.info(
       `MQTT client disconnected: ${config.stationName} (Station: ${config.stationId})`
     );
-    eventEmitter.emit("disconnect", config.stationId);
+    eventEmitter.emit("disconnect", config.stationName);
   });
 
   device.on("reconnect", () => {
     logger.info(
       `MQTT client reconnecting: ${config.stationName} (Station: ${config.stationId})`
     );
-    eventEmitter.emit("reconnect", config.stationId);
+    eventEmitter.emit("reconnect", config.stationName);
   });
 
   device.on("offline", () => {
@@ -55,7 +53,7 @@ export const createStationConnection = (config: MqttStation) => {
     logger.info(
       `MQTT client offline: ${config.stationName} (Station: ${config.stationId})`
     );
-    eventEmitter.emit("offline", config.stationId);
+    eventEmitter.emit("offline", config.stationName);
   });
 
   device.on("error", (error) => {
@@ -63,14 +61,14 @@ export const createStationConnection = (config: MqttStation) => {
       `MQTT client error: ${config.stationName} (Station: ${config.stationId})`,
       error
     );
-    eventEmitter.emit("error", error, config.stationId);
+    eventEmitter.emit("error", error, config.stationName);
   });
 
   device.on("message", (topic, payload) => {
     try {
       const message = JSON.parse(payload.toString());
       logger.debug(
-        `Message received on topic ${topic} (Station: ${config.stationId}):`,
+        `Message received on topic ${topic} (Station: ${config.stationName}):`,
         message
       );
 
@@ -89,7 +87,7 @@ export const createStationConnection = (config: MqttStation) => {
             callback(message, config.stationId);
           } catch (error) {
             logger.error(
-              `Error in subscriber callback for topic ${topic} (Station: ${config.stationId}):`,
+              `Error in subscriber callback for topic ${topic} (Station: ${config.stationName}):`,
               error
             );
           }
@@ -106,7 +104,7 @@ export const createStationConnection = (config: MqttStation) => {
               callback(message, config.stationId);
             } catch (error) {
               logger.error(
-                `Error in wildcard subscriber callback for topic ${subscribedTopic} (Station: ${config.stationId}):`,
+                `Error in wildcard subscriber callback for topic ${subscribedTopic} (Station: ${config.stationName}):`,
                 error
               );
             }
@@ -117,17 +115,17 @@ export const createStationConnection = (config: MqttStation) => {
       eventEmitter.emit("message", {
         topic,
         message,
-        stationId: config.stationId,
+        stationId: config.stationName,
       });
     } catch (error) {
       logger.error(
-        `Failed to parse message on topic ${topic} (Station: ${config.stationId}):`,
+        `Failed to parse message on topic ${topic} (Station: ${config.stationName}):`,
         error
       );
       eventEmitter.emit("message", {
         topic,
         message: payload.toString(),
-        stationId: config.stationId,
+        stationId: config.stationName,
       });
     }
   });
@@ -366,15 +364,15 @@ export const createMqttService = () => {
     },
 
     connectAll: async (): Promise<void> => {
-      const connections = Array.from(stations.values()).map((station) =>
+      const connections = Array.from(stations.values()).map((station) => {
         station.connect().catch((error) => {
           logger.error(
             `Failed to connect station ${station.config.stationId}:`,
             error
           );
           return Promise.resolve();
-        })
-      );
+        });
+      });
 
       await Promise.all(connections);
     },

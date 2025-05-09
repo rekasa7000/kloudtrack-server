@@ -41,7 +41,6 @@ const awsIot = __importStar(require("aws-iot-device-sdk"));
 const events_1 = require("events");
 const logger_1 = __importDefault(require("../../../core/utils/logger"));
 const createStationConnection = (config) => {
-    console.log(config.keyPath);
     const device = new awsIot.device({
         keyPath: config.keyPath,
         certPath: config.certPath,
@@ -67,25 +66,25 @@ const createStationConnection = (config) => {
     device.on("close", () => {
         connected = false;
         logger_1.default.info(`MQTT client disconnected: ${config.stationName} (Station: ${config.stationId})`);
-        eventEmitter.emit("disconnect", config.stationId);
+        eventEmitter.emit("disconnect", config.stationName);
     });
     device.on("reconnect", () => {
         logger_1.default.info(`MQTT client reconnecting: ${config.stationName} (Station: ${config.stationId})`);
-        eventEmitter.emit("reconnect", config.stationId);
+        eventEmitter.emit("reconnect", config.stationName);
     });
     device.on("offline", () => {
         connected = false;
         logger_1.default.info(`MQTT client offline: ${config.stationName} (Station: ${config.stationId})`);
-        eventEmitter.emit("offline", config.stationId);
+        eventEmitter.emit("offline", config.stationName);
     });
     device.on("error", (error) => {
         logger_1.default.error(`MQTT client error: ${config.stationName} (Station: ${config.stationId})`, error);
-        eventEmitter.emit("error", error, config.stationId);
+        eventEmitter.emit("error", error, config.stationName);
     });
     device.on("message", (topic, payload) => {
         try {
             const message = JSON.parse(payload.toString());
-            logger_1.default.debug(`Message received on topic ${topic} (Station: ${config.stationId}):`, message);
+            logger_1.default.debug(`Message received on topic ${topic} (Station: ${config.stationName}):`, message);
             const topicParts = topic.split("/");
             if (topicParts.length >= 2) {
                 const deviceId = topicParts[1];
@@ -99,7 +98,7 @@ const createStationConnection = (config) => {
                         callback(message, config.stationId);
                     }
                     catch (error) {
-                        logger_1.default.error(`Error in subscriber callback for topic ${topic} (Station: ${config.stationId}):`, error);
+                        logger_1.default.error(`Error in subscriber callback for topic ${topic} (Station: ${config.stationName}):`, error);
                     }
                 });
             }
@@ -111,7 +110,7 @@ const createStationConnection = (config) => {
                             callback(message, config.stationId);
                         }
                         catch (error) {
-                            logger_1.default.error(`Error in wildcard subscriber callback for topic ${subscribedTopic} (Station: ${config.stationId}):`, error);
+                            logger_1.default.error(`Error in wildcard subscriber callback for topic ${subscribedTopic} (Station: ${config.stationName}):`, error);
                         }
                     });
                 }
@@ -119,15 +118,15 @@ const createStationConnection = (config) => {
             eventEmitter.emit("message", {
                 topic,
                 message,
-                stationId: config.stationId,
+                stationId: config.stationName,
             });
         }
         catch (error) {
-            logger_1.default.error(`Failed to parse message on topic ${topic} (Station: ${config.stationId}):`, error);
+            logger_1.default.error(`Failed to parse message on topic ${topic} (Station: ${config.stationName}):`, error);
             eventEmitter.emit("message", {
                 topic,
                 message: payload.toString(),
-                stationId: config.stationId,
+                stationId: config.stationName,
             });
         }
     });
@@ -298,10 +297,12 @@ const createMqttService = () => {
             return station.connect();
         },
         connectAll: async () => {
-            const connections = Array.from(stations.values()).map((station) => station.connect().catch((error) => {
-                logger_1.default.error(`Failed to connect station ${station.config.stationId}:`, error);
-                return Promise.resolve();
-            }));
+            const connections = Array.from(stations.values()).map((station) => {
+                station.connect().catch((error) => {
+                    logger_1.default.error(`Failed to connect station ${station.config.stationId}:`, error);
+                    return Promise.resolve();
+                });
+            });
             await Promise.all(connections);
         },
         disconnect: (stationId) => {

@@ -21,7 +21,10 @@ import {
   updateRootCertificateSchema,
   uploadCertificateSchema,
 } from "./certificate.schema";
-import { upload } from "./certificate.service";
+import {
+  uploadMultipleCertificates,
+  uploadSingleCertificate,
+} from "./certificate.service";
 
 const router = Router();
 
@@ -36,14 +39,14 @@ router.get(`${rootCertificateRoute}/:id`, getRootCertificate);
 // Upload Root Certificate
 router.post(
   rootCertificateRoute,
-  upload.single("file"),
+  uploadSingleCertificate,
   validateRequest(createRootCertificateSchema),
   createRootCertificate
 );
 // Update Root Certificate
 router.put(
   `${rootCertificateRoute}/:id`,
-  upload.single("file"),
+  uploadSingleCertificate,
   validateRequest(updateRootCertificateSchema),
   updateRootCertificate
 );
@@ -64,12 +67,15 @@ router.post(
 // Upload Certificate
 router.post(
   certificateRoute,
+  uploadMultipleCertificates,
   validateRequest(uploadCertificateSchema),
   uploadCertificate
 );
+
 // Update Certificate
 router.put(
   certificateRoute,
+  uploadMultipleCertificates,
   validateRequest(updateCertificateSchema),
   updateCertificate
 );

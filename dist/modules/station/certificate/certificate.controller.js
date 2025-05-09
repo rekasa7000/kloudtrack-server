@@ -354,13 +354,13 @@ exports.uploadCertificate = (0, error_handler_middleware_1.asyncHandler)(async (
     const certFieldName = `${namePart}_${sanitizedSerial}-${certificate_constant_1.CERTIFICATE_TYPES.CERTIFICATE}`;
     const keyFieldName = `${namePart}_${sanitizedSerial}-${certificate_constant_1.CERTIFICATE_TYPES.PRIVATE_KEY}`;
     const files = req.files;
-    if (!files[certFieldName] || !files[keyFieldName]) {
+    if (!files["key-file"] || !files["cert-file"]) {
         throw new error_1.AppError("Both certificate and private key files are required", 400);
     }
     if (existingCert) {
         throw new error_1.AppError(`Certificate for station ${station.stationName} already exists`, 409);
     }
-    const certificateFile = fs_1.default.readFileSync(files[certFieldName][0].path);
+    const certificateFile = fs_1.default.readFileSync(files["cert-file"][0].path);
     const fingerprint = crypto_1.default
         .createHash("sha256")
         .update(certificateFile)

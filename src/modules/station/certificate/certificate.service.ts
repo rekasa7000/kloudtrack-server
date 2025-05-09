@@ -11,7 +11,7 @@ import prisma from "../../../config/database.config";
 
 interface MulterRequest extends Request {
   body: {
-    serial?: string;
+    serialCode?: string;
     version?: string;
   };
 }
@@ -21,14 +21,32 @@ const storage =
     ? multerS3({
         s3: s3Client,
         bucket: S3_BUCKET_NAME,
-        key: (req: MulterRequest, file, callback) => {
-          const serial = req.body.serial;
+        key: async (req: MulterRequest, file, callback) => {
+          const serialCode = req.body.serialCode;
+
+          if (!serialCode) {
+            return callback(new Error("Serial Code not found"), "");
+          }
+          const station = await prisma.station.findUnique({
+            where: {
+              serialCode,
+            },
+          });
+
+          if (!station) {
+            return callback(new Error("Station not found"), "");
+          }
+          const namePart = sanitizePathComponent(
+            station.stationType.substring(0, 5).toUpperCase()
+          );
+
+          const sanitizedSerial = sanitizePathComponent(serialCode);
 
           if (
             file.originalname.endsWith(CERTIFICATE_TYPES.PRIVATE_KEY) ||
             file.originalname.endsWith(CERTIFICATE_TYPES.CERTIFICATE)
           ) {
-            const stationDir = `certificates/${serial}`;
+            const stationDir = `certificates/${namePart}_${sanitizedSerial}`;
             const fileName = file.originalname.includes(".pem.")
               ? file.originalname
               : `${file.originalname}.pem`;
@@ -47,14 +65,33 @@ const storage =
       })
     : multer.diskStorage({
         destination: async (req, file, callback) => {
-          const serial = req.body.serial;
+          const serialCode = req.body.serialCode;
+          if (!serialCode) {
+            return callback(new Error("Serial Code not found"), "");
+          }
+          const station = await prisma.station.findUnique({
+            where: {
+              serialCode,
+            },
+          });
+
+          if (!station) {
+            return callback(new Error("Station not found"), "");
+          }
+          const namePart = sanitizePathComponent(
+            station.stationType.substring(0, 5).toUpperCase()
+          );
+
+          const sanitizedSerial = sanitizePathComponent(serialCode);
 
           if (
             file.originalname.endsWith(CERTIFICATE_TYPES.PRIVATE_KEY) ||
             file.originalname.endsWith(CERTIFICATE_TYPES.CERTIFICATE)
           ) {
-            const stationDir = path.join(CERTIFICATE_DIR, serial);
-
+            const stationDir = path.join(
+              CERTIFICATE_DIR,
+              `${namePart}_${sanitizedSerial}`
+            );
             if (!fs.existsSync(stationDir)) {
               fs.mkdirSync(stationDir, { recursive: true });
             }
@@ -69,36 +106,57 @@ const storage =
             callback(new Error("Invalid Certificate Type"), "");
           }
         },
-        filename: (req, file, callback) => {
-          if (file.originalname.includes(CERTIFICATE_TYPES.ROOT_CA)) {
+        filename: async (req, file, callback) => {
+          const serialCode = req.body.serialCode;
+          if (!serialCode) {
+            return callback(new Error("Serial Code not found"), "");
+          }
+          const station = await prisma.station.findUnique({
+            where: {
+              serialCode,
+            },
+          });
+
+          if (!station) {
+            return callback(new Error("Station not found"), "");
+          }
+          const namePart = sanitizePathComponent(
+            station.stationType.substring(0, 5).toUpperCase()
+          );
+
+          const sanitizedSerial = sanitizePathComponent(serialCode);
+
+          if (file.originalname.endsWith(CERTIFICATE_TYPES.ROOT_CA)) {
             const version = req.body.version || "CA1";
             const fileName = `AmazonRoot${version}.pem`;
             callback(null, fileName);
           } else {
-            const fileName = file.originalname.includes(".pem.")
-              ? file.originalname
-              : `${file.originalname}.pem`;
-
+            let fileName = "";
+            if (file.originalname.endsWith(CERTIFICATE_TYPES.PRIVATE_KEY)) {
+              fileName = `${namePart}_${sanitizedSerial}-${CERTIFICATE_TYPES.PRIVATE_KEY}`;
+            } else if (
+              file.originalname.endsWith(CERTIFICATE_TYPES.CERTIFICATE)
+            ) {
+              fileName = `${namePart}_${sanitizedSerial}-${CERTIFICATE_TYPES.CERTIFICATE}`;
+            }
             callback(null, fileName);
           }
         },
       });
 
-export const upload = multer({
-  storage,
+export const uploadSingleCertificate = multer({
+  storage: storage,
   fileFilter: (req, file, callback) => {
-    if (
-      file.mimetype === "application/x-pem-file" ||
-      file.mimetype === "application/x-x509-ca-cert" ||
-      file.mimetype === "text/plain" ||
-      file.originalname.endsWith(".pem") ||
-      file.originalname.endsWith(".crt") ||
-      file.originalname.endsWith(".cer")
-    ) {
-      callback(null, true);
-    } else {
-      callback(null, false);
-      return callback(new Error("Only PEM format certificates are allowed"));
-    }
+    callback(null, true);
   },
-});
+}).single("file");
+
+export const uploadMultipleCertificates = multer({
+  storage: storage,
+  fileFilter: (req, file, callback) => {
+    callback(null, true);
+  },
+}).fields([
+  { name: "key-file", maxCount: 1 },
+  { name: "cert-file", maxCount: 1 },
+]);

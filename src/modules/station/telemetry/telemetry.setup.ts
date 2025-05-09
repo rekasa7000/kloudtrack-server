@@ -42,7 +42,6 @@ export const initializeTelemetryService = async (): Promise<void> => {
         caPath: rootCertificate.path,
       });
 
-      console.log(config);
       mqttService.addStation(config);
 
       logger.info(`Added station ${station.stationName} to MQTT service`);
@@ -55,7 +54,7 @@ export const initializeTelemetryService = async (): Promise<void> => {
 
     stations.forEach((station) => {
       mqttService.subscribe(
-        `devices/${station.id}/data`,
+        `devices/${station.serialCode}/data`,
         telemetryHandler,
         station.id
       );
@@ -63,16 +62,16 @@ export const initializeTelemetryService = async (): Promise<void> => {
       mqttService.subscribe(`devices/+/data`, telemetryHandler, station.id);
     });
 
-    mqttService.on("reconnect", (stationId) => {
-      logger.info(`MQTT client for station ${stationId} reconnecting`);
+    mqttService.on("reconnect", (stationName) => {
+      logger.info(`MQTT client for station ${stationName} reconnecting`);
     });
 
-    mqttService.on("offline", (stationId) => {
-      logger.warn(`MQTT client for station ${stationId} is offline`);
+    mqttService.on("offline", (stationName) => {
+      logger.warn(`MQTT client for station ${stationName} is offline`);
     });
 
-    mqttService.on("error", (error, stationId) => {
-      logger.error(`MQTT client error for station ${stationId}:`, error);
+    mqttService.on("error", (error, stationName) => {
+      logger.error(`MQTT client error for station ${stationName}:`, error);
     });
 
     logger.info("Telemetry service initialized successfully");

@@ -10,6 +10,7 @@ import { AppError } from "../../../core/utils/error";
 import { validateStationExists } from "../station.helper";
 import {
   getCertificateFingerPrint,
+  getCertificatePath,
   validateCertificate,
   writeCertificateToFile,
 } from "./certificate.utils";
@@ -522,10 +523,8 @@ export const uploadCertificate = asyncHandler(
 
     const certFieldName = `${namePart}_${sanitizedSerial}-${CERTIFICATE_TYPES.CERTIFICATE}`;
     const keyFieldName = `${namePart}_${sanitizedSerial}-${CERTIFICATE_TYPES.PRIVATE_KEY}`;
-
     const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-
-    if (!files[certFieldName] || !files[keyFieldName]) {
+    if (!files["key-file"] || !files["cert-file"]) {
       throw new AppError(
         "Both certificate and private key files are required",
         400
@@ -539,7 +538,7 @@ export const uploadCertificate = asyncHandler(
       );
     }
 
-    const certificateFile = fs.readFileSync(files[certFieldName][0].path);
+    const certificateFile = fs.readFileSync(files["cert-file"][0].path);
     const fingerprint = crypto
       .createHash("sha256")
       .update(certificateFile)

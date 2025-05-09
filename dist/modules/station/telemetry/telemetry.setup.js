@@ -40,7 +40,6 @@ const initializeTelemetryService = async () => {
                 keyPath: station.certificate.keyPath,
                 caPath: rootCertificate.path,
             });
-            console.log(config);
             telemetry_mqtt_1.default.addStation(config);
             logger_1.default.info(`Added station ${station.stationName} to MQTT service`);
         }
@@ -48,17 +47,17 @@ const initializeTelemetryService = async () => {
         logger_1.default.info("All stations connected to MQTT service");
         telemetry_mqtt_1.default.on("message", processIncomingMessage);
         stations.forEach((station) => {
-            telemetry_mqtt_1.default.subscribe(`devices/${station.id}/data`, telemetryHandler, station.id);
+            telemetry_mqtt_1.default.subscribe(`devices/${station.serialCode}/data`, telemetryHandler, station.id);
             telemetry_mqtt_1.default.subscribe(`devices/+/data`, telemetryHandler, station.id);
         });
-        telemetry_mqtt_1.default.on("reconnect", (stationId) => {
-            logger_1.default.info(`MQTT client for station ${stationId} reconnecting`);
+        telemetry_mqtt_1.default.on("reconnect", (stationName) => {
+            logger_1.default.info(`MQTT client for station ${stationName} reconnecting`);
         });
-        telemetry_mqtt_1.default.on("offline", (stationId) => {
-            logger_1.default.warn(`MQTT client for station ${stationId} is offline`);
+        telemetry_mqtt_1.default.on("offline", (stationName) => {
+            logger_1.default.warn(`MQTT client for station ${stationName} is offline`);
         });
-        telemetry_mqtt_1.default.on("error", (error, stationId) => {
-            logger_1.default.error(`MQTT client error for station ${stationId}:`, error);
+        telemetry_mqtt_1.default.on("error", (error, stationName) => {
+            logger_1.default.error(`MQTT client error for station ${stationName}:`, error);
         });
         logger_1.default.info("Telemetry service initialized successfully");
     }

@@ -14,18 +14,18 @@ router.get(rootCertificateRoute, certificate_controller_1.listRootCertificates);
 // Get Root Certificate
 router.get(`${rootCertificateRoute}/:id`, certificate_controller_1.getRootCertificate);
 // Upload Root Certificate
-router.post(rootCertificateRoute, certificate_service_1.upload.single("file"), (0, validation_middleware_1.validateRequest)(certificate_schema_1.createRootCertificateSchema), certificate_controller_1.createRootCertificate);
+router.post(rootCertificateRoute, certificate_service_1.uploadSingleCertificate, (0, validation_middleware_1.validateRequest)(certificate_schema_1.createRootCertificateSchema), certificate_controller_1.createRootCertificate);
 // Update Root Certificate
-router.put(`${rootCertificateRoute}/:id`, certificate_service_1.upload.single("file"), (0, validation_middleware_1.validateRequest)(certificate_schema_1.updateRootCertificateSchema), certificate_controller_1.updateRootCertificate);
+router.put(`${rootCertificateRoute}/:id`, certificate_service_1.uploadSingleCertificate, (0, validation_middleware_1.validateRequest)(certificate_schema_1.updateRootCertificateSchema), certificate_controller_1.updateRootCertificate);
 // Delete Root Certificate
 router.delete(`${rootCertificateRoute}/:id`, (0, validation_middleware_1.validateRequest)(certificate_schema_1.deleteRootCertificateSchema), certificate_controller_1.deleteRootCertificate);
 // Activate Root Certificate
 router.post(`${rootCertificateRoute}/:id`, (0, validation_middleware_1.validateRequest)(certificate_schema_1.activateRootCertificateSchema), certificate_controller_1.activateRootCertificate);
 // *** CERTIFICATE PER STATIONS ***
 // Upload Certificate
-router.post(certificateRoute, (0, validation_middleware_1.validateRequest)(certificate_schema_1.uploadCertificateSchema), certificate_controller_1.uploadCertificate);
+router.post(certificateRoute, certificate_service_1.uploadMultipleCertificates, (0, validation_middleware_1.validateRequest)(certificate_schema_1.uploadCertificateSchema), certificate_controller_1.uploadCertificate);
 // Update Certificate
-router.put(certificateRoute, (0, validation_middleware_1.validateRequest)(certificate_schema_1.updateCertificateSchema), certificate_controller_1.updateCertificate);
+router.put(certificateRoute, certificate_service_1.uploadMultipleCertificates, (0, validation_middleware_1.validateRequest)(certificate_schema_1.updateCertificateSchema), certificate_controller_1.updateCertificate);
 // Delete Certificate
 router.delete(certificateRoute, (0, validation_middleware_1.validateRequest)(certificate_schema_1.stationIdSchema), certificate_controller_1.deleteCertificate);
 // Get Certificate by Station ID

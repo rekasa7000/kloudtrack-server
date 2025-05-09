@@ -13,6 +13,6 @@ exports.CERTIFICATE_DIR = environment_config_1.default.NODE_ENV === "production"
     : path_1.default.join(__dirname, "../../../../certificates");
 exports.CERTIFICATE_TYPES = {
     PRIVATE_KEY: "private.pem.key",
-    CERTIFICATE: "certificate.pem.key",
+    CERTIFICATE: "certificate.pem.crt",
     ROOT_CA: ".pem",
 };
