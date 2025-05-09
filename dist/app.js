@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
-const station_service_1 = require("./core/services/station.service");
 const cors_middleware_1 = require("./core/middlewares/cors.middleware");
 const error_handler_middleware_1 = require("./core/middlewares/error-handler.middleware");
 const logger_1 = __importDefault(require("./core/utils/logger"));
@@ -26,9 +25,9 @@ app.use((req, res) => {
 app.use(error_handler_middleware_1.errorHandler);
 (async () => {
     try {
-        const mqttService = await (0, station_service_1.setupMqttService)();
+        // const mqttService = await setupMqttService();
         logger_1.default.info("MQTT service initialized successfully");
-        app.locals.mqttService = mqttService;
+        // app.locals.mqttService = mqttService;
         app.listen(environment_config_1.default.PORT, () => {
             logger_1.default.info(`Server running on port ${environment_config_1.default.PORT}`);
         });

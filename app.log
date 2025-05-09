@@ -1084,3 +1084,11 @@
 {"level":30,"time":"04/30/2025, 04:26:16 PM","pid":18089,"hostname":"DWCM-iMac.local","description":"MQTT client connected: server-test-c59f7f0a (Station: test)"}
 {"level":30,"time":"04/30/2025, 04:26:16 PM","pid":18089,"hostname":"DWCM-iMac.local","description":"MQTT service initialized successfully"}
 {"level":30,"time":"04/30/2025, 04:26:16 PM","pid":18089,"hostname":"DWCM-iMac.local","description":"Server running on port 3000"}
+{"level":30,"time":"05/09/2025, 11:41:53 AM","pid":13320,"hostname":"LAPTOP-0HIBRLFS","description":"MQTT service initialized successfully"}
+{"level":30,"time":"05/09/2025, 11:41:53 AM","pid":13320,"hostname":"LAPTOP-0HIBRLFS","description":"Server running on port 3000"}
+{"level":30,"time":"05/09/2025, 11:42:54 AM","pid":13648,"hostname":"LAPTOP-0HIBRLFS","description":"MQTT service initialized successfully"}
+{"level":30,"time":"05/09/2025, 11:42:54 AM","pid":13648,"hostname":"LAPTOP-0HIBRLFS","description":"Server running on port 3000"}
+{"level":30,"time":"05/09/2025, 11:43:05 AM","pid":8984,"hostname":"LAPTOP-0HIBRLFS","description":"MQTT service initialized successfully"}
+{"level":30,"time":"05/09/2025, 11:43:05 AM","pid":8984,"hostname":"LAPTOP-0HIBRLFS","description":"Server running on port 3000"}
+{"level":30,"time":"05/09/2025, 11:43:08 AM","pid":16280,"hostname":"LAPTOP-0HIBRLFS","description":"MQTT service initialized successfully"}
+{"level":30,"time":"05/09/2025, 11:43:08 AM","pid":16280,"hostname":"LAPTOP-0HIBRLFS","description":"Server running on port 3000"}
