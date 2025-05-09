@@ -16,26 +16,20 @@
 // };
 
 import bcrypt from 'bcryptjs';
-import crypto from 'crypto';
-import nodemailer from 'nodemailer';
 import { Role, User } from '@prisma/client';
 import { UserModel } from '../models/user.model';
 import prisma from '../config/db';
 import { generateToken } from '../utils/jwt.util';
 import Logger from '../utils/logger';
-import formData from 'form-data';
-import Mailgun from 'mailgun.js';
+import sgMail from '@sendgrid/mail'
 
 const userModel = new UserModel();
 
 export class AuthService {
-  private mgClient;
-  
+
   constructor() {
-    this.mgClient = new Mailgun(formData).client({
-      username: 'api',
-      key: process.env.MAILGUN_API_KEY || (() => { throw new Error('MAILGUN_API_KEY is not defined'); })()
-    });
+    // Initialize SendGrid with API key
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY || (() => { throw new Error('SENDGRID_API_KEY is not defined'); })());
   }
 
 
@@ -115,55 +109,68 @@ export class AuthService {
   
   async requestPasswordReset(email: string): Promise<void> {
     try {
-      // 1. Generate and store token
+      // 1. Find the user
       const user = await userModel.findByEmail(email);
       if (!user) {
         Logger.warn(`Password reset requested for non-existent email: ${email}`);
         throw new Error('User not found');
       }
 
-      const resetToken = crypto.randomBytes(32).toString('hex');
-      const expiresAt = new Date(Date.now() + 3600000);
-      
+      // 2. Generate a 6-digit verification code
+      const verificationCode = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit code
+      const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // Expires in 15 minutes
+
+      // 3. Store the code in ResetToken table
       await prisma.resetToken.create({
-        data: { token: resetToken, userId: user.id, expiresAt }
+        data: {
+          token: verificationCode,
+          userId: user.id,
+          expiresAt,
+        },
       });
 
-      // 2. Send via Mailgun API
-      const resetLink = `${process.env.APP_URL}/reset-password?token=${resetToken}`;
-      const mailgunDomain = process.env.MAILGUN_DOMAIN || (() => { throw new Error('MAILGUN_DOMAIN is not defined'); })();
-      await this.mgClient.messages.create(mailgunDomain, {
-        from: `"Password Reset" <noreply@${process.env.MAILGUN_DOMAIN}>`,
-        to: [email],
-        subject: 'Password Reset Request',
-        text: `Click here to reset your password: ${resetLink}`,
+      // 4. Send the code via SendGrid
+      const senderEmail = process.env.SENDGRID_SENDER_EMAIL || (() => { throw new Error('SENDGRID_SENDER_EMAIL is not defined'); })();
+
+      const msg = {
+        to: email,
+        from: senderEmail,
+        subject: 'Password Reset Verification Code',
+        text: `Your verification code is: ${verificationCode}. It expires in 15 minutes.`,
         html: `
           <h2>Password Reset</h2>
-          <p>Click below to reset your password:</p>
-          <a href="${resetLink}">Reset Password</a>
-          <p>This link expires in 1 hour.</p>
-        `
-      });
+          <p>Your verification code is:</p>
+          <h3>${verificationCode}</h3>
+          <p>This code expires in 15 minutes.</p>
+          <p>Enter this code in the password reset form to set a new password.</p>
+        `,
+      };
 
-    } catch (error) {
-      console.error('Mailgun API Error:', error);
+      await sgMail.send(msg);
+      Logger.info(`Password reset code sent to: ${email}`);
+    } catch (error: any) {
+      console.error('SendGrid API Error:', {
+        message: error.message,
+        response: error.response?.body,
+        status: error.response?.status,
+      });
       throw new Error('Failed to send reset email');
     }
   }
 
-  async resetPassword(token: string, newPassword: string): Promise<void> {
-    // Find the reset token and ensure it's valid
+  async resetPassword(code: string, newPassword: string): Promise<void> {
+    // Find the reset token (verification code) and ensure it's valid
     const resetToken = await prisma.resetToken.findFirst({
       where: {
-        token,
+        token: code,
         expiresAt: { gt: new Date() },
       },
       include: { user: true },
     });
 
     if (!resetToken) {
-      Logger.warn('Invalid or expired password reset token used');
-      throw new Error('Invalid or expired token');
+      Logger.warn('Invalid or expired verification code used');
+      throw new Error('Invalid or expired verification code');
     }
 
     // Hash the new password

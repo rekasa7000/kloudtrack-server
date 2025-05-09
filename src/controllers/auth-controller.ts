@@ -67,7 +67,7 @@ export class AuthController {
     res.json({ success: true, message: 'Logged out successfully' });
   }
 
-static async requestPasswordReset(req: Request, res: Response): Promise<void> {
+  static async requestPasswordReset(req: Request, res: Response): Promise<void> {
     try {
       const { email } = req.body;
       if (!email) {
@@ -75,7 +75,7 @@ static async requestPasswordReset(req: Request, res: Response): Promise<void> {
         return;
       }
       await authService.requestPasswordReset(email);
-      res.json({ success: true, message: 'Password reset link sent to your email' });
+      res.json({ success: true, message: 'Verification code sent to your email' });
     } catch (error: any) {
       console.error('Request password reset error:', error);
       res.status(400).json({ success: false, error: error.message });
@@ -84,12 +84,12 @@ static async requestPasswordReset(req: Request, res: Response): Promise<void> {
 
   static async resetPassword(req: Request, res: Response): Promise<void> {
     try {
-      const { token, newPassword } = req.body;
-      if (!token || !newPassword) {
-        res.status(400).json({ success: false, error: 'Token and new password are required' });
+      const { code, newPassword } = req.body;
+      if (!code || !newPassword) {
+        res.status(400).json({ success: false, error: 'Verification code and new password are required' });
         return;
       }
-      await authService.resetPassword(token, newPassword);
+      await authService.resetPassword(code, newPassword);
       res.json({ success: true, message: 'Password reset successfully' });
     } catch (error: any) {
       console.error('Reset password error:', error);

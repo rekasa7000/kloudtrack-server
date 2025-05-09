@@ -19,21 +19,16 @@ exports.AuthService = void 0;
 //   });
 // };
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const crypto_1 = __importDefault(require("crypto"));
 const user_model_1 = require("../models/user.model");
 const db_1 = __importDefault(require("../config/db"));
 const jwt_util_1 = require("../utils/jwt.util");
 const logger_1 = __importDefault(require("../utils/logger"));
-const form_data_1 = __importDefault(require("form-data"));
-const mailgun_js_1 = __importDefault(require("mailgun.js"));
+const mail_1 = __importDefault(require("@sendgrid/mail"));
 const userModel = new user_model_1.UserModel();
 class AuthService {
-    mgClient;
     constructor() {
-        this.mgClient = new mailgun_js_1.default(form_data_1.default).client({
-            username: 'api',
-            key: process.env.MAILGUN_API_KEY || (() => { throw new Error('MAILGUN_API_KEY is not defined'); })()
-        });
+        // Initialize SendGrid with API key
+        mail_1.default.setApiKey(process.env.SENDGRID_API_KEY || (() => { throw new Error('SENDGRID_API_KEY is not defined'); })());
     }
     async register(data) {
         const existingUser = await userModel.findByEmail(data.email);
@@ -94,50 +89,62 @@ class AuthService {
     }
     async requestPasswordReset(email) {
         try {
-            // 1. Generate and store token
+            // 1. Find the user
             const user = await userModel.findByEmail(email);
             if (!user) {
                 logger_1.default.warn(`Password reset requested for non-existent email: ${email}`);
                 throw new Error('User not found');
             }
-            const resetToken = crypto_1.default.randomBytes(32).toString('hex');
-            const expiresAt = new Date(Date.now() + 3600000);
+            // 2. Generate a 6-digit verification code
+            const verificationCode = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit code
+            const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // Expires in 15 minutes
+            // 3. Store the code in ResetToken table
             await db_1.default.resetToken.create({
-                data: { token: resetToken, userId: user.id, expiresAt }
+                data: {
+                    token: verificationCode,
+                    userId: user.id,
+                    expiresAt,
+                },
             });
-            // 2. Send via Mailgun API
-            const resetLink = `${process.env.APP_URL}/reset-password?token=${resetToken}`;
-            const mailgunDomain = process.env.MAILGUN_DOMAIN || (() => { throw new Error('MAILGUN_DOMAIN is not defined'); })();
-            await this.mgClient.messages.create(mailgunDomain, {
-                from: `"Password Reset" <noreply@${process.env.MAILGUN_DOMAIN}>`,
-                to: [email],
-                subject: 'Password Reset Request',
-                text: `Click here to reset your password: ${resetLink}`,
+            // 4. Send the code via SendGrid
+            const senderEmail = process.env.SENDGRID_SENDER_EMAIL || (() => { throw new Error('SENDGRID_SENDER_EMAIL is not defined'); })();
+            const msg = {
+                to: email,
+                from: senderEmail,
+                subject: 'Password Reset Verification Code',
+                text: `Your verification code is: ${verificationCode}. It expires in 15 minutes.`,
                 html: `
           <h2>Password Reset</h2>
-          <p>Click below to reset your password:</p>
-          <a href="${resetLink}">Reset Password</a>
-          <p>This link expires in 1 hour.</p>
-        `
-            });
+          <p>Your verification code is:</p>
+          <h3>${verificationCode}</h3>
+          <p>This code expires in 15 minutes.</p>
+          <p>Enter this code in the password reset form to set a new password.</p>
+        `,
+            };
+            await mail_1.default.send(msg);
+            logger_1.default.info(`Password reset code sent to: ${email}`);
         }
         catch (error) {
-            console.error('Mailgun API Error:', error);
+            console.error('SendGrid API Error:', {
+                message: error.message,
+                response: error.response?.body,
+                status: error.response?.status,
+            });
             throw new Error('Failed to send reset email');
         }
     }
-    async resetPassword(token, newPassword) {
-        // Find the reset token and ensure it's valid
+    async resetPassword(code, newPassword) {
+        // Find the reset token (verification code) and ensure it's valid
         const resetToken = await db_1.default.resetToken.findFirst({
             where: {
-                token,
+                token: code,
                 expiresAt: { gt: new Date() },
             },
             include: { user: true },
         });
         if (!resetToken) {
-            logger_1.default.warn('Invalid or expired password reset token used');
-            throw new Error('Invalid or expired token');
+            logger_1.default.warn('Invalid or expired verification code used');
+            throw new Error('Invalid or expired verification code');
         }
         // Hash the new password
         const hashedPassword = await bcryptjs_1.default.hash(newPassword, 10);

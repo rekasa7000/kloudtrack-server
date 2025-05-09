@@ -70,7 +70,7 @@ class AuthController {
                 return;
             }
             await authService.requestPasswordReset(email);
-            res.json({ success: true, message: 'Password reset link sent to your email' });
+            res.json({ success: true, message: 'Verification code sent to your email' });
         }
         catch (error) {
             console.error('Request password reset error:', error);
@@ -79,12 +79,12 @@ class AuthController {
     }
     static async resetPassword(req, res) {
         try {
-            const { token, newPassword } = req.body;
-            if (!token || !newPassword) {
-                res.status(400).json({ success: false, error: 'Token and new password are required' });
+            const { code, newPassword } = req.body;
+            if (!code || !newPassword) {
+                res.status(400).json({ success: false, error: 'Verification code and new password are required' });
                 return;
             }
-            await authService.resetPassword(token, newPassword);
+            await authService.resetPassword(code, newPassword);
             res.json({ success: true, message: 'Password reset successfully' });
         }
         catch (error) {
