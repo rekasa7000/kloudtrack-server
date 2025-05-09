@@ -18,9 +18,8 @@
 import bcrypt from 'bcryptjs';
 import { Role, User } from '@prisma/client';
 import { UserModel } from '../models/user.model';
-import prisma from '../config/db';
+import prisma from '../config/database.config';
 import { generateToken } from '../utils/jwt.util';
-import Logger from '../utils/logger';
 import sgMail from '@sendgrid/mail'
 
 const userModel = new UserModel();
@@ -41,14 +40,12 @@ export class AuthService {
   }): Promise<{ user: User; token: string }> {
     const existingUser = await userModel.findByEmail(data.email);
     if (existingUser) {
-      Logger.warn(`Registration failed - Email already in use: ${data.email}`);
       throw new Error('Email already in use');
     }
 
     const normalizedRole = data.role.toUpperCase() as Role;
     const allowedRoles: Role[] = ['USER', 'ADMIN', 'SUPERADMIN'];
     if (!allowedRoles.includes(normalizedRole)) {
-      Logger.warn(`Invalid role specified during registration: ${data.role}`);
       throw new Error('Invalid role specified');
     }
 
@@ -62,25 +59,21 @@ export class AuthService {
     });
 
     const token = generateToken({ id: user.id });
-    Logger.info(`User registered: ${data.email}`);
     return { user, token };
   }
 
   async login(email: string, password: string): Promise<{ user: Partial<User>; token: string }> {
     const user = await userModel.findByEmail(email);
     if (!user) {
-      Logger.warn(`Login failed - Invalid email: ${email}`);
       throw new Error('Invalid email or password');
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      Logger.warn(`Login failed - Invalid password for: ${email}`);
       throw new Error('Invalid email or password');
     }
 
     const token = generateToken({ id: user.id });
-    Logger.info(`User logged in: ${email}`);
 
     return {
       user: { id: user.id, userName: user.userName, email: user.email, role: user.role },
@@ -91,11 +84,9 @@ export class AuthService {
   async getProfile(userId: number): Promise<Partial<User>> {
     const user = await userModel.findById(userId);
     if (!user) {
-      Logger.warn(`Profile access failed - User not found: ID ${userId}`);
       throw new Error('User not found');
     }
 
-    Logger.info(`Profile accessed: ${user.email}`);
     return {
       id: user.id,
       userName: user.userName,
@@ -112,7 +103,6 @@ export class AuthService {
       // 1. Find the user
       const user = await userModel.findByEmail(email);
       if (!user) {
-        Logger.warn(`Password reset requested for non-existent email: ${email}`);
         throw new Error('User not found');
       }
 
@@ -147,7 +137,6 @@ export class AuthService {
       };
 
       await sgMail.send(msg);
-      Logger.info(`Password reset code sent to: ${email}`);
     } catch (error: any) {
       console.error('SendGrid API Error:', {
         message: error.message,
@@ -169,7 +158,6 @@ export class AuthService {
     });
 
     if (!resetToken) {
-      Logger.warn('Invalid or expired verification code used');
       throw new Error('Invalid or expired verification code');
     }
 
@@ -185,7 +173,6 @@ export class AuthService {
       prisma.resetToken.delete({ where: { id: resetToken.id } }),
     ]);
 
-    Logger.info(`Password reset for user: ${resetToken.user.email}`);
   }
   
 }

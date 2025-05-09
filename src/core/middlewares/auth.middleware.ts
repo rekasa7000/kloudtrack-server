@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import prisma from '../config/db';
-import { AuthUser } from '../types/auth.type';
+import prisma from '../../config/database.config';
+import { AuthUser } from '../../types/auth.type';
 
 export const authenticate = async (
   req: Request,

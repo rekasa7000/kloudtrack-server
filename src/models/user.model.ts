@@ -1,4 +1,4 @@
-import prisma from '../config/db';
+import prisma from '../config/database.config';
 import { Role, User, ResetToken } from '@prisma/client';
 
 export class UserModel {

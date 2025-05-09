@@ -20,9 +20,8 @@ exports.AuthService = void 0;
 // };
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const user_model_1 = require("../models/user.model");
-const db_1 = __importDefault(require("../config/db"));
+const database_config_1 = __importDefault(require("../config/database.config"));
 const jwt_util_1 = require("../utils/jwt.util");
-const logger_1 = __importDefault(require("../utils/logger"));
 const mail_1 = __importDefault(require("@sendgrid/mail"));
 const userModel = new user_model_1.UserModel();
 class AuthService {
@@ -33,13 +32,11 @@ class AuthService {
     async register(data) {
         const existingUser = await userModel.findByEmail(data.email);
         if (existingUser) {
-            logger_1.default.warn(`Registration failed - Email already in use: ${data.email}`);
             throw new Error('Email already in use');
         }
         const normalizedRole = data.role.toUpperCase();
         const allowedRoles = ['USER', 'ADMIN', 'SUPERADMIN'];
         if (!allowedRoles.includes(normalizedRole)) {
-            logger_1.default.warn(`Invalid role specified during registration: ${data.role}`);
             throw new Error('Invalid role specified');
         }
         const hashedPassword = await bcryptjs_1.default.hash(data.password, 10);
@@ -50,22 +47,18 @@ class AuthService {
             role: normalizedRole,
         });
         const token = (0, jwt_util_1.generateToken)({ id: user.id });
-        logger_1.default.info(`User registered: ${data.email}`);
         return { user, token };
     }
     async login(email, password) {
         const user = await userModel.findByEmail(email);
         if (!user) {
-            logger_1.default.warn(`Login failed - Invalid email: ${email}`);
             throw new Error('Invalid email or password');
         }
         const isMatch = await bcryptjs_1.default.compare(password, user.password);
         if (!isMatch) {
-            logger_1.default.warn(`Login failed - Invalid password for: ${email}`);
             throw new Error('Invalid email or password');
         }
         const token = (0, jwt_util_1.generateToken)({ id: user.id });
-        logger_1.default.info(`User logged in: ${email}`);
         return {
             user: { id: user.id, userName: user.userName, email: user.email, role: user.role },
             token,
@@ -74,10 +67,8 @@ class AuthService {
     async getProfile(userId) {
         const user = await userModel.findById(userId);
         if (!user) {
-            logger_1.default.warn(`Profile access failed - User not found: ID ${userId}`);
             throw new Error('User not found');
         }
-        logger_1.default.info(`Profile accessed: ${user.email}`);
         return {
             id: user.id,
             userName: user.userName,
@@ -92,14 +83,13 @@ class AuthService {
             // 1. Find the user
             const user = await userModel.findByEmail(email);
             if (!user) {
-                logger_1.default.warn(`Password reset requested for non-existent email: ${email}`);
                 throw new Error('User not found');
             }
             // 2. Generate a 6-digit verification code
             const verificationCode = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit code
             const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // Expires in 15 minutes
             // 3. Store the code in ResetToken table
-            await db_1.default.resetToken.create({
+            await database_config_1.default.resetToken.create({
                 data: {
                     token: verificationCode,
                     userId: user.id,
@@ -122,7 +112,6 @@ class AuthService {
         `,
             };
             await mail_1.default.send(msg);
-            logger_1.default.info(`Password reset code sent to: ${email}`);
         }
         catch (error) {
             console.error('SendGrid API Error:', {
@@ -135,7 +124,7 @@ class AuthService {
     }
     async resetPassword(code, newPassword) {
         // Find the reset token (verification code) and ensure it's valid
-        const resetToken = await db_1.default.resetToken.findFirst({
+        const resetToken = await database_config_1.default.resetToken.findFirst({
             where: {
                 token: code,
                 expiresAt: { gt: new Date() },
@@ -143,20 +132,18 @@ class AuthService {
             include: { user: true },
         });
         if (!resetToken) {
-            logger_1.default.warn('Invalid or expired verification code used');
             throw new Error('Invalid or expired verification code');
         }
         // Hash the new password
         const hashedPassword = await bcryptjs_1.default.hash(newPassword, 10);
         // Update the user's password and delete the reset token
-        await db_1.default.$transaction([
-            db_1.default.user.update({
+        await database_config_1.default.$transaction([
+            database_config_1.default.user.update({
                 where: { id: resetToken.userId },
                 data: { password: hashedPassword },
             }),
-            db_1.default.resetToken.delete({ where: { id: resetToken.id } }),
+            database_config_1.default.resetToken.delete({ where: { id: resetToken.id } }),
         ]);
-        logger_1.default.info(`Password reset for user: ${resetToken.user.email}`);
     }
 }
 exports.AuthService = AuthService;
