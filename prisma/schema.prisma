@@ -199,7 +199,7 @@ model RootCertificate {
 }
 
 model Telemetry {
-  id             Int      @id @default(autoincrement()) @map("sensor_data_id")
+  id             Int      @id @default(autoincrement()) @map("telemetry_id")
   stationId      Int      @map("station_id")
   temperature    Float?   @map("temperature")
   humidity       Float?   @map("humidity")
@@ -209,6 +209,7 @@ model Telemetry {
   windSpeed      Float?   @map("wind_speed")
   precipitation  Float?   @map("precipitation")
   uvIndex        Float?   @map("uv_index")
+  distance       Float?   @map("distance")
   lightIntensity Float?   @map("light_intensity")
   recordedAt     DateTime @map("recorded_at")
   createdAt      DateTime @default(now()) @map("created_at")
