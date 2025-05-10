@@ -1,13 +1,18 @@
-import { Request, Response, NextFunction, Router } from "express";
-import { asyncHandler } from "../../core/middlewares/error-handler.middleware";
-import { checkAuth, login } from "./auth.controller";
+import { Router } from "express";
+import { AuthController } from "../../controllers/auth-controller";
+import {
+  validateRegister,
+  validateLogin,
+} from "../../validators/auth-validator";
 import { protect } from "../../core/middlewares/auth.middleware";
-import { validateRequest } from "../../core/middlewares/validation.middleware";
-import { SignInSchema } from "./auth.schema";
 
 const router = Router();
 
-router.post("/login", validateRequest(SignInSchema), login);
-router.get("/check-auth", protect, checkAuth);
+router.post("/register", validateRegister, AuthController.register);
+router.post("/login", validateLogin, AuthController.login);
+router.post("/logout", AuthController.logout);
+router.post("/request-password-reset", AuthController.requestPasswordReset);
+router.post("/reset-password", AuthController.resetPassword);
+router.get("/profile", protect, AuthController.getProfile);
 
 export default router;

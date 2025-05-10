@@ -26,5 +26,4 @@ app.use(error_handler_middleware_1.errorHandler);
 app.use((req, res, next) => {
     next(new error_1.AppError("Not Found", 404));
 });
-// Export app without starting the server here
 exports.default = app;

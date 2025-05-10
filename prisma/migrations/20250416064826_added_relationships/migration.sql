@@ -5,6 +5,9 @@
   - Added the required column `organization_id` to the `stations` table without a default value. This is not possible if the table is not empty.
   - Added the required column `organization_id` to the `users` table without a default value. This is not possible if the table is not empty.
 
+
+  - Made the organization_id column on table 'users' not required to test the user creation.
+
 */
 -- AlterTable
 ALTER TABLE "problem_reports" ALTER COLUMN "issued_by" SET NOT NULL;
@@ -13,7 +16,7 @@ ALTER TABLE "problem_reports" ALTER COLUMN "issued_by" SET NOT NULL;
 ALTER TABLE "stations" ADD COLUMN     "organization_id" INTEGER NOT NULL;
 
 -- AlterTable
-ALTER TABLE "users" ADD COLUMN     "organization_id" INTEGER NOT NULL;
+ALTER TABLE "users" ADD COLUMN     "organization_id" INTEGER ; 
 
 -- AddForeignKey
 ALTER TABLE "users" ADD CONSTRAINT "users_organization_id_fkey" FOREIGN KEY ("organization_id") REFERENCES "organizations"("organization_id") ON DELETE RESTRICT ON UPDATE CASCADE;

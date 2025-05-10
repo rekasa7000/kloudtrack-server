@@ -28,5 +28,4 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next(new AppError("Not Found", 404));
 });
 
-// Export app without starting the server here
 export default app;

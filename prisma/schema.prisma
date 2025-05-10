@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -74,8 +75,20 @@ model User {
   rootCertificate    RootCertificate[]
   problemReport      ProblemReport[]
   stationCertificate StationCertificate[]
+  resetToken         ResetToken[]
 
   @@map("users")
+}
+
+model ResetToken {
+  id        Int      @id @default(autoincrement()) @map("reset_token_id")
+  token     String   @unique @map("token")
+  userId    Int      @map("user_id")
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("reset_tokens")
 }
 
 model Organization {
@@ -104,7 +117,6 @@ model UserOrganization {
   user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, organizationId])
   @@map("user_organizations")
 }
 
@@ -197,7 +209,6 @@ model Telemetry {
   windSpeed      Float?   @map("wind_speed")
   precipitation  Float?   @map("precipitation")
   uvIndex        Float?   @map("uv_index")
-  distance       Float?   @map("distance")
   lightIntensity Float?   @map("light_intensity")
   recordedAt     DateTime @map("recorded_at")
   createdAt      DateTime @default(now()) @map("created_at")
