@@ -1,12 +1,11 @@
 import { Router } from "express";
 import stationRoute from "./modules/station/station.route";
-import certificateRoute from "./modules/certificate/certificate.route";
-import { authRouter } from "./modules/auth/auth.route";
+import authRoute from "./modules/auth/auth.route";
+import { protect } from "./core/middlewares/auth.middleware";
 
 const router = Router();
 
-router.use("/auth", authRouter);
-router.use("/api/station", stationRoute);
-router.use("/api/station", certificateRoute);
+router.use("/api/auth", authRoute);
+router.use("/api/station", protect, stationRoute);
 
 export default router;

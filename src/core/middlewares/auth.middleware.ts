@@ -1,62 +1,100 @@
-import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-import prisma from '../../config/database.config';
-import { AuthUser } from '../../types/auth.type';
+import { Request, Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
+import { AppError } from "../utils/error";
+import prisma from "../../config/database.config";
+import config from "../../config/environment.config";
+import { extractToken } from "../services/auth.service";
 
-export const authenticate = async (
+declare global {
+  namespace Express {
+    interface Request {
+      user?: {
+        id: number;
+        email: string;
+        role: string;
+        [key: string]: any;
+      };
+    }
+  }
+}
+
+export const protect = async (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
-    let token = req.header('Authorization')?.replace('Bearer ', '') || req.cookies?.token;
+    const token = extractToken(req);
 
     if (!token) {
-      res.status(401).json({ success: false, error: 'Authentication required' });
-      return;
+      return next(
+        new AppError("You are not logged in. Please log in to get access.", 401)
+      );
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: number };
+    const decoded = jwt.verify(token, config.JWT_SECRET) as TokenPayload;
 
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.id },
-      select: { id: true, userName: true, email: true, role: true },
+    const currentUser = await prisma.user.findUnique({
+      where: { id: decoded.userId },
+      select: {
+        id: true,
+        email: true,
+        role: true,
+        passwordChangedAt: true,
+      },
     });
 
-    if (!user) {
-      res.status(401).json({ success: false, error: 'User not found' });
-      return;
+    if (!currentUser) {
+      return next(
+        new AppError("The user belonging to this token no longer exists.", 401)
+      );
     }
 
-    req.user = user as AuthUser;
+    if (currentUser.passwordChangedAt) {
+      const changedTimestamp = Math.floor(
+        new Date(currentUser.passwordChangedAt).getTime() / 1000
+      );
+
+      if (decoded.iat < changedTimestamp) {
+        return next(
+          new AppError(
+            "User recently changed password! Please log in again.",
+            401
+          )
+        );
+      }
+    }
+
+    req.user = {
+      id: currentUser.id,
+      email: currentUser.email,
+      role: currentUser.role,
+    };
+
     next();
   } catch (error) {
-    console.error('Authentication error:', error);
-    if (error instanceof jwt.TokenExpiredError) {
-      res.status(401).json({ success: false, error: 'Token expired' });
-      return;
-    }
     if (error instanceof jwt.JsonWebTokenError) {
-      res.status(401).json({ success: false, error: 'Invalid token' });
-      return;
+      return next(new AppError("Invalid token. Please log in again.", 401));
     }
-    res.status(500).json({ success: false, error: 'Authentication failed' });
+    if (error instanceof jwt.TokenExpiredError) {
+      return next(
+        new AppError("Your token has expired! Please log in again.", 401)
+      );
+    }
+    return next(new AppError("Authentication failed", 401));
   }
 };
 
-export const authorize = (roles: string[]) => {
+export const restrictTo = (...roles: string[]) => {
   return (req: Request, res: Response, next: NextFunction): void => {
     if (!req.user) {
-      res.status(401).json({ success: false, error: 'Unauthorized' });
-      return;
+      return next(new AppError("You are not logged in", 401));
     }
 
     if (!roles.includes(req.user.role)) {
-      res.status(403).json({
-        success: false,
-        error: 'Forbidden - Insufficient permissions',
-      });
-      return;
+      return next(
+        new AppError("You do not have permission to perform this action", 403)
+      );
     }
 
     next();
