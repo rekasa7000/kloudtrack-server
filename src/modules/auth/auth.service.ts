@@ -15,22 +15,25 @@
 //   });
 // };
 
-import bcrypt from 'bcryptjs';
-import { Role, User } from '@prisma/client';
-import { UserModel } from '../models/user.model';
-import prisma from '../config/database.config';
-import { generateToken } from '../utils/jwt.util';
-import sgMail from '@sendgrid/mail'
+import bcrypt from "bcryptjs";
+import { Role, User } from "@prisma/client";
+import { UserModel } from "../../models/user.model";
+import prisma from "../../config/database.config";
+import { generateToken } from "../../core/utils/jwt.util";
+import sgMail from "@sendgrid/mail";
 
 const userModel = new UserModel();
 
 export class AuthService {
-
   constructor() {
     // Initialize SendGrid with API key
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY || (() => { throw new Error('SENDGRID_API_KEY is not defined'); })());
+    sgMail.setApiKey(
+      process.env.SENDGRID_API_KEY ||
+        (() => {
+          throw new Error("SENDGRID_API_KEY is not defined");
+        })()
+    );
   }
-
 
   async register(data: {
     userName: string;
@@ -40,13 +43,13 @@ export class AuthService {
   }): Promise<{ user: User; token: string }> {
     const existingUser = await userModel.findByEmail(data.email);
     if (existingUser) {
-      throw new Error('Email already in use');
+      throw new Error("Email already in use");
     }
 
     const normalizedRole = data.role.toUpperCase() as Role;
-    const allowedRoles: Role[] = ['USER', 'ADMIN', 'SUPERADMIN'];
+    const allowedRoles: Role[] = ["USER", "ADMIN", "SUPERADMIN"];
     if (!allowedRoles.includes(normalizedRole)) {
-      throw new Error('Invalid role specified');
+      throw new Error("Invalid role specified");
     }
 
     const hashedPassword = await bcrypt.hash(data.password, 10);
@@ -62,21 +65,29 @@ export class AuthService {
     return { user, token };
   }
 
-  async login(email: string, password: string): Promise<{ user: Partial<User>; token: string }> {
+  async login(
+    email: string,
+    password: string
+  ): Promise<{ user: Partial<User>; token: string }> {
     const user = await userModel.findByEmail(email);
     if (!user) {
-      throw new Error('Invalid email or password');
+      throw new Error("Invalid email or password");
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      throw new Error('Invalid email or password');
+      throw new Error("Invalid email or password");
     }
 
     const token = generateToken({ id: user.id });
 
     return {
-      user: { id: user.id, userName: user.userName, email: user.email, role: user.role },
+      user: {
+        id: user.id,
+        userName: user.userName,
+        email: user.email,
+        role: user.role,
+      },
       token,
     };
   }
@@ -84,7 +95,7 @@ export class AuthService {
   async getProfile(userId: number): Promise<Partial<User>> {
     const user = await userModel.findById(userId);
     if (!user) {
-      throw new Error('User not found');
+      throw new Error("User not found");
     }
 
     return {
@@ -97,17 +108,18 @@ export class AuthService {
     };
   }
 
-  
   async requestPasswordReset(email: string): Promise<void> {
     try {
       // 1. Find the user
       const user = await userModel.findByEmail(email);
       if (!user) {
-        throw new Error('User not found');
+        throw new Error("User not found");
       }
 
       // 2. Generate a 6-digit verification code
-      const verificationCode = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit code
+      const verificationCode = Math.floor(
+        100000 + Math.random() * 900000
+      ).toString(); // 6-digit code
       const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // Expires in 15 minutes
 
       // 3. Store the code in ResetToken table
@@ -120,12 +132,16 @@ export class AuthService {
       });
 
       // 4. Send the code via SendGrid
-      const senderEmail = process.env.SENDGRID_SENDER_EMAIL || (() => { throw new Error('SENDGRID_SENDER_EMAIL is not defined'); })();
+      const senderEmail =
+        process.env.SENDGRID_SENDER_EMAIL ||
+        (() => {
+          throw new Error("SENDGRID_SENDER_EMAIL is not defined");
+        })();
 
       const msg = {
         to: email,
         from: senderEmail,
-        subject: 'Password Reset Verification Code',
+        subject: "Password Reset Verification Code",
         text: `Your verification code is: ${verificationCode}. It expires in 15 minutes.`,
         html: `
           <h2>Password Reset</h2>
@@ -138,12 +154,12 @@ export class AuthService {
 
       await sgMail.send(msg);
     } catch (error: any) {
-      console.error('SendGrid API Error:', {
+      console.error("SendGrid API Error:", {
         message: error.message,
         response: error.response?.body,
         status: error.response?.status,
       });
-      throw new Error('Failed to send reset email');
+      throw new Error("Failed to send reset email");
     }
   }
 
@@ -158,7 +174,7 @@ export class AuthService {
     });
 
     if (!resetToken) {
-      throw new Error('Invalid or expired verification code');
+      throw new Error("Invalid or expired verification code");
     }
 
     // Hash the new password
@@ -172,7 +188,5 @@ export class AuthService {
       }),
       prisma.resetToken.delete({ where: { id: resetToken.id } }),
     ]);
-
   }
-  
 }

@@ -1,5 +1,5 @@
-import prisma from '../config/database.config';
-import { Role, User, ResetToken } from '@prisma/client';
+import prisma from "../config/database.config";
+import { Role, User, ResetToken } from "@prisma/client";
 
 export class UserModel {
   async create(data: {
@@ -23,7 +23,11 @@ export class UserModel {
     return prisma.user.update({ where: { id }, data });
   }
 
-  async createResetToken(userId: number, token: string, expiresAt: Date): Promise<ResetToken> {
+  async createResetToken(
+    userId: number,
+    token: string,
+    expiresAt: Date
+  ): Promise<ResetToken> {
     return prisma.resetToken.create({
       data: {
         token,
@@ -33,7 +37,9 @@ export class UserModel {
     });
   }
 
-  async findResetToken(token: string): Promise<ResetToken & { user: User } | null> {
+  async findResetToken(
+    token: string
+  ): Promise<(ResetToken & { user: User }) | null> {
     return prisma.resetToken.findFirst({
       where: {
         token,
