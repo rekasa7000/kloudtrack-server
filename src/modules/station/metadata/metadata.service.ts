@@ -1,41 +1,46 @@
-import prisma from "../../../config/database.config";
 import { StationMetadata } from "../station.types";
+import { MetadataRepository } from "./metadata.repository";
+import { AppError } from "../../../core/utils/error";
 
-export class StationService {
+export class MetadataService {
+  constructor(private metadataRepository: MetadataRepository) {}
+
   async getAllStations(skip: number, take: number) {
-    return prisma.station.findMany({
-      include: { certificate: true },
-      skip,
-      take,
-      orderBy: { id: "asc" },
-    });
+    return this.metadataRepository.getAllStations(skip, take);
   }
 
   async createStation(data: StationMetadata, userId: number) {
-    return prisma.station.create({
-      data: {
-        ...data,
-        createdByUserId: userId,
-      },
-    });
+    if (!data) {
+      throw new AppError("Station metadata is required", 400);
+    }
+
+    return this.metadataRepository.createStation(data, userId);
   }
 
   async updateStation(id: number, data: StationMetadata) {
-    return prisma.station.update({
-      where: { id },
-      data,
-    });
+    const existingStation = await this.metadataRepository.getStationById(id);
+    if (!existingStation) {
+      throw new AppError("Station not found", 404);
+    }
+
+    return this.metadataRepository.updateStation(id, data);
   }
 
   async deleteStation(id: number) {
-    return prisma.station.delete({
-      where: { id },
-    });
+    const existingStation = await this.metadataRepository.getStationById(id);
+    if (!existingStation) {
+      throw new AppError("Station not found", 404);
+    }
+
+    return this.metadataRepository.deleteStation(id);
   }
 
   async getStationById(id: number) {
-    return prisma.station.findUnique({
-      where: { id },
-    });
+    const station = await this.metadataRepository.getStationById(id);
+    if (!station) {
+      throw new AppError("Station not found", 404);
+    }
+
+    return station;
   }
 }

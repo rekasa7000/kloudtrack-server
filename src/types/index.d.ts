@@ -30,3 +30,9 @@ interface TokenPayload {
   iat: number;
   exp: number;
 }
+
+interface RouteDef {
+  method: "get" | "post" | "put" | "delete";
+  path: string;
+  handler: any;
+}
