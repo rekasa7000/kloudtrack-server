@@ -1,16 +1,7 @@
-import prisma from "../config/database.config";
 import { Role, User, ResetToken } from "@prisma/client";
+import prisma from "../../config/database.config";
 
-export class UserModel {
-  async create(data: {
-    userName: string;
-    email: string;
-    password: string;
-    role: Role;
-  }): Promise<User> {
-    return prisma.user.create({ data });
-  }
-
+export class AuthRepository {
   async findByEmail(email: string): Promise<User | null> {
     return prisma.user.findUnique({ where: { email } });
   }
@@ -23,11 +14,7 @@ export class UserModel {
     return prisma.user.update({ where: { id }, data });
   }
 
-  async createResetToken(
-    userId: number,
-    token: string,
-    expiresAt: Date
-  ): Promise<ResetToken> {
+  async createResetToken(userId: number, token: string, expiresAt: Date): Promise<ResetToken> {
     return prisma.resetToken.create({
       data: {
         token,
@@ -37,9 +24,7 @@ export class UserModel {
     });
   }
 
-  async findResetToken(
-    token: string
-  ): Promise<(ResetToken & { user: User }) | null> {
+  async findResetToken(token: string): Promise<(ResetToken & { user: User }) | null> {
     return prisma.resetToken.findFirst({
       where: {
         token,
@@ -51,5 +36,26 @@ export class UserModel {
 
   async deleteResetToken(id: number): Promise<void> {
     await prisma.resetToken.delete({ where: { id } });
+  }
+
+  async findValidToken(code: string) {
+    return prisma.resetToken.findFirst({
+      where: {
+        token: code,
+        expiresAt: { gt: new Date() },
+      },
+      include: { user: true },
+    });
+  }
+
+  async deleteTokenById(id: number) {
+    return prisma.resetToken.delete({ where: { id } });
+  }
+
+  async updatePassword(userId: number, hashedPassword: string) {
+    return prisma.user.update({
+      where: { id: userId },
+      data: { password: hashedPassword },
+    });
   }
 }

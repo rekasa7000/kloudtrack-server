@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { bulkCreateUsers, createUser } from "./user.controller";
+import UserController from "./user.controller";
 
 const router = Router();
+const userConteroller = new UserController();
 
-router.post("/users", createUser);
-router.post("/users/bulk", bulkCreateUsers);
+router.post("/users", userConteroller.create);
+router.post("/users/bulk", userConteroller.bulkCreate);
 
 export default router;

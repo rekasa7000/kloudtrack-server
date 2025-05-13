@@ -1,18 +1,34 @@
 import { Router } from "express";
-import { AuthController } from "../../controllers/auth-controller";
-import {
-  validateRegister,
-  validateLogin,
-} from "../../validators/auth-validator";
+import { AuthController } from "./auth.controller";
 import { protect } from "../../core/middlewares/auth.middleware";
+import { validateRequest } from "../../core/middlewares/validation.middleware";
+import { LoginValidation, RequesPasswordResetValidation } from "./auth.validator";
 
-const router = Router();
+export class AuthRoutes {
+  private router: Router;
+  private authController: AuthController;
 
-router.post("/register", validateRegister, AuthController.register);
-router.post("/login", validateLogin, AuthController.login);
-router.post("/logout", AuthController.logout);
-router.post("/request-password-reset", AuthController.requestPasswordReset);
-router.post("/reset-password", AuthController.resetPassword);
-router.get("/profile", protect, AuthController.getProfile);
+  constructor(authController: AuthController) {
+    this.router = Router();
+    this.authController = authController;
+    this.initializeRoutes();
+  }
 
-export default router;
+  private initializeRoutes(): void {
+    this.router.post("/login", validateRequest(LoginValidation), this.authController.login);
+    this.router.post(
+      "/password-reset/request",
+      validateRequest(RequesPasswordResetValidation),
+      this.authController.requestPasswordReset
+    );
+    this.router.post("/password-reset", this.authController.resetPassword);
+
+    // Protected
+    this.router.get("/profile", protect, this.authController.getProfile);
+    this.router.post("/logout", protect, this.authController.logout);
+  }
+
+  public getRouter(): Router {
+    return this.router;
+  }
+}

@@ -1,13 +1,13 @@
 import { z } from "zod";
 
-export const UserRoleEnum = z.enum(["user", "admin", "superadmin"]);
+export const UserRoleEnum = z.enum(["USER", "ADMIN", "SUPERADMIN"]);
 
 export const BaseUserSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters long"),
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
-  role: UserRoleEnum.default("user"),
+  role: UserRoleEnum.default("USER"),
 });
 
 export const CreateUserSchema = BaseUserSchema.extend({

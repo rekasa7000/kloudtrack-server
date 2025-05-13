@@ -1,17 +1,8 @@
-
 export interface AuthUser {
   id: number;
   userName: string;
   email: string;
   role: string;
-}
-
-declare global {
-  namespace Express {
-    interface Request {
-      user?: AuthUser;
-    }
-  }
 }
 
 export interface RegisterData {

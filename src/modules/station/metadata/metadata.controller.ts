@@ -1,100 +1,66 @@
 import { Request, Response } from "express";
 import { asyncHandler } from "../../../core/middlewares/error-handler.middleware";
-import { AppError } from "../../../core/utils/error";
-import prisma from "../../../config/database.config";
 import { sendResponse } from "../../../core/utils/response";
+import { AppError } from "../../../core/utils/error";
+import { StationService } from "./metadata.service";
 import { StationMetadata } from "../station.types";
 
-// * ALL STATIONS
-export const getAllStations = asyncHandler(
-  async (req: Request, res: Response) => {
+export default class StationController {
+  private stationService: StationService;
+
+  constructor() {
+    this.stationService = new StationService();
+  }
+
+  getAll = asyncHandler(async (req: Request, res: Response) => {
     const skip = Number(req.query.skip as string);
     const take = Number(req.query.take as string);
 
-    const allStations = await prisma.station.findMany({
-      include: {
-        certificate: true,
-      },
-      skip: skip,
-      take: take,
-      orderBy: {
-        id: "asc",
-      },
-    });
+    const stations = await this.stationService.getAllStations(skip, take);
+    return sendResponse(res, stations, 200, "Stations fetched successfully");
+  });
 
-    return sendResponse(res, allStations, 200, "Stations fetched successfully");
-  }
-);
+  create = asyncHandler(async (req: Request, res: Response) => {
+    if (!req.user) throw new AppError("Not authenticated", 400);
 
-// * CREATE STATION
-export const createStation = asyncHandler(
-  async (req: Request, res: Response) => {
     const data: StationMetadata = req.body;
+    const newStation = await this.stationService.createStation(
+      data,
+      req.user.id
+    );
 
-    if (!req.user) {
-      throw new AppError("Not authenticated", 400);
-    }
+    return sendResponse(res, newStation, 201, "Station created successfully");
+  });
 
-    const newStation = await prisma.station.create({
-      data: {
-        ...data,
-        createdByUserId: req.user.id,
-      },
-    });
-
-    return sendResponse(res, newStation, 201, "Station created succesfully");
-  }
-);
-
-// * UPDATE STATION
-export const updateStation = asyncHandler(
-  async (req: Request, res: Response) => {
+  update = asyncHandler(async (req: Request, res: Response) => {
     const data: StationMetadata = req.body;
     const { id } = req.params;
 
-    const updatedStation = await prisma.station.update({
-      where: { id: +id },
-      data: {
-        ...data,
-      },
-    });
-
+    const updatedStation = await this.stationService.updateStation(+id, data);
     return sendResponse(
       res,
       updatedStation,
       200,
-      "Station created succesfully"
+      "Station updated successfully"
     );
-  }
-);
+  });
 
-// * DELETE STATION
-export const deleteStation = asyncHandler(
-  async (req: Request, res: Response) => {
+  delete = asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const deleteStation = await prisma.station.delete({
-      where: { id: +id },
-    });
-
+    const deletedStation = await this.stationService.deleteStation(+id);
     return sendResponse(
       res,
-      deleteStation,
+      deletedStation,
       200,
       "Station deleted successfully"
     );
-  }
-);
+  });
 
-// * GET STATION BY ID
-export const getStationById = asyncHandler(
-  async (req: Request, res: Response) => {
+  getById = asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const stationById = await prisma.station.findUnique({
-      where: { id: +id },
-    });
-
-    return sendResponse(res, stationById, 200, "Station fetched successfully");
-  }
-);
+    const station = await this.stationService.getStationById(+id);
+    return sendResponse(res, station, 200, "Station fetched successfully");
+  });
+}
