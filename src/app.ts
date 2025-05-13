@@ -24,8 +24,27 @@ app.use((req: Request, res: Response) => {
 
 // error handler
 app.use(errorHandler);
+<<<<<<< HEAD
 app.use((req: Request, res: Response, next: NextFunction) => {
   next(new AppError("Not Found", 404));
 });
+=======
+
+(async () => {
+  try {
+    // const mqttService = await setupMqttService();
+    logger.info("MQTT service initialized successfully");
+
+    // app.locals.mqttService = mqttService;
+
+    app.listen(config.PORT, () => {
+      logger.info(`Server running on port ${config.PORT}`);
+    });
+  } catch (error) {
+    logger.error("Failed to initialize MQTT service:", error);
+    process.exit(1);
+  }
+})();
+>>>>>>> origin/activate_station
 
 export default app;
