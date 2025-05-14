@@ -5,8 +5,12 @@ import { AppError } from "../../../core/utils/error";
 import { MetadataService } from "./metadata.service";
 import { StationMetadata } from "../station.types";
 
-export default class StationController {
-  constructor(private metadataService: MetadataService) {}
+export class MetadataController {
+  private metadataService: MetadataService;
+
+  constructor() {
+    this.metadataService = new MetadataService();
+  }
 
   getAll = asyncHandler(async (req: Request, res: Response) => {
     const skip = Number(req.query.skip as string);

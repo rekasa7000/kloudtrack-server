@@ -1114,3 +1114,85 @@
 {"level":30,"time":"05/01/2025, 02:48:24 PM","pid":13148,"hostname":"DESKTOP-LG32EGI","description":"Server running on port 3000"}
 {"level":30,"time":"05/01/2025, 02:50:47 PM","pid":3832,"hostname":"DESKTOP-LG32EGI","description":"MQTT service initialized successfully"}
 {"level":30,"time":"05/01/2025, 02:50:47 PM","pid":3832,"hostname":"DESKTOP-LG32EGI","description":"Server running on port 3000"}
+{"level":30,"time":"05/14/2025, 02:37:00 PM","pid":29148,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/14/2025, 02:37:02 PM","pid":29148,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/14/2025, 02:37:02 PM","pid":29148,"hostname":"DWCM-iMac.local","description":"Station 1 added successfully"}
+{"level":30,"time":"05/14/2025, 02:37:02 PM","pid":29148,"hostname":"DWCM-iMac.local","description":"Added station Mt. Cloud AWS 3 to MQTT service"}
+{"level":30,"time":"05/14/2025, 02:37:02 PM","pid":29148,"hostname":"DWCM-iMac.local","description":"All stations connected to MQTT service"}
+{"level":30,"time":"05/14/2025, 02:37:02 PM","pid":29148,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: devices/AWS-2025-003/data (Station: 1)"}
+{"level":30,"time":"05/14/2025, 02:37:02 PM","pid":29148,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: devices/+/data (Station: 1)"}
+{"level":30,"time":"05/14/2025, 02:37:02 PM","pid":29148,"hostname":"DWCM-iMac.local","description":"Telemetry service initialized successfully"}
+{"level":30,"time":"05/14/2025, 02:37:02 PM","pid":29148,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/14/2025, 02:37:02 PM","pid":29148,"hostname":"DWCM-iMac.local","description":"MQTT client offline: Mt. Cloud AWS 3 (Station: 1)"}
+{"level":40,"time":"05/14/2025, 02:37:02 PM","pid":29148,"hostname":"DWCM-iMac.local","description":"MQTT client for station Mt. Cloud AWS 3 is offline"}
+{"level":30,"time":"05/14/2025, 02:37:02 PM","pid":29148,"hostname":"DWCM-iMac.local","description":"MQTT client disconnected: Mt. Cloud AWS 3 (Station: 1)"}
+{"level":30,"time":"05/14/2025, 02:37:03 PM","pid":29148,"hostname":"DWCM-iMac.local","description":"MQTT client reconnecting: Mt. Cloud AWS 3 (Station: 1)"}
+{"level":30,"time":"05/14/2025, 02:37:03 PM","pid":29148,"hostname":"DWCM-iMac.local","description":"MQTT client for station Mt. Cloud AWS 3 reconnecting"}
+{"level":30,"time":"05/14/2025, 02:37:04 PM","pid":29148,"hostname":"DWCM-iMac.local","description":"MQTT client disconnected: Mt. Cloud AWS 3 (Station: 1)"}
+{"level":30,"time":"05/14/2025, 02:37:06 PM","pid":29148,"hostname":"DWCM-iMac.local","description":"MQTT client reconnecting: Mt. Cloud AWS 3 (Station: 1)"}
+{"level":30,"time":"05/14/2025, 02:37:06 PM","pid":29148,"hostname":"DWCM-iMac.local","description":"MQTT client for station Mt. Cloud AWS 3 reconnecting"}
+{"level":30,"time":"05/14/2025, 02:37:06 PM","pid":29148,"hostname":"DWCM-iMac.local","description":"MQTT client disconnected: Mt. Cloud AWS 3 (Station: 1)"}
+{"level":30,"time":"05/14/2025, 02:38:02 PM","pid":29429,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/14/2025, 02:38:04 PM","pid":29429,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/14/2025, 02:38:04 PM","pid":29429,"hostname":"DWCM-iMac.local","description":"Station 1 added successfully"}
+{"level":30,"time":"05/14/2025, 02:38:04 PM","pid":29429,"hostname":"DWCM-iMac.local","description":"Added station Mt. Cloud AWS 3 to MQTT service"}
+{"level":30,"time":"05/14/2025, 02:38:04 PM","pid":29429,"hostname":"DWCM-iMac.local","description":"All stations connected to MQTT service"}
+{"level":30,"time":"05/14/2025, 02:38:04 PM","pid":29429,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: devices/AWS-2025-003/data (Station: 1)"}
+{"level":30,"time":"05/14/2025, 02:38:04 PM","pid":29429,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: devices/+/data (Station: 1)"}
+{"level":30,"time":"05/14/2025, 02:38:04 PM","pid":29429,"hostname":"DWCM-iMac.local","description":"Telemetry service initialized successfully"}
+{"level":30,"time":"05/14/2025, 02:38:04 PM","pid":29429,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/14/2025, 02:38:04 PM","pid":31619,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/14/2025, 02:38:06 PM","pid":31619,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/14/2025, 02:38:06 PM","pid":31619,"hostname":"DWCM-iMac.local","description":"Station 1 added successfully"}
+{"level":30,"time":"05/14/2025, 02:38:06 PM","pid":31619,"hostname":"DWCM-iMac.local","description":"Added station Mt. Cloud AWS 3 to MQTT service"}
+{"level":30,"time":"05/14/2025, 02:38:06 PM","pid":31619,"hostname":"DWCM-iMac.local","description":"All stations connected to MQTT service"}
+{"level":30,"time":"05/14/2025, 02:38:06 PM","pid":31619,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: devices/AWS-2025-003/data (Station: 1)"}
+{"level":30,"time":"05/14/2025, 02:38:06 PM","pid":31619,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: devices/+/data (Station: 1)"}
+{"level":30,"time":"05/14/2025, 02:38:06 PM","pid":31619,"hostname":"DWCM-iMac.local","description":"Telemetry service initialized successfully"}
+{"level":30,"time":"05/14/2025, 02:38:06 PM","pid":31619,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/14/2025, 02:38:06 PM","pid":31619,"hostname":"DWCM-iMac.local","description":"MQTT client offline: Mt. Cloud AWS 3 (Station: 1)"}
+{"level":40,"time":"05/14/2025, 02:38:06 PM","pid":31619,"hostname":"DWCM-iMac.local","description":"MQTT client for station Mt. Cloud AWS 3 is offline"}
+{"level":30,"time":"05/14/2025, 02:38:06 PM","pid":31619,"hostname":"DWCM-iMac.local","description":"MQTT client disconnected: Mt. Cloud AWS 3 (Station: 1)"}
+{"level":30,"time":"05/14/2025, 02:38:07 PM","pid":31619,"hostname":"DWCM-iMac.local","description":"MQTT client reconnecting: Mt. Cloud AWS 3 (Station: 1)"}
+{"level":30,"time":"05/14/2025, 02:38:07 PM","pid":31619,"hostname":"DWCM-iMac.local","description":"MQTT client for station Mt. Cloud AWS 3 reconnecting"}
+{"level":30,"time":"05/14/2025, 02:38:07 PM","pid":31619,"hostname":"DWCM-iMac.local","description":"MQTT client disconnected: Mt. Cloud AWS 3 (Station: 1)"}
+{"level":30,"time":"05/14/2025, 02:38:40 PM","pid":31880,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/14/2025, 02:38:41 PM","pid":31880,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/14/2025, 02:38:41 PM","pid":31880,"hostname":"DWCM-iMac.local","description":"Station 1 added successfully"}
+{"level":30,"time":"05/14/2025, 02:38:41 PM","pid":31880,"hostname":"DWCM-iMac.local","description":"Added station Mt. Cloud AWS 3 to MQTT service"}
+{"level":30,"time":"05/14/2025, 02:38:41 PM","pid":31880,"hostname":"DWCM-iMac.local","description":"All stations connected to MQTT service"}
+{"level":30,"time":"05/14/2025, 02:38:41 PM","pid":31880,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: devices/AWS-2025-003/data (Station: 1)"}
+{"level":30,"time":"05/14/2025, 02:38:41 PM","pid":31880,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: devices/+/data (Station: 1)"}
+{"level":30,"time":"05/14/2025, 02:38:41 PM","pid":31880,"hostname":"DWCM-iMac.local","description":"Telemetry service initialized successfully"}
+{"level":30,"time":"05/14/2025, 02:38:41 PM","pid":31880,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/14/2025, 02:38:41 PM","pid":31880,"hostname":"DWCM-iMac.local","description":"MQTT client offline: Mt. Cloud AWS 3 (Station: 1)"}
+{"level":40,"time":"05/14/2025, 02:38:41 PM","pid":31880,"hostname":"DWCM-iMac.local","description":"MQTT client for station Mt. Cloud AWS 3 is offline"}
+{"level":30,"time":"05/14/2025, 02:38:41 PM","pid":31880,"hostname":"DWCM-iMac.local","description":"MQTT client disconnected: Mt. Cloud AWS 3 (Station: 1)"}
+{"level":30,"time":"05/14/2025, 02:38:42 PM","pid":34062,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/14/2025, 02:38:43 PM","pid":34062,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/14/2025, 02:38:43 PM","pid":34062,"hostname":"DWCM-iMac.local","description":"Station 1 added successfully"}
+{"level":30,"time":"05/14/2025, 02:38:43 PM","pid":34062,"hostname":"DWCM-iMac.local","description":"Added station Mt. Cloud AWS 3 to MQTT service"}
+{"level":30,"time":"05/14/2025, 02:38:43 PM","pid":34062,"hostname":"DWCM-iMac.local","description":"All stations connected to MQTT service"}
+{"level":30,"time":"05/14/2025, 02:38:43 PM","pid":34062,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: devices/AWS-2025-003/data (Station: 1)"}
+{"level":30,"time":"05/14/2025, 02:38:43 PM","pid":34062,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: devices/+/data (Station: 1)"}
+{"level":30,"time":"05/14/2025, 02:38:43 PM","pid":34062,"hostname":"DWCM-iMac.local","description":"Telemetry service initialized successfully"}
+{"level":30,"time":"05/14/2025, 02:38:43 PM","pid":34062,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/14/2025, 02:38:43 PM","pid":34062,"hostname":"DWCM-iMac.local","description":"MQTT client offline: Mt. Cloud AWS 3 (Station: 1)"}
+{"level":40,"time":"05/14/2025, 02:38:43 PM","pid":34062,"hostname":"DWCM-iMac.local","description":"MQTT client for station Mt. Cloud AWS 3 is offline"}
+{"level":30,"time":"05/14/2025, 02:38:43 PM","pid":34062,"hostname":"DWCM-iMac.local","description":"MQTT client disconnected: Mt. Cloud AWS 3 (Station: 1)"}
+{"level":30,"time":"05/14/2025, 03:03:28 PM","pid":34790,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}
+{"level":30,"time":"05/14/2025, 03:03:30 PM","pid":34790,"hostname":"DWCM-iMac.local","description":"Setting up MQTT for 1 active stations"}
+{"level":30,"time":"05/14/2025, 03:03:30 PM","pid":34790,"hostname":"DWCM-iMac.local","description":"Station 1 added successfully"}
+{"level":30,"time":"05/14/2025, 03:03:30 PM","pid":34790,"hostname":"DWCM-iMac.local","description":"Added station Mt. Cloud AWS 3 to MQTT service"}
+{"level":30,"time":"05/14/2025, 03:03:30 PM","pid":34790,"hostname":"DWCM-iMac.local","description":"All stations connected to MQTT service"}
+{"level":30,"time":"05/14/2025, 03:03:30 PM","pid":34790,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: devices/AWS-2025-003/data (Station: 1)"}
+{"level":30,"time":"05/14/2025, 03:03:30 PM","pid":34790,"hostname":"DWCM-iMac.local","description":"Subscribed to topic: devices/+/data (Station: 1)"}
+{"level":30,"time":"05/14/2025, 03:03:30 PM","pid":34790,"hostname":"DWCM-iMac.local","description":"Telemetry service initialized successfully"}
+{"level":30,"time":"05/14/2025, 03:03:30 PM","pid":34790,"hostname":"DWCM-iMac.local","description":"Application services initialized successfully"}
+{"level":30,"time":"05/14/2025, 03:03:30 PM","pid":34790,"hostname":"DWCM-iMac.local","description":"MQTT client offline: Mt. Cloud AWS 3 (Station: 1)"}
+{"level":40,"time":"05/14/2025, 03:03:30 PM","pid":34790,"hostname":"DWCM-iMac.local","description":"MQTT client for station Mt. Cloud AWS 3 is offline"}
+{"level":30,"time":"05/14/2025, 03:03:30 PM","pid":34790,"hostname":"DWCM-iMac.local","description":"MQTT client disconnected: Mt. Cloud AWS 3 (Station: 1)"}
+{"level":30,"time":"05/14/2025, 03:03:31 PM","pid":34790,"hostname":"DWCM-iMac.local","description":"MQTT client reconnecting: Mt. Cloud AWS 3 (Station: 1)"}
+{"level":30,"time":"05/14/2025, 03:03:31 PM","pid":34790,"hostname":"DWCM-iMac.local","description":"MQTT client for station Mt. Cloud AWS 3 reconnecting"}
+{"level":30,"time":"05/14/2025, 03:03:32 PM","pid":34790,"hostname":"DWCM-iMac.local","description":"MQTT client disconnected: Mt. Cloud AWS 3 (Station: 1)"}
+{"level":30,"time":"05/14/2025, 04:34:05 PM","pid":49388,"hostname":"DWCM-iMac.local","description":"Server running on port 3001"}

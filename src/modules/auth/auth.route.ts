@@ -8,9 +8,9 @@ export class AuthRoutes {
   private router: Router;
   private authController: AuthController;
 
-  constructor(authController: AuthController) {
+  constructor() {
     this.router = Router();
-    this.authController = authController;
+    this.authController = new AuthController();
     this.initializeRoutes();
   }
 
@@ -22,8 +22,6 @@ export class AuthRoutes {
       this.authController.requestPasswordReset
     );
     this.router.post("/password-reset", this.authController.resetPassword);
-
-    // Protected
     this.router.get("/profile", protect, this.authController.getProfile);
     this.router.post("/logout", protect, this.authController.logout);
   }

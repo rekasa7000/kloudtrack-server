@@ -4,7 +4,18 @@ import { StationMetadata } from "../station.types";
 export class MetadataRepository {
   async getAllStations(skip: number, take: number) {
     return prisma.station.findMany({
-      include: { certificate: true },
+      include: {
+        certificate: true,
+        user: {
+          select: {
+            id: true,
+            userName: true,
+            firstName: true,
+            lastName: true,
+            role: true,
+          },
+        },
+      },
       skip,
       take,
       orderBy: { id: "asc" },
@@ -17,6 +28,17 @@ export class MetadataRepository {
         ...data,
         createdByUserId: userId,
       },
+      include: {
+        user: {
+          select: {
+            id: true,
+            userName: true,
+            firstName: true,
+            lastName: true,
+            role: true,
+          },
+        },
+      },
     });
   }
 
@@ -24,18 +46,51 @@ export class MetadataRepository {
     return prisma.station.update({
       where: { id },
       data,
+      include: {
+        user: {
+          select: {
+            id: true,
+            userName: true,
+            firstName: true,
+            lastName: true,
+            role: true,
+          },
+        },
+      },
     });
   }
 
   async deleteStation(id: number) {
     return prisma.station.delete({
       where: { id },
+      include: {
+        user: {
+          select: {
+            id: true,
+            userName: true,
+            firstName: true,
+            lastName: true,
+            role: true,
+          },
+        },
+      },
     });
   }
 
   async getStationById(id: number) {
     return prisma.station.findUnique({
       where: { id },
+      include: {
+        user: {
+          select: {
+            id: true,
+            userName: true,
+            firstName: true,
+            lastName: true,
+            role: true,
+          },
+        },
+      },
     });
   }
 }

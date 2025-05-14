@@ -6,7 +6,10 @@ import { sendResponse } from "../../core/utils/response";
 import { AppError } from "../../core/utils/error";
 
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  private authService: AuthService;
+  constructor() {
+    this.authService = new AuthService();
+  }
 
   login = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { email, password } = req.body;

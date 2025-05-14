@@ -1,11 +1,26 @@
+// station.route.ts
 import { Router } from "express";
-import certificateRoute from "./certificate/certificate.route";
-import { StationRoutes } from "./metadata/metadata.route";
+import { MetadataRoutes } from "./metadata/metadata.route";
+import { CertificateRoutes } from "./certificate/certificate.route";
 
-const router = Router();
-const stationRoutes = new StationRoutes();
+export class StationRoutes {
+  private router: Router;
+  private metadataRoutes: MetadataRoutes;
+  private certificateRoutes: CertificateRoutes;
 
-router.use("/", stationRoutes.getRouter());
-router.use("/certificate", certificateRoute);
+  constructor() {
+    this.router = Router();
+    this.metadataRoutes = new MetadataRoutes();
+    this.certificateRoutes = new CertificateRoutes();
+    this.initializeRoutes();
+  }
 
-export default router;
+  private initializeRoutes(): void {
+    this.router.use("/", this.metadataRoutes.getRouter());
+    this.router.use("/certificates", this.certificateRoutes.getRouter());
+  }
+
+  public getRouter(): Router {
+    return this.router;
+  }
+}

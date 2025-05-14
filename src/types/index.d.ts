@@ -1,3 +1,5 @@
+import { Router } from "express";
+
 interface MqttStation {
   keyPath: string;
   certPath: string;
@@ -35,4 +37,16 @@ interface RouteDef {
   method: "get" | "post" | "put" | "delete";
   path: string;
   handler: any;
+}
+
+interface IRouteConfig {
+  path: string;
+  router: Router;
+}
+
+interface MulterRequest extends Request {
+  body: {
+    serialCode?: string;
+    version?: string;
+  };
 }

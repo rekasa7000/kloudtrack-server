@@ -4,14 +4,14 @@ import prisma from "../../config/database.config";
 import { generateToken } from "../../core/utils/jwt.util";
 import nodemailer from "nodemailer";
 import { AuthRepository } from "./auth.repository";
+import { createTransporter } from "../../config/mail.config";
 
 export class AuthService {
   private transporter: nodemailer.Transporter;
   private authRepository: AuthRepository;
-
-  constructor(transporter: nodemailer.Transporter, authRepository: AuthRepository) {
-    this.transporter = transporter;
-    this.authRepository = authRepository;
+  constructor() {
+    this.transporter = createTransporter();
+    this.authRepository = new AuthRepository();
   }
 
   async login(email: string, password: string): Promise<{ user: Partial<User>; token: string }> {

@@ -1,29 +1,25 @@
 import { Router } from "express";
-import stationRoute from "./modules/station/station.route";
 import { protect } from "./core/middlewares/auth.middleware";
 import { AuthRoutes } from "./modules/auth/auth.route";
-import { AuthController } from "./modules/auth/auth.controller";
-import { AuthService } from "./modules/auth/auth.service";
-import nodemailer from "nodemailer";
-import { AuthRepository } from "./modules/auth/auth.repository";
+import { StationRoutes } from "./modules/station/station.route";
 
-const router = Router();
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || "smtp.hostinger.com",
-  port: parseInt(process.env.SMTP_PORT || "465"),
-  secure: process.env.SMTP_SECURE === "true",
-  auth: {
-    user: process.env.SMTP_USER || "no-reply@kloudtechsea.com",
-    pass: process.env.SMTP_PASSWORD || "Kloudtech123456789!",
-  },
-});
-const authRepository = new AuthRepository();
-const authService = new AuthService(transporter, authRepository);
-const authController = new AuthController(authService);
+export class AppRoutes {
+  private router: Router;
+  private stationRoutes: StationRoutes;
+  private authRoutes: AuthRoutes;
+  constructor() {
+    this.router = Router();
+    this.stationRoutes = new StationRoutes();
+    this.authRoutes = new AuthRoutes();
+    this.initializeRoutes();
+  }
 
-const authRoutes = new AuthRoutes(authController);
+  private initializeRoutes(): void {
+    this.router.use("/api/auth", this.authRoutes.getRouter());
+    this.router.use("/api/station", protect, this.stationRoutes.getRouter());
+  }
 
-router.use("/api/auth", authRoutes.getRouter());
-router.use("/api/station", protect, stationRoute);
-
-export default router;
+  public getRouter(): Router {
+    return this.router;
+  }
+}

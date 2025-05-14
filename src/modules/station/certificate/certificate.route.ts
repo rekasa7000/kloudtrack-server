@@ -1,16 +1,6 @@
 import { Router } from "express";
-import {
-  deleteCertificate,
-  deleteRootCertificate,
-  getCertificateByStationId,
-  getRootCertificate,
-  updateCertificate,
-  updateRootCertificate,
-  uploadCertificate,
-  createRootCertificate,
-  activateRootCertificate,
-  listRootCertificates,
-} from "./certificate.controller";
+import { CertificateController } from "./certificate.controller";
+import { CertificateUploadService } from "./certificate-upload.service";
 import { validateRequest } from "../../../core/middlewares/validation.middleware";
 import {
   activateRootCertificateSchema,
@@ -21,75 +11,72 @@ import {
   updateRootCertificateSchema,
   uploadCertificateSchema,
 } from "./certificate.schema";
-import {
-  uploadMultipleCertificates,
-  uploadSingleCertificate,
-} from "./certificate.service";
-
-const router = Router();
 
 const rootCertificateRoute: string = "/root";
 const certificateRoute: string = "/:stationId";
 
-// *** AMAZON ROOT CERTIFICATE ***
-// Get all root certificate
-router.get(rootCertificateRoute, listRootCertificates);
-// Get Root Certificate
-router.get(`${rootCertificateRoute}/:id`, getRootCertificate);
-// Upload Root Certificate
-router.post(
-  rootCertificateRoute,
-  uploadSingleCertificate,
-  validateRequest(createRootCertificateSchema),
-  createRootCertificate
-);
-// Update Root Certificate
-router.put(
-  `${rootCertificateRoute}/:id`,
-  uploadSingleCertificate,
-  validateRequest(updateRootCertificateSchema),
-  updateRootCertificate
-);
-// Delete Root Certificate
-router.delete(
-  `${rootCertificateRoute}/:id`,
-  validateRequest(deleteRootCertificateSchema),
-  deleteRootCertificate
-);
-// Activate Root Certificate
-router.post(
-  `${rootCertificateRoute}/:id`,
-  validateRequest(activateRootCertificateSchema),
-  activateRootCertificate
-);
+export class CertificateRoutes {
+  private router: Router;
+  private certificateController: CertificateController;
+  private certificateUploadService: CertificateUploadService;
 
-// *** CERTIFICATE PER STATIONS ***
-// Upload Certificate
-router.post(
-  certificateRoute,
-  uploadMultipleCertificates,
-  validateRequest(uploadCertificateSchema),
-  uploadCertificate
-);
+  constructor() {
+    this.router = Router();
+    this.certificateController = new CertificateController();
+    this.certificateUploadService = new CertificateUploadService();
+    this.initializeRoutes();
+  }
 
-// Update Certificate
-router.put(
-  certificateRoute,
-  uploadMultipleCertificates,
-  validateRequest(updateCertificateSchema),
-  updateCertificate
-);
-// Delete Certificate
-router.delete(
-  certificateRoute,
-  validateRequest(stationIdSchema),
-  deleteCertificate
-);
-// Get Certificate by Station ID
-router.get(
-  certificateRoute,
-  validateRequest(stationIdSchema),
-  getCertificateByStationId
-);
+  private initializeRoutes(): void {
+    this.router.get(rootCertificateRoute, this.certificateController.listRootCertificates);
+    this.router.get(`${rootCertificateRoute}/:id`, this.certificateController.getRootCertificate);
+    this.router.post(
+      rootCertificateRoute,
+      this.certificateUploadService.uploadSingle(),
+      validateRequest(createRootCertificateSchema),
+      this.certificateController.createRootCertificate
+    );
+    this.router.put(
+      `${rootCertificateRoute}/:id`,
+      this.certificateUploadService.uploadSingle(),
+      validateRequest(updateRootCertificateSchema),
+      this.certificateController.updateRootCertificate
+    );
+    this.router.delete(
+      `${rootCertificateRoute}/:id`,
+      validateRequest(deleteRootCertificateSchema),
+      this.certificateController.deleteRootCertificate
+    );
+    this.router.post(
+      `${rootCertificateRoute}/:id`,
+      validateRequest(activateRootCertificateSchema),
+      this.certificateController.activateRootCertificate
+    );
+    this.router.post(
+      certificateRoute,
+      this.certificateUploadService.uploadMultiple(),
+      validateRequest(uploadCertificateSchema),
+      this.certificateController.uploadCertificate
+    );
+    this.router.put(
+      certificateRoute,
+      this.certificateUploadService.uploadMultiple(),
+      validateRequest(updateCertificateSchema),
+      this.certificateController.updateCertificate
+    );
+    this.router.delete(
+      certificateRoute,
+      validateRequest(stationIdSchema),
+      this.certificateController.deleteCertificate
+    );
+    this.router.get(
+      certificateRoute,
+      validateRequest(stationIdSchema),
+      this.certificateController.getCertificateByStationId
+    );
+  }
 
-export default router;
+  public getRouter(): Router {
+    return this.router;
+  }
+}

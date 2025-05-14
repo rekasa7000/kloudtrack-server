@@ -4,6 +4,7 @@ import { AppError } from "../utils/error";
 import prisma from "../../config/database.config";
 import config from "../../config/environment.config";
 import { extractToken } from "../services/auth.service";
+import { TokenPayload } from "../../types";
 
 declare global {
   namespace Express {
@@ -18,18 +19,12 @@ declare global {
   }
 }
 
-export const protect = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
+export const protect = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const token = extractToken(req);
 
     if (!token) {
-      return next(
-        new AppError("You are not logged in. Please log in to get access.", 401)
-      );
+      return next(new AppError("You are not logged in. Please log in to get access.", 401));
     }
 
     const decoded = jwt.verify(token, config.JWT_SECRET) as TokenPayload;
@@ -45,23 +40,14 @@ export const protect = async (
     });
 
     if (!currentUser) {
-      return next(
-        new AppError("The user belonging to this token no longer exists.", 401)
-      );
+      return next(new AppError("The user belonging to this token no longer exists.", 401));
     }
 
     if (currentUser.passwordChangedAt) {
-      const changedTimestamp = Math.floor(
-        new Date(currentUser.passwordChangedAt).getTime() / 1000
-      );
+      const changedTimestamp = Math.floor(new Date(currentUser.passwordChangedAt).getTime() / 1000);
 
       if (decoded.iat < changedTimestamp) {
-        return next(
-          new AppError(
-            "User recently changed password! Please log in again.",
-            401
-          )
-        );
+        return next(new AppError("User recently changed password! Please log in again.", 401));
       }
     }
 
@@ -77,9 +63,7 @@ export const protect = async (
       return next(new AppError("Invalid token. Please log in again.", 401));
     }
     if (error instanceof jwt.TokenExpiredError) {
-      return next(
-        new AppError("Your token has expired! Please log in again.", 401)
-      );
+      return next(new AppError("Your token has expired! Please log in again.", 401));
     }
     return next(new AppError("Authentication failed", 401));
   }
@@ -92,9 +76,7 @@ export const restrictTo = (...roles: string[]) => {
     }
 
     if (!roles.includes(req.user.role)) {
-      return next(
-        new AppError("You do not have permission to perform this action", 403)
-      );
+      return next(new AppError("You do not have permission to perform this action", 403));
     }
 
     next();

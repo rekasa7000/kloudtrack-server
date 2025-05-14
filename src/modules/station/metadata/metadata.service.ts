@@ -3,7 +3,10 @@ import { MetadataRepository } from "./metadata.repository";
 import { AppError } from "../../../core/utils/error";
 
 export class MetadataService {
-  constructor(private metadataRepository: MetadataRepository) {}
+  private metadataRepository: MetadataRepository;
+  constructor() {
+    this.metadataRepository = new MetadataRepository();
+  }
 
   async getAllStations(skip: number, take: number) {
     return this.metadataRepository.getAllStations(skip, take);
