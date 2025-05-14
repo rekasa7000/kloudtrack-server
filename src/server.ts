@@ -1,8 +1,17 @@
-import "reflect-metadata";
-import app from "./app";
-import config from "./config/environment.config";
-import logger from "./core/utils/logger";
+import { createApp } from "./app";
 
-app.listen(config.PORT, async () => {
-  logger.info(`Server running on port ${config.PORT}`);
-});
+async function startServer() {
+  try {
+    const { server } = await createApp();
+    const PORT = process.env.PORT || 3000;
+
+    server.listen(PORT, () => {
+      console.log(`Server started on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Failed to start server:", error);
+    process.exit(1);
+  }
+}
+
+startServer();
