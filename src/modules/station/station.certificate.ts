@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { PrismaClient, StationCertificate, RootCertificate } from "@prisma/client";
+import { AppError } from "../../core/utils/error";
 
 export class CertificateService {
   private prisma: PrismaClient;
@@ -17,26 +18,23 @@ export class CertificateService {
     rootCert: Buffer;
   }> {
     try {
-      // Get station certificate paths from database
       const certificate = await this.prisma.stationCertificate.findUnique({
         where: { stationId },
       });
 
       if (!certificate) {
-        throw new Error(`No certificate found for station ID: ${stationId}`);
+        throw new AppError(`No certificate found for station ID: ${stationId}`, 404);
       }
 
-      // Get the latest active root certificate
       const rootCertificate = await this.prisma.rootCertificate.findFirst({
         where: { status: "ACTIVE" },
         orderBy: { createdAt: "desc" },
       });
 
       if (!rootCertificate) {
-        throw new Error("No active root certificate found");
+        throw new AppError("No active root certificate found", 404);
       }
 
-      // Read certificate files
       const cert = fs.readFileSync(path.join(this.certificateBasePath, certificate.certPath));
       const key = fs.readFileSync(path.join(this.certificateBasePath, certificate.keyPath));
       const rootCert = fs.readFileSync(path.join(this.certificateBasePath, rootCertificate.path));
@@ -44,7 +42,7 @@ export class CertificateService {
       return { cert, key, rootCert };
     } catch (error) {
       console.error("Error getting station certificate:", error);
-      throw error;
+      throw new AppError("Error getting station certificate", 500);
     }
   }
 
@@ -55,7 +53,7 @@ export class CertificateService {
       });
     } catch (error) {
       console.error("Error getting all station certificates:", error);
-      throw error;
+      throw new AppError("Error getting all station certificate", 500);
     }
   }
 
@@ -67,7 +65,7 @@ export class CertificateService {
       });
     } catch (error) {
       console.error("Error getting root certificate:", error);
-      throw error;
+      throw new AppError("Error getting root certificate", 500);
     }
   }
 }
