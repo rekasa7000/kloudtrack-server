@@ -1,7 +1,12 @@
-import { RootCertificate, CertificateStatus, Prisma, StationCertificate } from "@prisma/client";
+import { RootCertificate, CertificateStatus, Prisma, StationCertificate, PrismaClient } from "@prisma/client";
 import prisma from "../../../config/database.config";
 
 export class CertificateRepository {
+  private prisma: PrismaClient;
+  constructor(prisma: PrismaClient) {
+    this.prisma = prisma;
+  }
+
   async findAllRoot(): Promise<RootCertificate[]> {
     return prisma.rootCertificate.findMany({
       include: {

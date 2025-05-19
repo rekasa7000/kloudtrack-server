@@ -1,5 +1,6 @@
 import { PrismaClient, Station } from "@prisma/client";
-import { StationConfig } from "./station.types";
+import { StationConfig, StationLookup } from "./station.types";
+import { AppError } from "../../core/utils/error";
 
 export class StationService {
   private prisma: PrismaClient;
@@ -67,6 +68,28 @@ export class StationService {
     } catch (error) {
       console.error("Error getting all station configs:", error);
       throw error;
+    }
+  }
+
+  async validateStationExists(lookup: StationLookup): Promise<Station> {
+    try {
+      const { serialCode, stationId, stationName } = lookup;
+
+      const station = await this.prisma.station.findFirst({
+        where: {
+          ...(serialCode && { serialCode }),
+          ...(stationName && { stationName }),
+          ...(stationId && { id: stationId }),
+        },
+      });
+
+      if (!station) {
+        throw new AppError("Station not found with the given identifier(s)", 400);
+      }
+
+      return station;
+    } catch (error) {
+      throw new AppError("Error Checking Station", 500);
     }
   }
 }

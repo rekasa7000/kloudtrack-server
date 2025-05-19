@@ -4,8 +4,8 @@ import { AppError } from "../../../core/utils/error";
 
 export class MetadataService {
   private metadataRepository: MetadataRepository;
-  constructor() {
-    this.metadataRepository = new MetadataRepository();
+  constructor(metadataRepository: MetadataRepository) {
+    this.metadataRepository = metadataRepository;
   }
 
   async getAllStations(skip: number, take: number) {

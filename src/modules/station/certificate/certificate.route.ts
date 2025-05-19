@@ -11,6 +11,7 @@ import {
   updateRootCertificateSchema,
   uploadCertificateSchema,
 } from "./certificate.schema";
+import certificateService from "./container";
 
 const rootCertificateRoute: string = "/root";
 const certificateRoute: string = "/:stationId";
@@ -22,7 +23,7 @@ export class CertificateRoutes {
 
   constructor() {
     this.router = Router();
-    this.certificateController = new CertificateController();
+    this.certificateController = new CertificateController(certificateService);
     this.certificateUploadService = new CertificateUploadService();
     this.initializeRoutes();
   }

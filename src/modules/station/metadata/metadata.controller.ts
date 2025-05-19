@@ -8,8 +8,8 @@ import { StationMetadata } from "../station.types";
 export class MetadataController {
   private metadataService: MetadataService;
 
-  constructor() {
-    this.metadataService = new MetadataService();
+  constructor(metadataService: MetadataService) {
+    this.metadataService = metadataService;
   }
 
   getAll = asyncHandler(async (req: Request, res: Response) => {

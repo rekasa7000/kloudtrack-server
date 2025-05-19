@@ -6,8 +6,8 @@ import { CertificateService } from "./certificate.service";
 
 export class CertificateController {
   private certificateService: CertificateService;
-  constructor() {
-    this.certificateService = new CertificateService();
+  constructor(certificateService: CertificateService) {
+    this.certificateService = certificateService;
   }
 
   getRootCertificate = asyncHandler(async (req: Request, res: Response) => {

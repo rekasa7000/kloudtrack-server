@@ -5,6 +5,21 @@ export class OrganizationService {
   constructor(private organizationRepository: OrganizationRepository) {}
 
   async create(data: Prisma.OrganizationUncheckedCreateInput) {
+    const result = await prisma.$transaction(async (prisma) => {
+      const organization = await this.organizationService.create({ organizationName, description });
+
+      await prisma.userOrganization.create({
+        data: {
+          userId,
+          organizationId: organization.id,
+          isAdmin: true,
+        },
+      });
+
+      return organization;
+    });
+
+    logger.info(`Organization created: ${organizationName} by user ID: ${userId}`);
     return this.organizationRepository.create(data);
   }
   async update(data: Prisma.OrganizationUncheckedUpdateInput, id: number) {

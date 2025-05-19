@@ -1,6 +1,6 @@
 import * as mqtt from "mqtt";
 import { EventEmitter } from "events";
-import { CertificateService } from "../station.certificate";
+import { CertificateService } from "../certificate/certificate.service";
 import { StationConfig, MqttMessage } from "../station.types";
 
 export class AwsIotClient extends EventEmitter {
@@ -22,12 +22,10 @@ export class AwsIotClient extends EventEmitter {
 
   async connect(): Promise<void> {
     try {
-      // Get certificates for this station
       const { cert, key, rootCert } = await this.certificateService.getStationCertificate(this.stationConfig.stationId);
 
       const clientId = `backend-${this.stationConfig.awsThingName}`;
 
-      // Configure MQTT connection options
       const options: mqtt.IClientOptions = {
         clientId,
         protocol: "mqtts",
@@ -38,15 +36,13 @@ export class AwsIotClient extends EventEmitter {
         keepalive: 60,
       };
 
-      // Connect to AWS IoT Core
       const connectionUrl = `mqtts://${this.endpoint}:8883`;
       this.client = mqtt.connect(connectionUrl, options);
 
-      // Setup event handlers
       this.client.on("connect", () => {
         console.log(`Connected to AWS IoT Core for Thing: ${this.stationConfig.awsThingName}`);
-        this.reconnectAttempts = 0; // Reset reconnect attempts on successful connection
-        this.resubscribe(); // Resubscribe to previously subscribed topics
+        this.reconnectAttempts = 0;
+        this.resubscribe();
         this.emit("connected", this.stationConfig.awsThingName);
       });
 

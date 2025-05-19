@@ -1,9 +1,7 @@
 import path from "path";
 import fs from "fs";
 import crypto from "crypto";
-import prisma from "../../../config/database.config";
 import { AppError } from "../../../core/utils/error";
-import { validateStationExists } from "../station.helper";
 import {
   getCertificateFingerPrint,
   validateCertificate,
@@ -14,11 +12,18 @@ import {
 import { sanitizePathComponent } from "../../../core/utils/sanitizer";
 import { CERTIFICATE_DIR, CERTIFICATE_TYPES } from "./certificate.constant";
 import { CertificateRepository } from "./certificate.repository";
+import { StationService } from "../station.service";
+import prisma from "../../../config/database.config";
 
 export class CertificateService {
   private certificateRepository: CertificateRepository;
-  constructor() {
-    this.certificateRepository = new CertificateRepository();
+  private certificateBasePath: string;
+  private stationService: StationService;
+
+  constructor(certificateBasePath: string, certificateRepository: CertificateRepository) {
+    this.certificateRepository = certificateRepository;
+    this.certificateBasePath = certificateBasePath;
+    this.stationService = new StationService(prisma);
   }
 
   async getRootCertificate() {
@@ -310,7 +315,7 @@ export class CertificateService {
       throw new AppError("Invalid characters in serial code", 400);
     }
 
-    const station = await validateStationExists({ serialCode });
+    const station = await this.stationService.validateStationExists({ serialCode });
 
     const existingCert = await this.certificateRepository.findByStationId(station.id);
 
@@ -333,14 +338,11 @@ export class CertificateService {
 
     let fingerprint: string;
 
-    // Handle content-based upload
     if (certificateContent && privateKeyContent) {
       await writeCertificateToFile(certificateContent, certPath);
       await writeCertificateToFile(privateKeyContent, keyPath);
       fingerprint = getCertificateFingerPrint(certificateContent);
-    }
-    // Handle file-based upload
-    else if (certificateData.certFile && certificateData.keyFile) {
+    } else if (certificateData.certFile && certificateData.keyFile) {
       const certificateFile = fs.readFileSync(certificateData.certFile.path);
       fingerprint = crypto.createHash("sha256").update(certificateFile).digest("hex");
     } else {
@@ -393,7 +395,7 @@ export class CertificateService {
       throw new AppError(`Station Id is Required`, 400);
     }
 
-    const station = await validateStationExists({ stationId });
+    const station = await this.stationService.validateStationExists({ stationId });
 
     const existingCert = await this.certificateRepository.findByStationId(station.id);
 
@@ -433,7 +435,6 @@ export class CertificateService {
     let updatedCertificate = false;
     let updatedPrivateKey = false;
 
-    // Handle certificate content update
     if (certificateContent) {
       const certPath = path.join(process.cwd(), certPathRelative);
       await writeCertificateToFile(certificateContent, certPath);
@@ -442,9 +443,7 @@ export class CertificateService {
       expiresAt.setFullYear(expiresAt.getFullYear() + 1);
       updateData.expiresAt = expiresAt;
       updatedCertificate = true;
-    }
-    // Handle certificate file update
-    else if (certificateData.certFile) {
+    } else if (certificateData.certFile) {
       const certificateFile = fs.readFileSync(certificateData.certFile.path);
       updateData.fingerprint = crypto.createHash("sha256").update(certificateFile).digest("hex");
       const expiresAt = new Date();
@@ -453,14 +452,11 @@ export class CertificateService {
       updatedCertificate = true;
     }
 
-    // Handle private key content update
     if (privateKeyContent) {
       const keyPath = path.join(process.cwd(), keyPathRelative);
       await writeCertificateToFile(privateKeyContent, keyPath);
       updatedPrivateKey = true;
-    }
-    // Handle private key file update
-    else if (certificateData.keyFile) {
+    } else if (certificateData.keyFile) {
       updatedPrivateKey = true;
     }
 
@@ -492,7 +488,7 @@ export class CertificateService {
       throw new AppError("Station id is required", 400);
     }
 
-    const station = await validateStationExists({ stationId });
+    const station = await this.stationService.validateStationExists({ stationId });
 
     const existingCert = await this.certificateRepository.findByStationId(station.id);
 
@@ -519,7 +515,7 @@ export class CertificateService {
       throw new AppError("Station id is required", 400);
     }
 
-    const station = await validateStationExists({ stationId });
+    const station = await this.stationService.validateStationExists({ stationId });
 
     const certificate = await this.certificateRepository.findByStationId(station.id);
 
@@ -550,5 +546,34 @@ export class CertificateService {
       certificate: certificateContent,
       privateKey: privateKeyContent,
     };
+  }
+
+  async getStationCertificate(stationId: number): Promise<{
+    cert: Buffer;
+    key: Buffer;
+    rootCert: Buffer;
+  }> {
+    try {
+      const certificate = await this.certificateRepository.findById(stationId);
+
+      if (!certificate) {
+        throw new AppError(`No certificate found for station ID: ${stationId}`, 404);
+      }
+
+      const rootCertificate = await this.certificateRepository.findCurrentActiveRoot();
+
+      if (!rootCertificate) {
+        throw new AppError("No active root certificate found", 404);
+      }
+
+      const cert = fs.readFileSync(path.join(this.certificateBasePath, certificate.certPath));
+      const key = fs.readFileSync(path.join(this.certificateBasePath, certificate.keyPath));
+      const rootCert = fs.readFileSync(path.join(this.certificateBasePath, rootCertificate.path));
+
+      return { cert, key, rootCert };
+    } catch (error) {
+      console.error("Error getting station certificate:", error);
+      throw new AppError("Error getting station certificate", 500);
+    }
   }
 }

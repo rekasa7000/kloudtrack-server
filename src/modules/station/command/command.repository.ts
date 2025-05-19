@@ -1,16 +1,15 @@
-import { PrismaClient } from "@prisma/client";
-import prisma from "../../../config/database.config";
-import { StationMetadata } from "../station.types";
+import { Prisma, Command, PrismaClient } from "@prisma/client";
 
-export class MetadataRepository {
+export class CommandRepository {
   private prisma: PrismaClient;
   constructor(prisma: PrismaClient) {
     this.prisma = prisma;
   }
-  async getAllStations(skip: number, take: number) {
-    return prisma.station.findMany({
+
+  async findAll(skip: number, take: number): Promise<Command[]> {
+    return this.prisma.command.findMany({
       include: {
-        certificate: true,
+        station: true,
         user: {
           select: {
             id: true,
@@ -23,17 +22,14 @@ export class MetadataRepository {
       },
       skip,
       take,
-      orderBy: { id: "asc" },
     });
   }
 
-  async createStation(data: StationMetadata, userId: number) {
-    return prisma.station.create({
-      data: {
-        ...data,
-        createdByUserId: userId,
-      },
+  async findById(id: number): Promise<Command | null> {
+    return this.prisma.command.findUnique({
+      where: { id },
       include: {
+        station: true,
         user: {
           select: {
             id: true,
@@ -47,11 +43,11 @@ export class MetadataRepository {
     });
   }
 
-  async updateStation(id: number, data: StationMetadata) {
-    return prisma.station.update({
-      where: { id },
+  async create(data: Prisma.CommandUncheckedCreateInput): Promise<Command> {
+    return this.prisma.command.create({
       data,
       include: {
+        station: true,
         user: {
           select: {
             id: true,
@@ -65,10 +61,12 @@ export class MetadataRepository {
     });
   }
 
-  async deleteStation(id: number) {
-    return prisma.station.delete({
+  async update(id: number): Promise<Command> {
+    return this.prisma.command.update({
       where: { id },
+      data: { executedAt: new Date() },
       include: {
+        station: true,
         user: {
           select: {
             id: true,
@@ -82,20 +80,9 @@ export class MetadataRepository {
     });
   }
 
-  async getStationById(id: number) {
-    return prisma.station.findUnique({
+  async delete(id: number): Promise<Command> {
+    return this.prisma.command.delete({
       where: { id },
-      include: {
-        user: {
-          select: {
-            id: true,
-            userName: true,
-            firstName: true,
-            lastName: true,
-            role: true,
-          },
-        },
-      },
     });
   }
 }

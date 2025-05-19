@@ -1,12 +1,14 @@
 import { PrismaClient } from "@prisma/client";
 import { Server as HttpServer } from "http";
 import { StationService } from "./station.service";
-import { CertificateService } from "./station.certificate";
-import { TelemetryService } from "./station.telemetry";
-import { CommandService } from "./station.command";
+import { CertificateService } from "./certificate/certificate.service";
+import { TelemetryService } from "./telemetry/telemetry.service";
+import { CommandService } from "./command/command.service";
 import { AwsIotManager } from "./aws-iot/aws-iot-manager";
 import { StationWebSocketServer } from "./station.socket";
-import path from "path";
+import commandService from "./command/container";
+import telemetryService from "./telemetry/container";
+import certificateService from "./certificate/container";
 
 export class StationModule {
   private stationService: StationService;
@@ -17,13 +19,11 @@ export class StationModule {
   private webSocketServer: StationWebSocketServer;
 
   constructor(prisma: PrismaClient, httpServer: HttpServer, certificateBasePath: string, awsIotEndpoint: string) {
-    // Initialize services
     this.stationService = new StationService(prisma);
-    this.certificateService = new CertificateService(prisma, certificateBasePath);
-    this.telemetryService = new TelemetryService(prisma);
-    this.commandService = new CommandService(prisma);
+    this.certificateService = certificateService;
+    this.telemetryService = telemetryService;
+    this.commandService = commandService;
 
-    // Initialize AWS IoT Manager
     this.awsIotManager = new AwsIotManager(
       this.stationService,
       this.certificateService,
@@ -32,27 +32,22 @@ export class StationModule {
       awsIotEndpoint
     );
 
-    // Initialize WebSocket server
     this.webSocketServer = new StationWebSocketServer(httpServer);
 
-    // Set up event handling between AWS IoT and WebSocket
     this.setupEventHandlers();
   }
 
   private setupEventHandlers(): void {
-    // Forward telemetry data from AWS IoT to WebSocket clients
     this.awsIotManager.on("telemetry", (stationId, telemetryData) => {
       if (this.webSocketServer.hasSubscribers(stationId)) {
         this.webSocketServer.broadcastTelemetry(stationId, telemetryData);
       }
     });
 
-    // Forward command responses from AWS IoT to WebSocket clients
     this.awsIotManager.on("command_response", (stationId, responseData) => {
       this.webSocketServer.broadcastCommandResponse(stationId, responseData);
     });
 
-    // Forward station connection status to WebSocket clients
     this.awsIotManager.on("station_connected", (stationId) => {
       this.webSocketServer.broadcastStationStatus(stationId, "connected");
     });
@@ -80,7 +75,6 @@ export class StationModule {
     await this.awsIotManager.close();
   }
 
-  // Expose services for routes
   getStationService(): StationService {
     return this.stationService;
   }

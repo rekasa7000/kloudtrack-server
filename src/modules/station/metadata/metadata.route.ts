@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { MetadataController } from "./metadata.controller";
+import metadataService from "./container";
 
 export class MetadataRoutes {
   private router: Router;
@@ -7,7 +8,7 @@ export class MetadataRoutes {
 
   constructor() {
     this.router = Router();
-    this.metadataController = new MetadataController();
+    this.metadataController = new MetadataController(metadataService);
     this.initializeRoutes();
   }
 
