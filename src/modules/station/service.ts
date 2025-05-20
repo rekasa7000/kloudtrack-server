@@ -1,12 +1,12 @@
 import { StationMetadata } from "../../core/services/station/station.types";
-import { MetadataRepository } from "./repository";
+import { StationRepository } from "./repository";
 import { AppError } from "../../core/utils/error";
 
-export class MetadataService {
-  private repository: MetadataRepository;
+export class StationService {
+  private repository: StationRepository;
 
-  constructor(metadataRepository: MetadataRepository) {
-    this.repository = metadataRepository;
+  constructor(stationRepository: StationRepository) {
+    this.repository = stationRepository;
   }
 
   async getAllStations(skip: number, take: number) {

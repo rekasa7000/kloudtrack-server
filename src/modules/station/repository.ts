@@ -1,14 +1,13 @@
 import { PrismaClient } from "@prisma/client";
-import prisma from "../../config/database.config";
 import { StationMetadata } from "../../core/services/station/station.types";
 
-export class MetadataRepository {
+export class StationRepository {
   private prisma: PrismaClient;
   constructor(prisma: PrismaClient) {
     this.prisma = prisma;
   }
   async getAllStations(skip: number, take: number) {
-    return prisma.station.findMany({
+    return this.prisma.station.findMany({
       include: {
         certificate: true,
         user: {
@@ -28,7 +27,7 @@ export class MetadataRepository {
   }
 
   async createStation(data: StationMetadata, userId: number) {
-    return prisma.station.create({
+    return this.prisma.station.create({
       data: {
         ...data,
         createdByUserId: userId,
@@ -48,7 +47,7 @@ export class MetadataRepository {
   }
 
   async updateStation(id: number, data: StationMetadata) {
-    return prisma.station.update({
+    return this.prisma.station.update({
       where: { id },
       data,
       include: {
@@ -66,7 +65,7 @@ export class MetadataRepository {
   }
 
   async deleteStation(id: number) {
-    return prisma.station.delete({
+    return this.prisma.station.delete({
       where: { id },
       include: {
         user: {
@@ -83,7 +82,7 @@ export class MetadataRepository {
   }
 
   async getStationById(id: number) {
-    return prisma.station.findUnique({
+    return this.prisma.station.findUnique({
       where: { id },
       include: {
         user: {

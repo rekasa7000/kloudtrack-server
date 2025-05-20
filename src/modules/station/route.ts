@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { MetadataController } from "./controller";
+import { StationController } from "./controller";
 
-export class MetadataRoutes {
+export class StationRoutes {
   private router: Router;
-  private controller: MetadataController;
+  private controller: StationController;
 
-  constructor(metadataController: MetadataController) {
+  constructor(stationController: StationController) {
     this.router = Router();
-    this.controller = metadataController;
+    this.controller = stationController;
     this.initializeRoutes();
   }
 

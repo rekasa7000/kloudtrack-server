@@ -2,14 +2,14 @@ import { Request, Response } from "express";
 import { asyncHandler } from "../../core/middlewares/error-handler.middleware";
 import { sendResponse } from "../../core/utils/response";
 import { AppError } from "../../core/utils/error";
-import { MetadataService } from "./service";
+import { StationService } from "./service";
 import { StationMetadata } from "../../core/services/station/station.types";
 
-export class MetadataController {
-  private service: MetadataService;
+export class StationController {
+  private service: StationService;
 
-  constructor(metadataService: MetadataService) {
-    this.service = metadataService;
+  constructor(stationService: StationService) {
+    this.service = stationService;
   }
 
   getAll = asyncHandler(async (req: Request, res: Response) => {
