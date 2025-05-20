@@ -14,6 +14,6 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/modules/user/controller.ts"],
   "exclude": ["node_modules"]
 }

@@ -1,0 +1,59 @@
+import { Router } from "express";
+import { RootCertificateController } from "./controller";
+import { RootCertificateUploadService } from "./upload";
+import { validateRequest } from "../../core/middlewares/validation.middleware";
+import {
+  activateRootCertificateSchema,
+  createRootCertificateSchema,
+  deleteRootCertificateSchema,
+  updateRootCertificateSchema,
+} from "./schema";
+
+const rootCertificateRoute: string = "/root";
+
+export class RootCertificateRoute {
+  private router: Router;
+  private controller: RootCertificateController;
+  private uploadService: RootCertificateUploadService;
+
+  constructor(
+    certificateController: RootCertificateController,
+    certificateUploadService: RootCertificateUploadService
+  ) {
+    this.router = Router();
+    this.controller = certificateController;
+    this.uploadService = certificateUploadService;
+    this.initializeRoutes();
+  }
+
+  private initializeRoutes(): void {
+    this.router.get(rootCertificateRoute, this.controller.listRootCertificates);
+    this.router.get(`${rootCertificateRoute}/:id`, this.controller.getRootCertificate);
+    this.router.post(
+      rootCertificateRoute,
+      this.uploadService.uploadRootCertificate(),
+      validateRequest(createRootCertificateSchema),
+      this.controller.createRootCertificate
+    );
+    this.router.put(
+      `${rootCertificateRoute}/:id`,
+      this.uploadService.uploadRootCertificate(),
+      validateRequest(updateRootCertificateSchema),
+      this.controller.updateRootCertificate
+    );
+    this.router.delete(
+      `${rootCertificateRoute}/:id`,
+      validateRequest(deleteRootCertificateSchema),
+      this.controller.deleteRootCertificate
+    );
+    this.router.post(
+      `${rootCertificateRoute}/:id`,
+      validateRequest(activateRootCertificateSchema),
+      this.controller.activateRootCertificate
+    );
+  }
+
+  public getRouter(): Router {
+    return this.router;
+  }
+}

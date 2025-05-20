@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { protect } from "./core/middlewares/auth.middleware";
-import { AuthRoutes } from "./modules/auth/auth.route";
-import { StationRoutes } from "./modules/station/station.route";
+import { AuthRoutes } from "./modules/auth/route";
+import { StationRoutes } from "./core/services/station/station.route";
 
 export class AppRoutes {
   private router: Router;

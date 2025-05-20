@@ -6,7 +6,7 @@ import { errorHandler } from "./core/middlewares/error-handler.middleware";
 import { AppRoutes } from "./route";
 import { AppError } from "./core/utils/error";
 import http from "http";
-import { StationModule } from "./modules/station/station.index";
+import { StationModule } from "./core/services/station/station.index";
 import prisma from "./config/database.config";
 import path from "path";
 
