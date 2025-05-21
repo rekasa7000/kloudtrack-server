@@ -11,7 +11,7 @@ import {
 
 const rootCertificateRoute: string = "/root";
 
-export class RootCertificateRoute {
+export class RootCertificateRoutes {
   private router: Router;
   private controller: RootCertificateController;
   private uploadService: RootCertificateUploadService;

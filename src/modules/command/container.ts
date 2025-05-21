@@ -8,12 +8,12 @@ export class CommandContainer {
   public readonly repository: CommandRepository;
   public readonly service: CommandService;
   public readonly controller: CommandController;
-  public readonly route: CommandRoutes;
+  public readonly routes: CommandRoutes;
 
   constructor(prisma: PrismaClient) {
     this.repository = new CommandRepository(prisma);
     this.service = new CommandService(this.repository);
     this.controller = new CommandController(this.service);
-    this.route = new CommandRoutes(this.controller);
+    this.routes = new CommandRoutes(this.controller);
   }
 }

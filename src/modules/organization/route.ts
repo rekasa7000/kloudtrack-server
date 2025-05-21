@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { OrganizationController } from "./controller";
 
-export class OrganizationRoute {
+export class OrganizationRoutes {
   private router: Router;
   private controller: OrganizationController;
 
@@ -16,5 +16,9 @@ export class OrganizationRoute {
     this.router.put("/:id", this.controller.updateOrganization.bind(this.controller));
     this.router.delete("/:id", this.controller.deleteOrganization.bind(this.controller));
     this.router.get("/:id", this.controller.getOrganizationById.bind(this.controller));
+  }
+
+  public getRouter(): Router {
+    return this.router;
   }
 }

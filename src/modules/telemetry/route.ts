@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { TelemetryController } from "./controller";
 
-export class TelemetryRoute {
+export class TelemetryRoutes {
   private router: Router;
   private controller: TelemetryController;
 

@@ -1,4 +1,4 @@
-import express, { NextFunction } from "express";
+import express, { Application, NextFunction } from "express";
 import cors from "cors";
 import { Request, Response } from "express";
 import { corsOptions, customCors } from "./core/middlewares/cors.middleware";
@@ -9,48 +9,116 @@ import http from "http";
 import { StationModule } from "./core/services/station/station.index";
 import prisma from "./config/database.config";
 import path from "path";
+import { PrismaClient } from "@prisma/client";
 
-export async function createApp() {
-  const app = express();
-  const server = http.createServer(app);
+export class App {
+  public app: Application;
+  public server: http.Server;
+  private prisma: PrismaClient;
+  private appRoutes!: AppRoutes;
+  // private stationModule: StationModule;
+  private certificateBasePath: string;
+  private awsIotEndpoint: string;
 
-  app.use(customCors);
-  app.options(/(.*)/, cors(corsOptions));
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
-  const routes = new AppRoutes();
+  constructor() {
+    this.app = express();
+    this.server = http.createServer(this.app);
 
-  app.use((req: Request, res: Response) => {
-    res.status(404).json({ error: "Not Found" });
-  });
+    this.certificateBasePath = process.env.CERTIFICATE_BASE_PATH || path.join(__dirname, "../certificates");
+    this.awsIotEndpoint = process.env.AWS_IOT_ENDPOINT || "";
 
-  const certificateBasePath = process.env.CERTIFICATE_BASE_PATH || path.join(__dirname, "../certificates");
-  const awsIotEndpoint = process.env.AWS_IOT_ENDPOINT || "";
+    if (!this.awsIotEndpoint) {
+      throw new Error("AWS_IOT_ENDPOINT environment variable is required");
+    }
 
-  if (!awsIotEndpoint) {
-    throw new Error("AWS_IOT_ENDPOINT environment variable is required");
+    this.prisma = prisma || new PrismaClient();
+
+    // this.stationModule = new StationModule(
+    //   this.prisma,
+    //   this.server,
+    //   this.certificateBasePath,
+    //   this.awsIotEndpoint
+    // );
+
+    this.configureMiddleware();
+    this.setupRoutes();
+    this.configureErrorHandling();
+
+    this.setupShutdownHandlers();
   }
 
-  const stationModule = new StationModule(prisma, server, certificateBasePath, awsIotEndpoint);
+  private configureMiddleware(): void {
+    this.app.use(customCors);
+    this.app.options(/(.*)/, cors(corsOptions));
 
-  await stationModule.initialize();
+    this.app.use(express.json());
+    this.app.use(express.urlencoded({ extended: true }));
+  }
 
-  app.use(routes.getRouter());
+  private setupRoutes(): void {
+    this.appRoutes = new AppRoutes(this.prisma);
 
-  app.use(errorHandler);
-  app.use((req: Request, res: Response, next: NextFunction) => {
-    next(new AppError("Not Found", 404));
-  });
+    this.app.use(this.appRoutes.getRouter());
+  }
 
-  const shutdown = async () => {
-    console.log("Shutting down application...");
-    await stationModule.close();
-    await prisma.$disconnect();
-    process.exit(0);
-  };
+  private configureErrorHandling(): void {
+    this.app.use((req: Request, res: Response, next: NextFunction) => {
+      next(new AppError("Not Found", 404));
+    });
 
-  process.on("SIGINT", shutdown);
-  process.on("SIGTERM", shutdown);
+    this.app.use(errorHandler);
+  }
 
-  return { app, server, prisma, stationModule };
+  private setupShutdownHandlers(): void {
+    const shutdown = async () => {
+      console.log("Shutting down application...");
+      await this.stop();
+      process.exit(0);
+    };
+
+    process.on("SIGINT", shutdown);
+    process.on("SIGTERM", shutdown);
+  }
+
+  public async initialize(): Promise<void> {
+    try {
+      await this.stationModule.initialize();
+
+      await this.prisma.$connect();
+      console.log("Connected to database successfully");
+    } catch (error) {
+      console.error("Failed to initialize application:", error);
+      await this.stop();
+      throw error;
+    }
+  }
+
+  public async start(port: number = 3000): Promise<void> {
+    try {
+      await this.initialize();
+
+      this.server.listen(port, () => {
+        console.log(`Server running on http://localhost:${port}`);
+      });
+    } catch (error) {
+      console.error("Failed to start server:", error);
+      await this.stop();
+      process.exit(1);
+    }
+  }
+
+  public async stop(): Promise<void> {
+    try {
+      if (this.stationModule) {
+        await this.stationModule.close();
+      }
+
+      await this.prisma.$disconnect();
+      console.log("Disconnected from database");
+    } catch (error) {
+      console.error("Error during shutdown:", error);
+    }
+  }
 }
+
+export default new App();

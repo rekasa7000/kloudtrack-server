@@ -1,17 +1,11 @@
-import { createApp } from "./app";
+import app from "./app";
+import dotenv from "dotenv";
 
-async function startServer() {
-  try {
-    const { server } = await createApp();
-    const PORT = process.env.PORT || 3000;
+dotenv.config();
 
-    server.listen(PORT, () => {
-      console.log(`Server started on port ${PORT}`);
-    });
-  } catch (error) {
-    console.error("Failed to start server:", error);
-    process.exit(1);
-  }
-}
+const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 
-startServer();
+app.start(PORT).catch((err) => {
+  console.error("Failed to start application:", err);
+  process.exit(1);
+});

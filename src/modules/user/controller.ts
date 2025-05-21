@@ -1,314 +1,322 @@
 import { Request, Response, NextFunction } from "express";
-import prisma from "../../config/database.config";
-import { sendResponse } from "../../core/utils/response";
-import { hashPassword } from "../../core/utils/password";
+import { Role } from "@prisma/client";
+import { UserService, UserCreateInput, UserUpdateInput, ChangePasswordInput, ResetPasswordInput } from "./service";
 import { AppError } from "../../core/utils/error";
+import { FindManyUsersParams } from "./repository";
+import multer from "multer";
 import { asyncHandler } from "../../core/middlewares/error-handler.middleware";
 
-export default class UserController {
-  create = asyncHandler(
-    async (req: Request, res: Response, next: NextFunction) => {
-      const { email, password, firstName, lastName, role, ...otherData } =
-        req.body;
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024,
+  },
+  fileFilter: (_req, file, cb) => {
+    if (file.mimetype.startsWith("image/")) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only image files are allowed"));
+    }
+  },
+});
 
-      const existingUser = await prisma.user.findUnique({
-        where: { email },
-      });
+export const uploadProfilePictureMiddleware = upload.single("profilePicture");
 
-      if (existingUser) {
-        return next(new AppError("User with this email already exists", 400));
+export class UserController {
+  private service: UserService;
+
+  constructor(userService: UserService) {
+    this.service = userService;
+  }
+
+  getCurrentUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.user?.id;
+
+      if (!userId) {
+        return next(new AppError("Not authenticated", 401));
       }
 
-      if (role !== "user" && req.user?.role !== "superadmin") {
-        return next(
-          new AppError("Only superadmin can create admin accounts", 403)
-        );
-      }
+      const user = await this.service.getUser(userId);
 
-      const hashedPassword = await hashPassword(password);
-
-      const newUser = await prisma.user.create({
-        data: {
-          email,
-          password: hashedPassword,
-          firstName,
-          lastName,
-          role,
-          ...otherData,
-        },
-        select: {
-          id: true,
-          email: true,
-          firstName: true,
-          lastName: true,
-          role: true,
-          createdAt: true,
-        },
+      res.status(200).json({
+        status: "success",
+        data: { user },
       });
-
-      return sendResponse(res, {
-        success: true,
-        statusCode: 201,
-        message: "User created successfully",
-        data: newUser,
-      });
+    } catch (error) {
+      next(error);
     }
-  );
+  });
 
-  bulkCreate = asyncHandler(
-    async (req: Request, res: Response, next: NextFunction) => {
-      const { users } = req.body;
-
-      const createdUsers = await prisma.$transaction(async (db) => {
-        const results: any = [];
-
-        for (const userData of users) {
-          const {
-            email,
-            password,
-            firstName,
-            lastName,
-            role = "user",
-            ...otherData
-          } = userData;
-
-          const existing = await db.user.findUnique({ where: { email } });
-          if (existing) {
-            throw new AppError(`User with email ${email} already exists`, 400);
-          }
-
-          const hashedPassword = await hashPassword(password);
-
-          const newUser = await db.user.create({
-            data: {
-              email,
-              password: hashedPassword,
-              firstName,
-              lastName,
-              role,
-              ...otherData,
-            },
-            select: {
-              id: true,
-              email: true,
-              firstName: true,
-              lastName: true,
-              role: true,
-              createdAt: true,
-            },
-          });
-
-          results.push(newUser);
-        }
-
-        return results;
-      });
-
-      return sendResponse(res, {
-        success: true,
-        statusCode: 201,
-        message: `Successfully created ${createdUsers.length} users`,
-        data: createdUsers,
-      });
-    }
-  );
-
-  update = asyncHandler(
-    async (req: Request, res: Response, next: NextFunction) => {
+  getUserById = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
       const userId = parseInt(req.params.id);
+
       if (isNaN(userId)) {
         return next(new AppError("Invalid user ID", 400));
       }
 
-      const userToUpdate = await prisma.user.findUnique({
-        where: { id: userId },
-        select: { id: true, role: true },
+      const user = await this.service.getUser(userId);
+
+      res.status(200).json({
+        status: "success",
+        data: { user },
       });
-
-      if (!userToUpdate) {
-        return next(new AppError("User not found", 404));
-      }
-
-      const { role } = req.body;
-      const requestUser = req.user!;
-
-      if (
-        requestUser.role !== "admin" &&
-        requestUser.role !== "SUPERADMIN" &&
-        requestUser.id !== userId
-      ) {
-        return next(new AppError("You can only update your own profile", 403));
-      }
-
-      if (
-        role &&
-        role !== userToUpdate.role &&
-        requestUser.role !== "SUPERADMIN"
-      ) {
-        return next(new AppError("Only superadmin can change user roles", 403));
-      }
-
-      if (
-        (userToUpdate.role === "ADMIN" || userToUpdate.role === "SUPERADMIN") &&
-        requestUser.role !== "SUPERADMIN"
-      ) {
-        return next(
-          new AppError("You don't have permission to modify this user", 403)
-        );
-      }
-
-      const { password, ...updateData } = req.body;
-
-      const dataToUpdate: any = { ...updateData };
-      if (password) {
-        dataToUpdate.password = await hashPassword(password);
-      }
-
-      const updatedUser = await prisma.user.update({
-        where: { id: userId },
-        data: dataToUpdate,
-        select: {
-          id: true,
-          email: true,
-          firstName: true,
-          lastName: true,
-          role: true,
-          phone: true,
-          profilePicture: true,
-          updatedAt: true,
-        },
-      });
-
-      return sendResponse(res, {
-        success: true,
-        statusCode: 200,
-        message: "User updated successfully",
-        data: updatedUser,
-      });
+    } catch (error) {
+      next(error);
     }
-  );
+  });
 
-  delete = asyncHandler(
-    async (req: Request, res: Response, next: NextFunction) => {
-      const userId = parseInt(req.params.id);
-      if (isNaN(userId)) {
-        return next(new AppError("Invalid user ID", 400));
-      }
+  getUsers = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const {
+        page = "1",
+        limit = "10",
+        search = "",
+        role,
+        orderField = "createdAt",
+        orderDirection = "desc",
+      } = req.query;
 
-      const userToDelete = await prisma.user.findUnique({
-        where: { id: userId },
-        select: { id: true, role: true },
-      });
-
-      if (!userToDelete) {
-        return next(new AppError("User not found", 404));
-      }
-
-      if (
-        (userToDelete.role === "ADMIN" || userToDelete.role === "SUPERADMIN") &&
-        req.user!.role !== "SUPERADMIN"
-      ) {
-        return next(
-          new AppError(
-            "Only superadmin can delete admin or superadmin users",
-            403
-          )
-        );
-      }
-
-      await prisma.user.delete({
-        where: { id: userId },
-      });
-
-      return sendResponse(res, {
-        success: true,
-        statusCode: 200,
-        message: "User deleted successfully",
-      });
-    }
-  );
-
-  getById = asyncHandler(
-    async (req: Request, res: Response, next: NextFunction) => {
-      const userId = parseInt(req.params.id);
-      if (isNaN(userId)) {
-        return next(new AppError("Invalid user ID", 400));
-      }
-
-      if (
-        req.user!.role !== "ADMIN" &&
-        req.user!.role !== "SUPERADMIN" &&
-        req.user!.id !== userId
-      ) {
-        return next(new AppError("You can only view your own profile", 403));
-      }
-
-      const user = await prisma.user.findUnique({
-        where: { id: userId },
-        select: {
-          id: true,
-          email: true,
-          firstName: true,
-          lastName: true,
-          role: true,
-          phone: true,
-          profilePicture: true,
-          createdAt: true,
-          updatedAt: true,
-        },
-      });
-
-      if (!user) {
-        return next(new AppError("User not found", 404));
-      }
-
-      return sendResponse(res, {
-        success: true,
-        statusCode: 200,
-        message: "User retrieved successfully",
-        data: user,
-      });
-    }
-  );
-
-  getAll = asyncHandler(
-    async (req: Request, res: Response, next: NextFunction) => {
-      const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 10;
-      const skip = (page - 1) * limit;
-
-      const totalUsers = await prisma.user.count();
-
-      const users = await prisma.user.findMany({
-        skip,
-        take: limit,
-        select: {
-          id: true,
-          email: true,
-          firstName: true,
-          lastName: true,
-          role: true,
-          phone: true,
-          createdAt: true,
-          updatedAt: true,
-        },
+      const params: FindManyUsersParams = {
+        page: parseInt(page as string),
+        limit: parseInt(limit as string),
+        searchTerm: search as string,
         orderBy: {
-          createdAt: "desc",
+          field: orderField as any,
+          direction: orderDirection as "asc" | "desc",
+        },
+      };
+
+      if (role && Object.values(Role).includes(role as Role)) {
+        params.role = role as Role;
+      }
+
+      const { users, total } = await this.service.findUsers(params);
+
+      res.status(200).json({
+        status: "success",
+        results: users.length,
+        pagination: {
+          total,
+          page: params.page,
+          limit: params.limit,
+          pages: Math.ceil(total / params.limit!),
+        },
+        data: { users },
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  createUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userData: UserCreateInput = req.body;
+
+      const createdByUserId = req.user?.id;
+
+      const newUser = await this.service.createUser(userData, createdByUserId);
+
+      res.status(201).json({
+        status: "success",
+        data: { user: newUser },
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  bulkCreateUsers = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      if (!Array.isArray(req.body)) {
+        return next(new AppError("Request body must be an array of users", 400));
+      }
+
+      const usersData: UserCreateInput[] = req.body;
+
+      const createdByUserId = req.user?.id;
+
+      const result = await this.service.bulkCreateUsers(usersData, createdByUserId);
+
+      res.status(201).json({
+        status: "success",
+        data: {
+          count: result.count,
+          message: `Successfully created ${result.count} users`,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  updateUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = parseInt(req.params.id);
+
+      if (isNaN(userId)) {
+        return next(new AppError("Invalid user ID", 400));
+      }
+
+      const userData: UserUpdateInput = req.body;
+
+      const requestingUserId = req.user?.id;
+      const isUser = req.user?.role === Role.USER;
+
+      if (isUser && requestingUserId !== userId) {
+        return next(new AppError("You do not have permission to update this user", 403));
+      }
+
+      const updatedUser = await this.service.updateUser(userId, userData);
+
+      res.status(200).json({
+        status: "success",
+        data: { user: updatedUser },
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  deleteUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = parseInt(req.params.id);
+
+      if (isNaN(userId)) {
+        return next(new AppError("Invalid user ID", 400));
+      }
+
+      const requestingUserId = req.user?.id;
+      const isUser = req.user?.role === Role.USER;
+
+      if (requestingUserId === userId) {
+        return next(new AppError("Cannot delete your own account", 403));
+      }
+
+      if (isUser) {
+        return next(new AppError("Only administrators can delete users", 403));
+      }
+
+      const deletedUser = await this.service.deleteUser(userId);
+
+      res.status(200).json({
+        status: "success",
+        data: { user: deletedUser },
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  uploadProfilePicture = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = parseInt(req.params.id);
+
+      if (isNaN(userId)) {
+        return next(new AppError("Invalid user ID", 400));
+      }
+
+      const requestingUserId = req.user?.id;
+      const isUser = req.user?.role === Role.USER;
+
+      if (isUser && requestingUserId !== userId) {
+        return next(new AppError("You do not have permission to update this user's profile picture", 403));
+      }
+
+      if (!req.file) {
+        return next(new AppError("No file uploaded", 400));
+      }
+
+      const updatedUser = await this.service.uploadProfilePicture({
+        userId,
+        file: {
+          buffer: req.file.buffer,
+          mimetype: req.file.mimetype,
+          originalname: req.file.originalname,
         },
       });
 
-      return sendResponse(res, {
-        success: true,
-        statusCode: 200,
-        message: "Users retrieved successfully",
-        data: users,
-        meta: {
-          page,
-          limit,
-          total: totalUsers,
-          totalPages: Math.ceil(totalUsers / limit),
-        },
+      res.status(200).json({
+        status: "success",
+        data: { user: updatedUser },
       });
+    } catch (error) {
+      next(error);
     }
-  );
+  });
+
+  changePassword = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = parseInt(req.params.id);
+
+      if (isNaN(userId)) {
+        return next(new AppError("Invalid user ID", 400));
+      }
+
+      const requestingUserId = req.user?.id;
+
+      if (requestingUserId !== userId) {
+        return next(new AppError("You can only change your own password", 403));
+      }
+
+      const { currentPassword, newPassword, confirmPassword } = req.body;
+
+      if (!currentPassword || !newPassword || !confirmPassword) {
+        return next(new AppError("Missing required password fields", 400));
+      }
+
+      const passwordData: ChangePasswordInput = {
+        userId,
+        currentPassword,
+        newPassword,
+        confirmPassword,
+      };
+
+      const updatedUser = await this.service.changePassword(passwordData);
+
+      res.status(200).json({
+        status: "success",
+        data: { user: updatedUser },
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  getUsersWithoutOrganization = asyncHandler(async (_req: Request, res: Response, next: NextFunction) => {
+    try {
+      const users = await this.service.getUsersWithoutOrganization();
+
+      res.status(200).json({
+        status: "success",
+        results: users.length,
+        data: { users },
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  getUsersWithExpiredPasswords = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { days = "90" } = req.query;
+      const daysThreshold = parseInt(days as string);
+
+      if (isNaN(daysThreshold) || daysThreshold <= 0) {
+        return next(new AppError("Days must be a positive number", 400));
+      }
+
+      const users = await this.service.getUsersWithExpiredPasswords(daysThreshold);
+
+      res.status(200).json({
+        status: "success",
+        results: users.length,
+        data: { users },
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
 }

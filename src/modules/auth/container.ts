@@ -9,12 +9,12 @@ export class AuthContainer {
   public readonly repository: AuthRepository;
   public readonly service: AuthService;
   public readonly controller: AuthController;
-  public readonly route: AuthRoutes;
+  public readonly routes: AuthRoutes;
 
   constructor(prisma: PrismaClient) {
     this.repository = new AuthRepository(prisma);
     this.service = new AuthService(createTransporter(), this.repository);
     this.controller = new AuthController(this.service);
-    this.route = new AuthRoutes(this.controller);
+    this.routes = new AuthRoutes(this.controller);
   }
 }

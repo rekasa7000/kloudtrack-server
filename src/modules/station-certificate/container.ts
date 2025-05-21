@@ -10,13 +10,13 @@ export class StationCertificateContainer {
   public readonly repository: StationCertificateRepository;
   public readonly service: StationCertificateService;
   public readonly controller: StationCertificateController;
-  public readonly route: StationCertificateRoutes;
+  public readonly routes: StationCertificateRoutes;
 
   constructor(prisma: PrismaClient) {
     this.uploadService = new StationCertificateUploadService();
     this.repository = new StationCertificateRepository(prisma);
     this.service = new StationCertificateService(this.repository);
     this.controller = new StationCertificateController(this.service);
-    this.route = new StationCertificateRoutes(this.controller, this.uploadService);
+    this.routes = new StationCertificateRoutes(this.controller, this.uploadService);
   }
 }

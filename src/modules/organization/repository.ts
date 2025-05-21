@@ -1,8 +1,12 @@
-import { Prisma } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import prisma from "../../config/database.config";
 
 export class OrganizationRepository {
-  constructor() {}
+  private prisma: PrismaClient;
+
+  constructor(prisma: PrismaClient) {
+    this.prisma = prisma;
+  }
 
   async create(data: Prisma.OrganizationUncheckedCreateInput) {
     return prisma.organization.create({
