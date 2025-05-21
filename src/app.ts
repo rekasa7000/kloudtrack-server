@@ -6,7 +6,6 @@ import { errorHandler } from "./core/middlewares/error-handler.middleware";
 import { AppRoutes } from "./route";
 import { AppError } from "./core/utils/error";
 import http from "http";
-import { StationModule } from "./core/services/station/station.index";
 import prisma from "./config/database.config";
 import path from "path";
 import { PrismaClient } from "@prisma/client";
@@ -16,7 +15,6 @@ export class App {
   public server: http.Server;
   private prisma: PrismaClient;
   private appRoutes!: AppRoutes;
-  // private stationModule: StationModule;
   private certificateBasePath: string;
   private awsIotEndpoint: string;
 
@@ -32,13 +30,6 @@ export class App {
     }
 
     this.prisma = prisma || new PrismaClient();
-
-    // this.stationModule = new StationModule(
-    //   this.prisma,
-    //   this.server,
-    //   this.certificateBasePath,
-    //   this.awsIotEndpoint
-    // );
 
     this.configureMiddleware();
     this.setupRoutes();
@@ -82,8 +73,6 @@ export class App {
 
   public async initialize(): Promise<void> {
     try {
-      await this.stationModule.initialize();
-
       await this.prisma.$connect();
       console.log("Connected to database successfully");
     } catch (error) {
@@ -109,10 +98,6 @@ export class App {
 
   public async stop(): Promise<void> {
     try {
-      if (this.stationModule) {
-        await this.stationModule.close();
-      }
-
       await this.prisma.$disconnect();
       console.log("Disconnected from database");
     } catch (error) {
