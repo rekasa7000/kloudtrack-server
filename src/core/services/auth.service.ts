@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
-import config from "../../config/environment.config";
+import config from "../../config/environment";
 
 export const generateToken = (userId: number, res: Response): string => {
   const token = jwt.sign({ userId }, config.JWT_SECRET, { expiresIn: "7d" });

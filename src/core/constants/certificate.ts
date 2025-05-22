@@ -1,5 +1,5 @@
 import path from "path";
-import config from "../../config/environment.config";
+import config from "../../config/environment";
 
 export const CERTIFICATE_STATUSES = ["ACTIVE", "INACTIVE", "REVOKED"] as const;
 export const VERSION_PATTERN = /^CA\d+$/i;

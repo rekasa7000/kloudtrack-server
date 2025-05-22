@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { AppError } from "../utils/error";
 import prisma from "../../config/database.config";
-import config from "../../config/environment.config";
+import config from "../../config/environment";
 import { extractToken } from "../services/auth.service";
 import { TokenPayload } from "../../types";
 

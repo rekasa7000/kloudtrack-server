@@ -1,6 +1,37 @@
-import { StationMetadata } from "../../core/services/station/station.types";
 import { StationRepository } from "./repository";
-import { AppError } from "../../core/utils/error";
+import { Station, StationType } from "@prisma/client";
+import { logger } from "../../core/utils/logger";
+
+export interface CreateStationDTO {
+  stationName: string;
+  stationType: StationType;
+  location: any;
+  barangay: string;
+  city: string;
+  province: string;
+  country: string;
+  serialCode: string;
+  elevation?: number;
+  stationPicture?: string;
+  firmwareVersion: string;
+  createdByUserId: number;
+  organizationId?: number;
+  isActive: boolean;
+}
+
+export interface UpdateStationDTO {
+  stationName?: string;
+  stationType?: StationType;
+  location?: any;
+  barangay?: string;
+  city?: string;
+  province?: string;
+  country?: string;
+  elevation?: number;
+  stationPicture?: string;
+  firmwareVersion?: string;
+  isActive?: boolean;
+}
 
 export class StationService {
   private repository: StationRepository;
@@ -9,42 +40,135 @@ export class StationService {
     this.repository = stationRepository;
   }
 
-  async getAllStations(skip: number, take: number) {
-    return this.repository.getAllStations(skip, take);
-  }
+  async createStation(data: CreateStationDTO, userId: number): Promise<Station> {
+    try {
+      const station = await this.repository.create(data, userId);
 
-  async createStation(data: StationMetadata, userId: number) {
-    if (!data) {
-      throw new AppError("Station metadata is required", 400);
+      logger.info(`Station created: ${station.stationName} (ID: ${station.id})`);
+      return station;
+    } catch (error) {
+      logger.error("Failed to create station:", error);
+      throw error;
     }
-
-    return this.repository.createStation(data, userId);
-  }
-
-  async updateStation(id: number, data: StationMetadata) {
-    const existingStation = await this.repository.getStationById(id);
-    if (!existingStation) {
-      throw new AppError("Station not found", 404);
-    }
-
-    return this.repository.updateStation(id, data);
-  }
-
-  async deleteStation(id: number) {
-    const existingStation = await this.repository.getStationById(id);
-    if (!existingStation) {
-      throw new AppError("Station not found", 404);
-    }
-
-    return this.repository.deleteStation(id);
   }
 
   async getStationById(id: number) {
-    const station = await this.repository.getStationById(id);
-    if (!station) {
-      throw new AppError("Station not found", 404);
+    try {
+      return await this.repository.findById(id);
+    } catch (error) {
+      logger.error(`Failed to get station ${id}:`, error);
+      throw error;
     }
+  }
 
-    return station;
+  async getStationBySerialCode(serialCode: string): Promise<Station | null> {
+    try {
+      return await this.repository.findBySerial(serialCode);
+    } catch (error) {
+      logger.error(`Failed to get station by serial code ${serialCode}:`, error);
+      throw error;
+    }
+  }
+
+  async getAllStations(
+    page: number = 1,
+    limit: number = 10
+  ): Promise<{
+    stations: Station[];
+    total: number;
+    totalPages: number;
+  }> {
+    try {
+      const skip = (page - 1) * limit;
+
+      const data = await this.repository.findAll(skip, limit);
+
+      return {
+        stations: data.stations,
+        total: data.total,
+        totalPages: Math.ceil(data.total / limit),
+      };
+    } catch (error) {
+      logger.error("Failed to get all stations:", error);
+      throw error;
+    }
+  }
+
+  async getActiveStations(): Promise<Station[]> {
+    try {
+      return await this.repository.findActive();
+    } catch (error) {
+      logger.error("Failed to get active stations:", error);
+      throw error;
+    }
+  }
+
+  async updateStation(id: number, data: UpdateStationDTO): Promise<Station> {
+    try {
+      const station = await this.repository.update(id, data);
+
+      logger.info(`Station updated: ${station.stationName} (ID: ${station.id})`);
+      return station;
+    } catch (error) {
+      logger.error(`Failed to update station ${id}:`, error);
+      throw error;
+    }
+  }
+
+  async activateStation(id: number): Promise<Station> {
+    try {
+      const station = await this.repository.activateStation(id);
+
+      logger.info(`Station activated: ${station.stationName} (ID: ${station.id})`);
+      return station;
+    } catch (error) {
+      logger.error(`Failed to activate station ${id}:`, error);
+      throw error;
+    }
+  }
+
+  async deactivateStation(id: number): Promise<Station> {
+    try {
+      const station = await this.repository.deactivateStation(id);
+
+      logger.info(`Station deactivated: ${station.stationName} (ID: ${station.id})`);
+      return station;
+    } catch (error) {
+      logger.error(`Failed to deactivate station ${id}:`, error);
+      throw error;
+    }
+  }
+
+  async updateStationStatus(id: number, status: any): Promise<void> {
+    try {
+      if (status.firmwareVersion) {
+        await this.repository.updateStatus(id, status);
+      }
+
+      logger.debug(`Station status updated for station ${id}`);
+    } catch (error) {
+      logger.error(`Failed to update station status ${id}:`, error);
+      throw error;
+    }
+  }
+
+  async deleteStation(id: number): Promise<void> {
+    try {
+      await this.repository.delete(id);
+
+      logger.info(`Station deleted: ID ${id}`);
+    } catch (error) {
+      logger.error(`Failed to delete station ${id}:`, error);
+      throw error;
+    }
+  }
+
+  async getStationsByOrganization(organizationId: number): Promise<Station[]> {
+    try {
+      return await this.repository.findByOrganization(organizationId);
+    } catch (error) {
+      logger.error(`Failed to get stations by organization ${organizationId}:`, error);
+      throw error;
+    }
   }
 }

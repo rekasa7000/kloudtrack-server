@@ -9,9 +9,9 @@ export class TelemetryService {
     this.repository = telemetryRepository;
   }
 
-  async createTelemetry(data: Prisma.TelemetryUncheckedCreateInput) {
+  async createTelemetry(stationId: number, data: Prisma.TelemetryUncheckedCreateInput) {
     try {
-      const telemetry = await this.repository.create(data);
+      const telemetry = await this.repository.create(stationId, data);
       return telemetry;
     } catch (error) {
       console.error("Error saving Telemetry:", error);

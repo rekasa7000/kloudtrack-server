@@ -14,8 +14,9 @@ export class TelemetryController {
 
   saveTelemetry = asyncHandler(async (req: Request, res: Response) => {
     const data: Prisma.TelemetryUncheckedCreateInput = req.body;
+    const { stationId } = req.params;
 
-    const telemetry = await this.service.createTelemetry(data);
+    const telemetry = await this.service.createTelemetry(+stationId, data);
 
     return sendResponse(res, undefined, 400, `Weather data saved successfully on ${telemetry.station.stationName}`);
   });

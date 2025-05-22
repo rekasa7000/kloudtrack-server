@@ -1,38 +1,41 @@
-import { PrismaClient } from "@prisma/client";
-import { StationMetadata } from "../../core/services/station/station.types";
+import { Prisma, PrismaClient } from "@prisma/client";
 
 export class StationRepository {
   private prisma: PrismaClient;
   constructor(prisma: PrismaClient) {
     this.prisma = prisma;
   }
-  async getAllStations(skip: number, take: number) {
-    return this.prisma.station.findMany({
-      include: {
-        certificate: true,
-        user: {
-          select: {
-            id: true,
-            userName: true,
-            firstName: true,
-            lastName: true,
-            role: true,
-          },
+  async findAll(skip: number, take: number) {
+    const [stations, total] = await Promise.all([
+      this.prisma.station.findMany({
+        skip,
+        take,
+        include: {
+          certificate: true,
+          user: true,
+          organization: true,
         },
-      },
-      skip,
-      take,
-      orderBy: { id: "asc" },
-    });
+        orderBy: { createdAt: "desc" },
+      }),
+      this.prisma.station.count(),
+    ]);
+    return {
+      stations,
+      total,
+    };
   }
 
-  async createStation(data: StationMetadata, userId: number) {
+  async create(data: Prisma.StationUncheckedCreateInput, userId: number) {
     return this.prisma.station.create({
       data: {
         ...data,
+        isActive: false,
+        activatedAt: null,
         createdByUserId: userId,
       },
       include: {
+        certificate: true,
+        organization: true,
         user: {
           select: {
             id: true,
@@ -46,7 +49,7 @@ export class StationRepository {
     });
   }
 
-  async updateStation(id: number, data: StationMetadata) {
+  async update(id: number, data: Prisma.StationUncheckedUpdateInput) {
     return this.prisma.station.update({
       where: { id },
       data,
@@ -64,7 +67,7 @@ export class StationRepository {
     });
   }
 
-  async deleteStation(id: number) {
+  async delete(id: number) {
     return this.prisma.station.delete({
       where: { id },
       include: {
@@ -81,10 +84,11 @@ export class StationRepository {
     });
   }
 
-  async getStationById(id: number) {
-    return this.prisma.station.findUnique({
+  async findById(id: number) {
+    return await this.prisma.station.findUnique({
       where: { id },
       include: {
+        certificate: true,
         user: {
           select: {
             id: true,
@@ -94,7 +98,89 @@ export class StationRepository {
             role: true,
           },
         },
+        organization: true,
+
+        telemetry: {
+          orderBy: { createdAt: "desc" },
+          take: 10,
+        },
+        command: {
+          orderBy: { createdAt: "desc" },
+          take: 5,
+        },
       },
+    });
+  }
+
+  async findBySerial(serialCode: string) {
+    return await this.prisma.station.findUnique({
+      where: { serialCode },
+      include: {
+        certificate: true,
+        user: true,
+        organization: true,
+      },
+    });
+  }
+
+  async findActive() {
+    return await this.prisma.station.findMany({
+      where: { isActive: true },
+      include: {
+        certificate: true,
+        user: true,
+        organization: true,
+      },
+    });
+  }
+
+  async activateStation(id: number) {
+    return await this.prisma.station.update({
+      where: { id },
+      data: {
+        isActive: true,
+        activatedAt: new Date(),
+      },
+      include: {
+        certificate: true,
+        user: true,
+        organization: true,
+      },
+    });
+  }
+  async deactivateStation(id: number) {
+    return await this.prisma.station.update({
+      where: { id },
+      data: {
+        isActive: false,
+        activatedAt: new Date(),
+      },
+      include: {
+        certificate: true,
+        user: true,
+        organization: true,
+      },
+    });
+  }
+
+  async updateStatus(id: number, status: any) {
+    return await this.prisma.station.update({
+      where: { id },
+      data: {
+        firmwareVersion: status.firmwareVersion,
+      },
+    });
+  }
+
+  async findByOrganization(organizationId: number) {
+    return await this.prisma.station.findMany({
+      where: { organizationId },
+      include: {
+        certificate: true,
+        user: true,
+        organization: true,
+      },
+      orderBy: { createdAt: "desc" },
     });
   }
 }

@@ -4,7 +4,7 @@ import multerS3 from "multer-s3";
 import { Request } from "express";
 
 import { S3_BUCKET_NAME, s3Client } from "../../config/aws.config";
-import config from "../../config/environment.config";
+import config from "../../config/environment";
 import { CERTIFICATE_DIR, CERTIFICATE_TYPES } from "../../core/constants/certificate";
 
 interface MulterRequest extends Request {

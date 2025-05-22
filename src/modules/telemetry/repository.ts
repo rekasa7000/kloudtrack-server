@@ -23,9 +23,12 @@ export class TelemetryRepository {
     });
   }
 
-  async create(data: Prisma.TelemetryUncheckedCreateInput) {
+  async create(stationId: number, data: Prisma.TelemetryUncheckedCreateInput) {
     return this.prisma.telemetry.create({
-      data,
+      data: {
+        ...data,
+        stationId,
+      },
       include: {
         station: true,
       },

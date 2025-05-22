@@ -1,39 +1,26 @@
-import pino from "pino";
-import fs from "fs";
-import config from "../../config/environment.config";
+import winston from "winston";
+import { config } from "../../config/environment";
 
-const logStream = fs.createWriteStream("./app.log", { flags: "a" });
-
-const consoleTransport = pino.transport({
-  target: "pino-pretty",
-  options: {
-    colorize: true,
-    translateTime: "yyyy-mm-dd HH:MM:ss",
-    ignore: "pid,hostname",
-  },
+const logger = winston.createLogger({
+  level: config.logging.level,
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.errors({ stack: true }),
+    winston.format.json()
+  ),
+  defaultMeta: { service: "weather-station-iot" },
+  transports: [
+    new winston.transports.File({ filename: "logs/error.log", level: "error" }),
+    new winston.transports.File({ filename: "logs/combined.log" }),
+  ],
 });
 
-const localTimeFormatter = {
-  time: () =>
-    `,"time":"${new Date().toLocaleString("en-US", {
-      timeZone: "Asia/Manila",
-      hour12: true,
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    })}"`,
-};
-const logger = pino(
-  {
-    level: config.NODE_ENV === "production" ? "info" : "debug",
-    timestamp: localTimeFormatter.time,
-    messageKey: "description",
-  },
+if (config.env !== "production") {
+  logger.add(
+    new winston.transports.Console({
+      format: winston.format.combine(winston.format.colorize(), winston.format.simple()),
+    })
+  );
+}
 
-  pino.multistream([{ stream: logStream }, { stream: consoleTransport }])
-);
-
-export default logger;
+export { logger };

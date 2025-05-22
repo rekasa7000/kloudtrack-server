@@ -6,7 +6,7 @@ import { Request } from "express";
 
 import { CERTIFICATE_DIR, CERTIFICATE_TYPES } from "../../core/constants/certificate";
 import { S3_BUCKET_NAME, s3Client } from "../../config/aws.config";
-import config from "../../config/environment.config";
+import config from "../../config/environment";
 import { sanitizePathComponent } from "../../core/utils/sanitizer";
 import prisma from "../../config/database.config";
 

@@ -50,3 +50,47 @@ interface MulterRequest extends Request {
     version?: string;
   };
 }
+
+interface WeatherStationConfig {
+  thingName: string;
+  location: string;
+  latitude?: number;
+  longitude?: number;
+}
+
+interface WeatherData {
+  stationId: number;
+  temperature?: number;
+  humidity?: number;
+  pressure?: number;
+  heatIndex?: number;
+  windDirection?: number;
+  windSpeed?: number;
+  precipitation?: number;
+  uvIndex?: number;
+  distance?: number;
+  lightIntensity?: number;
+  recordedAt: Date;
+}
+
+interface StationCommand {
+  stationId: number;
+  commandType: string;
+  parameters?: Record<string, any>;
+  priority?: "low" | "medium" | "high";
+}
+
+interface IoTMessage {
+  topic: string;
+  payload: any;
+  timestamp: Date;
+  clientId: string;
+}
+
+interface StationConnection {
+  stationId: number;
+  clientId: string;
+  isConnected: boolean;
+  lastSeen: Date;
+  connectionCount: number;
+}
