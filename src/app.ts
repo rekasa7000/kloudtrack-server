@@ -6,9 +6,19 @@ import { errorHandler } from "./core/middlewares/error-handler.middleware";
 import { AppRoutes } from "./route";
 import { AppError } from "./core/utils/error";
 import http from "http";
-import prisma from "./config/database.config";
 import path from "path";
 import { PrismaClient } from "@prisma/client";
+import { prisma } from "./config/database.config";
+import { config } from "./config/environment";
+import { IoTManager } from "./modules/iot/service";
+import { AuthContainer } from "./modules/auth/container";
+import { CommandContainer } from "./modules/command/container";
+import { OrganizationContainer } from "./modules/organization/container";
+import { RootCertificateContainer } from "./modules/root-certificate/container";
+import { StationContainer } from "./modules/station/container";
+import { StationCertificateContainer } from "./modules/station-certificate/container";
+import { TelemetryContainer } from "./modules/telemetry/container";
+import { UserContainer } from "./modules/user/container";
 
 export class App {
   public app: Application;
@@ -18,23 +28,42 @@ export class App {
   private certificateBasePath: string;
   private awsIotEndpoint: string;
 
+  private authContainer: AuthContainer;
+  private commandContainer: CommandContainer;
+  private organizationContainer: OrganizationContainer;
+  private rootCertificateContainer: RootCertificateContainer;
+  private stationContainer: StationContainer;
+  private stationCertificateContainer: StationCertificateContainer;
+  private telemetryContainer: TelemetryContainer;
+  private userContainer: UserContainer;
+
+  private iotManager: IoTManager;
+
   constructor() {
     this.app = express();
     this.server = http.createServer(this.app);
 
-    this.certificateBasePath = process.env.CERTIFICATE_BASE_PATH || path.join(__dirname, "../certificates");
-    this.awsIotEndpoint = process.env.AWS_IOT_ENDPOINT || "";
+    this.certificateBasePath = config.certificates.rootCaPath || path.join(__dirname, "../certificates");
+    this.awsIotEndpoint = config.aws.iot.endpoint;
 
     if (!this.awsIotEndpoint) {
       throw new Error("AWS_IOT_ENDPOINT environment variable is required");
     }
 
     this.prisma = prisma || new PrismaClient();
+    this.authContainer = new AuthContainer(this.prisma);
+    this.commandContainer = new CommandContainer(this.prisma);
+    this.organizationContainer = new OrganizationContainer(this.prisma);
+    this.rootCertificateContainer = new RootCertificateContainer(this.prisma);
+    this.stationContainer = new StationContainer(this.prisma);
+    this.stationCertificateContainer = new StationCertificateContainer(this.prisma);
+    this.telemetryContainer = new TelemetryContainer(this.prisma);
+    this.userContainer = new UserContainer(this.prisma);
 
+    this.iotManager = new IoTManager(this.stationContainer, this.telemetryContainer, this.commandContainer);
     this.configureMiddleware();
     this.setupRoutes();
     this.configureErrorHandling();
-
     this.setupShutdownHandlers();
   }
 
@@ -47,9 +76,19 @@ export class App {
   }
 
   private setupRoutes(): void {
-    this.appRoutes = new AppRoutes(this.prisma);
+    this.appRoutes = new AppRoutes(
+      this.prisma,
+      this.authContainer,
+      this.commandContainer,
+      this.organizationContainer,
+      this.rootCertificateContainer,
+      this.stationContainer,
+      this.stationCertificateContainer,
+      this.telemetryContainer,
+      this.userContainer
+    );
 
-    this.app.use(this.appRoutes.getRouter());
+    this.app.use("/api/v1", this.appRoutes.getRouter());
   }
 
   private configureErrorHandling(): void {

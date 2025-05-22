@@ -12,32 +12,23 @@ export class IoTManager extends EventEmitter {
   private static instance: IoTManager;
   private stationConnections: Map<string, awsIot> = new Map();
   private connectionStatus: Map<number, StationConnection> = new Map();
-  private iot: AWS.Iot;
-  private iotData: AWS.IotData;
+  private iot!: AWS.Iot;
+  private iotData!: AWS.IotData;
   private stationContainer: StationContainer;
   private telemetryContainer: TelemetryContainer;
   private commandContainer: CommandContainer;
 
-  private constructor(
+  constructor(
     stationContainer: StationContainer,
     telemetryContainer: TelemetryContainer,
     commandContainer: CommandContainer
   ) {
     super();
-    this.iot = new AWS.Iot();
-    this.iotData = new AWS.IotData();
     this.stationContainer = stationContainer;
     this.telemetryContainer = telemetryContainer;
     this.commandContainer = commandContainer;
     this.setupAWS();
   }
-
-  //   public static getInstance(): IoTManager {
-  //     if (!IoTManager.instance) {
-  //       IoTManager.instance = new IoTManager(this.stationContainer.service, new TelemetryService(), new CommandService());
-  //     }
-  //     return IoTManager.instance;
-  //   }
 
   private setupAWS(): void {
     AWS.config.update({
@@ -105,9 +96,12 @@ export class IoTManager extends EventEmitter {
     device.on("connect", () => {
       logger.info(`Station ${stationId} connected to AWS IoT`);
 
-      const telemetryTopic = `weather/stations/${stationId}/telemetry`;
-      const commandTopic = `weather/stations/${stationId}/commands`;
-      const statusTopic = `weather/stations/${stationId}/status`;
+      // const telemetryTopic = `weather/stations/${stationId}/telemetry`;
+      // const commandTopic = `weather/stations/${stationId}/commands`;
+      // const statusTopic = `weather/stations/${stationId}/status`;
+      const telemetryTopic = `weather/stations/1/telemetry`;
+      const commandTopic = `weather/stations/1/commands`;
+      const statusTopic = `weather/stations/1/status`;
 
       device.subscribe([telemetryTopic, statusTopic]);
 
@@ -124,6 +118,8 @@ export class IoTManager extends EventEmitter {
           timestamp: new Date(),
           clientId,
         };
+
+        console.log(message);
 
         await this.handleIncomingMessage(stationId, message);
       } catch (error) {

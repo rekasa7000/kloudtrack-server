@@ -1,9 +1,10 @@
 import bcrypt from "bcryptjs";
 import { Role, User } from "@prisma/client";
-import prisma from "../../config/database.config";
-import { generateToken } from "../../core/utils/jwt.util";
+import { generateToken } from "../../core/utils/auth";
 import nodemailer from "nodemailer";
 import { AuthRepository } from "./repository";
+import { prisma } from "../../config/database.config";
+import { Response } from "express";
 
 export class AuthService {
   private transporter: nodemailer.Transporter;
@@ -13,7 +14,7 @@ export class AuthService {
     this.repository = authRepository;
   }
 
-  async login(email: string, password: string): Promise<{ user: Partial<User>; token: string }> {
+  async login(email: string, password: string, res: Response): Promise<{ user: Partial<User>; token: string }> {
     const user = await this.repository.findByEmail(email);
     if (!user) {
       throw new Error("Invalid email or password");
@@ -24,7 +25,7 @@ export class AuthService {
       throw new Error("Invalid email or password");
     }
 
-    const token = generateToken({ id: user.id });
+    const token = generateToken(user.id, res);
 
     return {
       user: {

@@ -1,37 +1,7 @@
 import { StationRepository } from "./repository";
 import { Station, StationType } from "@prisma/client";
 import { logger } from "../../core/utils/logger";
-
-export interface CreateStationDTO {
-  stationName: string;
-  stationType: StationType;
-  location: any;
-  barangay: string;
-  city: string;
-  province: string;
-  country: string;
-  serialCode: string;
-  elevation?: number;
-  stationPicture?: string;
-  firmwareVersion: string;
-  createdByUserId: number;
-  organizationId?: number;
-  isActive: boolean;
-}
-
-export interface UpdateStationDTO {
-  stationName?: string;
-  stationType?: StationType;
-  location?: any;
-  barangay?: string;
-  city?: string;
-  province?: string;
-  country?: string;
-  elevation?: number;
-  stationPicture?: string;
-  firmwareVersion?: string;
-  isActive?: boolean;
-}
+import { CreateStationDTO, UpdateStationDTO } from "./type";
 
 export class StationService {
   private repository: StationRepository;
@@ -71,7 +41,7 @@ export class StationService {
   }
 
   async getAllStations(
-    page: number = 1,
+    skip: number = 1,
     limit: number = 10
   ): Promise<{
     stations: Station[];
@@ -79,8 +49,6 @@ export class StationService {
     totalPages: number;
   }> {
     try {
-      const skip = (page - 1) * limit;
-
       const data = await this.repository.findAll(skip, limit);
 
       return {

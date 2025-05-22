@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { asyncHandler } from "../../core/middlewares/error-handler.middleware";
 import { sendResponse } from "../../core/utils/response";
-import logger from "../../core/utils/logger";
 import { OrganizationService } from "./service";
 
 export class OrganizationController {

@@ -9,8 +9,6 @@ import {
   updateRootCertificateSchema,
 } from "./schema";
 
-const rootCertificateRoute: string = "/root";
-
 export class RootCertificateRoutes {
   private router: Router;
   private controller: RootCertificateController;
@@ -27,30 +25,22 @@ export class RootCertificateRoutes {
   }
 
   private initializeRoutes(): void {
-    this.router.get(rootCertificateRoute, this.controller.listRootCertificates);
-    this.router.get(`${rootCertificateRoute}/:id`, this.controller.getRootCertificate);
+    this.router.get("/", this.controller.listRootCertificates);
+    this.router.get(`/:id`, this.controller.getRootCertificate);
     this.router.post(
-      rootCertificateRoute,
+      "/",
       this.uploadService.uploadRootCertificate(),
       validateRequest(createRootCertificateSchema),
       this.controller.createRootCertificate
     );
     this.router.put(
-      `${rootCertificateRoute}/:id`,
+      `/:id`,
       this.uploadService.uploadRootCertificate(),
       validateRequest(updateRootCertificateSchema),
       this.controller.updateRootCertificate
     );
-    this.router.delete(
-      `${rootCertificateRoute}/:id`,
-      validateRequest(deleteRootCertificateSchema),
-      this.controller.deleteRootCertificate
-    );
-    this.router.post(
-      `${rootCertificateRoute}/:id`,
-      validateRequest(activateRootCertificateSchema),
-      this.controller.activateRootCertificate
-    );
+    this.router.delete(`/:id`, validateRequest(deleteRootCertificateSchema), this.controller.deleteRootCertificate);
+    this.router.post(`/:id`, validateRequest(activateRootCertificateSchema), this.controller.activateRootCertificate);
   }
 
   public getRouter(): Router {

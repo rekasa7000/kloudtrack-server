@@ -1,5 +1,4 @@
-import { RootCertificate, CertificateStatus, Prisma, StationCertificate, PrismaClient, Station } from "@prisma/client";
-import { StationLookup } from "../../core/services/station/station.types";
+import { RootCertificate, CertificateStatus, Prisma, PrismaClient } from "@prisma/client";
 
 export class RootCertificateRepository {
   private prisma: PrismaClient;

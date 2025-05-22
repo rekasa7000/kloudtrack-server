@@ -28,7 +28,7 @@ interface PublishOptions {
 }
 
 interface TokenPayload {
-  userId: number;
+  id: number;
   iat: number;
   exp: number;
 }

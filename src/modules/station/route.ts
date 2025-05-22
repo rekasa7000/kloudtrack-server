@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { StationController } from "./controller";
+import { restrictTo } from "../../core/middlewares/auth.middleware";
 
 export class StationRoutes {
   private router: Router;
@@ -12,11 +13,11 @@ export class StationRoutes {
   }
 
   private initializeRoutes(): void {
-    this.router.get("/", this.controller.getAll.bind(this.controller));
+    this.router.get("/", restrictTo("SUPERADMIN"), this.controller.getAll.bind(this.controller));
     this.router.get("/:id", this.controller.getById.bind(this.controller));
-    this.router.post("/", this.controller.create.bind(this.controller));
-    this.router.put("/:id", this.controller.update.bind(this.controller));
-    this.router.delete("/:id", this.controller.delete.bind(this.controller));
+    this.router.post("/", restrictTo("SUPERADMIN"), this.controller.create.bind(this.controller));
+    this.router.put("/:id", restrictTo("SUPERADMIN"), this.controller.update.bind(this.controller));
+    this.router.delete("/:id", restrictTo("SUPERADMIN"), this.controller.delete.bind(this.controller));
   }
 
   public getRouter(): Router {

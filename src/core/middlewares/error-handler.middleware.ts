@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { AppError } from "../utils/error";
-import logger from "../utils/logger";
-import config from "../../config/environment";
+import { logger } from "../utils/logger";
+import { config } from "../../config/environment";
 
 export const errorHandler = (err: Error | AppError, req: Request, res: Response, next: NextFunction) => {
   const statusCode = "statusCode" in err ? err.statusCode : 500;
@@ -16,7 +16,7 @@ export const errorHandler = (err: Error | AppError, req: Request, res: Response,
   res.status(statusCode).json({
     success: false,
     message,
-    stack: config.NODE_ENV === "development" ? err.stack : undefined,
+    stack: config.env === "development" ? err.stack : undefined,
   });
 };
 

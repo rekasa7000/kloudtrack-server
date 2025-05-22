@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs";
 import crypto from "crypto";
-import { CERTIFICATE_DIR } from "../constants/certificate";
+import { config } from "../../config/environment";
 
 export const getCertificateDir = () => {
   const baseDir =
@@ -23,7 +23,7 @@ export const formatVersion = (version: string): string => {
 export const getCertificatePath = (version: string): string => {
   const formattedVersion = formatVersion(version);
   const fileName = `AmazonRoot${formattedVersion}.pem`;
-  return path.join(CERTIFICATE_DIR, fileName);
+  return path.join(config.certificates.dir, fileName);
 };
 
 export const validateCertificate = (content: string): boolean => {

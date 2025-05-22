@@ -14,9 +14,7 @@ async function main() {
     });
 
     if (existingSuperAdmin) {
-      console.log(
-        `SUPERADMIN already exists with ID: ${existingSuperAdmin.id}`
-      );
+      console.log(`SUPERADMIN already exists with ID: ${existingSuperAdmin.id}`);
       return;
     }
 

@@ -10,7 +10,7 @@ export class RootCertificateContainer {
   public readonly repository: RootCertificateRepository;
   public readonly service: RootCertificateService;
   public readonly controller: RootCertificateController;
-  public readonly routes: RootCertificates;
+  public readonly routes: RootCertificateRoutes;
 
   constructor(prisma: PrismaClient) {
     this.uploadService = new RootCertificateUploadService();

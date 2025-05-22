@@ -6,6 +6,8 @@ export class StationRepository {
     this.prisma = prisma;
   }
   async findAll(skip: number, take: number) {
+    console.log("SKIP: ", skip);
+    console.log("TAKE: ", take);
     const [stations, total] = await Promise.all([
       this.prisma.station.findMany({
         skip,

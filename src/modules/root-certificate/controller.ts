@@ -27,17 +27,18 @@ export class RootCertificateController {
         certificateText,
         version,
       });
-
       return sendResponse(res, result, 201, "Amazon Root CA certificate created successfully");
     }
 
+    console.log(req.file);
     if (!req.file) {
       throw new AppError("Root CA certificate file is required", 400);
     }
 
     const { version } = req.body;
     const result = await this.service.createRootCertificate(req.user.id, {
-      filePath: req.file.path,
+      s3Key: req.file.key,
+      s3Location: req.file.location,
       version,
     });
 
@@ -46,7 +47,6 @@ export class RootCertificateController {
 
   updateRootCertificate = asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
-
     if (!id) {
       throw new AppError("Certificate ID is required", 400);
     }
@@ -57,7 +57,6 @@ export class RootCertificateController {
         certificateText,
         version,
       });
-
       return sendResponse(res, result, 200, "Amazon Root CA certificate updated successfully");
     }
 
@@ -67,7 +66,8 @@ export class RootCertificateController {
 
     const { version } = req.body;
     const result = await this.service.updateRootCertificate(+id, {
-      filePath: req.file.path,
+      s3Key: req.file.key,
+      s3Location: req.file.location,
       version,
     });
 

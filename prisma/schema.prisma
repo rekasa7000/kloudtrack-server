@@ -167,7 +167,9 @@ model Station {
 model StationCertificate {
   id               Int               @id @default(autoincrement()) @map("certificate_id")
   keyPath          String            @map("key_path")
+  keyLocation      String?           @map("key_location")
   certPath         String            @map("cert_path")
+  certLocation     String?           @map("cert_location")
   awsCertId        String?           @map("aws_certificate_id")
   awsCertArn       String?           @map("aws_certificate_arn")
   status           CertificateStatus @map("certificate_status")
@@ -187,6 +189,7 @@ model StationCertificate {
 model RootCertificate {
   id               Int               @id @default(autoincrement()) @map("root_certificate_id")
   path             String            @map("path")
+  location         String?           @map("location")
   version          String            @map("version") //CA1 CA3
   status           CertificateStatus @map("certificate_status")
   uploadedByUserId Int               @map("uploaded_by_user_id")

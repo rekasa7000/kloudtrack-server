@@ -1,5 +1,4 @@
 import { Prisma, PrismaClient } from "@prisma/client";
-import prisma from "../../config/database.config";
 
 export class OrganizationRepository {
   private prisma: PrismaClient;
@@ -9,32 +8,32 @@ export class OrganizationRepository {
   }
 
   async create(data: Prisma.OrganizationUncheckedCreateInput) {
-    return prisma.organization.create({
+    return this.prisma.organization.create({
       data,
     });
   }
   async update(data: Prisma.OrganizationUncheckedUpdateInput, id: number) {
-    return prisma.organization.update({
+    return this.prisma.organization.update({
       data,
       where: { id },
     });
   }
   async delete(id: number) {
-    return prisma.organization.delete({
+    return this.prisma.organization.delete({
       where: { id },
     });
   }
   async findById(id: number) {
-    return prisma.organization.findUnique({
+    return this.prisma.organization.findUnique({
       where: { id },
     });
   }
   async findMany() {
-    return prisma.organization.findMany();
+    return this.prisma.organization.findMany();
   }
 
   async findByUserId(userId: number) {
-    return await prisma.userOrganization.findFirst({
+    return await this.prisma.userOrganization.findFirst({
       where: {
         userId,
       },

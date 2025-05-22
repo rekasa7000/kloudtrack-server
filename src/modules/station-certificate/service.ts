@@ -5,7 +5,7 @@ import { AppError } from "../../core/utils/error";
 import { getCertificateFingerPrint, writeCertificateToFile } from "../../core/utils/certificate";
 import { sanitizePathComponent } from "../../core/utils/sanitizer";
 import { StationCertificateRepository } from "./repository";
-import { CERTIFICATE_DIR, CERTIFICATE_TYPES } from "../../core/constants/certificate";
+import { config } from "../../config/environment";
 
 export class StationCertificateService {
   private repository: StationCertificateRepository;
@@ -71,13 +71,13 @@ export class StationCertificateService {
 
     const namePart = sanitizePathComponent(station.stationType.substring(0, 5).toUpperCase());
 
-    const stationDir = path.join(CERTIFICATE_DIR, `${namePart}_${sanitizedSerial}`);
+    const stationDir = path.join(config.certificates.rootCaPath, `${namePart}_${sanitizedSerial}`);
     if (!fs.existsSync(stationDir)) {
       fs.mkdirSync(stationDir, { recursive: true });
     }
 
-    const certFileName = `${namePart}_${sanitizedSerial}-${CERTIFICATE_TYPES.CERTIFICATE}`;
-    const keyFileName = `${namePart}_${sanitizedSerial}-${CERTIFICATE_TYPES.PRIVATE_KEY}`;
+    const certFileName = `${namePart}_${sanitizedSerial}-certificate.pem.crt`;
+    const keyFileName = `${namePart}_${sanitizedSerial}-private.pem.key`;
 
     const certPath = path.join(stationDir, certFileName);
     const keyPath = path.join(stationDir, keyFileName);
@@ -174,7 +174,7 @@ export class StationCertificateService {
 
     const namePart = sanitizePathComponent(existingCert.station.stationType.substring(0, 5).toUpperCase());
     const sanitizedSerial = sanitizePathComponent(existingCert.station.serialCode);
-    const stationDir = path.join(CERTIFICATE_DIR, `${namePart}_${sanitizedSerial}`);
+    const stationDir = path.join(config.certificates.rootCaPath, `${namePart}_${sanitizedSerial}`);
 
     if (!fs.existsSync(stationDir)) {
       fs.mkdirSync(stationDir, { recursive: true });
@@ -251,7 +251,7 @@ export class StationCertificateService {
     const namePart = sanitizePathComponent(existingCert.station.stationType.substring(0, 5).toUpperCase());
     const sanitizedSerial = sanitizePathComponent(existingCert.station.serialCode);
 
-    const stationDir = path.join(CERTIFICATE_DIR, `${namePart}_${sanitizedSerial}`);
+    const stationDir = path.join(config.certificates.rootCaPath, `${namePart}_${sanitizedSerial}`);
 
     if (fs.existsSync(stationDir)) {
       fs.rmSync(stationDir, { recursive: true, force: true });

@@ -1,11 +1,11 @@
 import jwt from "jsonwebtoken";
-import { Request, Response, NextFunction } from "express";
-import config from "../../config/environment";
+import { Request, Response } from "express";
+import { config } from "../../config/environment";
 
-export const generateToken = (userId: number, res: Response): string => {
-  const token = jwt.sign({ userId }, config.JWT_SECRET, { expiresIn: "7d" });
+export const generateToken = (id: number, res: Response): string => {
+  const token = jwt.sign({ id }, config.jwt.secret, { expiresIn: "7d" });
 
-  res.cookie("kloudtrack-jwt", token, {
+  res.cookie(config.cookie, token, {
     maxAge: 30 * 24 * 60 * 60 * 1000, //30 dayums
     httpOnly: true,
     sameSite: "strict",
@@ -17,7 +17,7 @@ export const generateToken = (userId: number, res: Response): string => {
 };
 
 export const clearAuthCookie = (res: Response): void => {
-  res.cookie("zorb-jwt", "", {
+  res.cookie(config.cookie, "", {
     maxAge: 0,
     httpOnly: true,
     sameSite: "strict",
@@ -31,8 +31,8 @@ export const extractToken = (req: Request): string | null => {
     return req.headers.authorization.split(" ")[1];
   }
 
-  if (req.cookies && req.cookies["zorb-jwt"]) {
-    return req.cookies["zorb-jwt"];
+  if (req.cookies && req.cookies[config.cookie]) {
+    return req.cookies[config.cookie];
   }
 
   return null;

@@ -3,7 +3,7 @@ import { asyncHandler } from "../../core/middlewares/error-handler.middleware";
 import { sendResponse } from "../../core/utils/response";
 import { AppError } from "../../core/utils/error";
 import { StationService } from "./service";
-import { StationMetadata } from "../../core/services/station/station.types";
+import { CreateStationDTO, UpdateStationDTO } from "./type";
 
 export class StationController {
   private service: StationService;
@@ -23,14 +23,14 @@ export class StationController {
   create = asyncHandler(async (req: Request, res: Response) => {
     if (!req.user) throw new AppError("Not authenticated", 400);
 
-    const data: StationMetadata = req.body;
+    const data: CreateStationDTO = req.body;
     const newStation = await this.service.createStation(data, req.user.id);
 
     return sendResponse(res, newStation, 201, "Station created successfully");
   });
 
   update = asyncHandler(async (req: Request, res: Response) => {
-    const data: StationMetadata = req.body;
+    const data: UpdateStationDTO = req.body;
     const { id } = req.params;
 
     const updatedStation = await this.service.updateStation(+id, data);

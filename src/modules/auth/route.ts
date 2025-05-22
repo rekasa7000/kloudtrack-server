@@ -15,15 +15,15 @@ export class AuthRoutes {
   }
 
   private initializeRoutes(): void {
-    this.router.post("/login", validateRequest(LoginValidation), this.controller.login);
+    this.router.post("/login", validateRequest(LoginValidation), this.controller.login.bind(this.controller));
     this.router.post(
       "/password-reset/request",
       validateRequest(RequesPasswordResetValidation),
-      this.controller.requestPasswordReset
+      this.controller.requestPasswordReset.bind(this.controller)
     );
-    this.router.post("/password-reset", this.controller.resetPassword);
-    this.router.get("/profile", protect, this.controller.getProfile);
-    this.router.post("/logout", protect, this.controller.logout);
+    this.router.post("/password-reset", this.controller.resetPassword.bind(this.controller));
+    this.router.get("/check-auth", protect, this.controller.getProfile.bind(this.controller));
+    this.router.post("/logout", protect, this.controller.logout.bind(this.controller));
   }
 
   public getRouter(): Router {
