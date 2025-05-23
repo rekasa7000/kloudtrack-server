@@ -134,7 +134,7 @@ export class StationCertificateRepository {
 
   async delete(id: number): Promise<StationCertificate> {
     return this.prisma.stationCertificate.delete({
-      where: { id },
+      where: { stationId: id },
     });
   }
 

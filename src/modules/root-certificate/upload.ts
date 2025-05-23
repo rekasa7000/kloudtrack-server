@@ -1,7 +1,6 @@
 import multer from "multer";
-import multerS3 from "multer-s3";
 import { Request } from "express";
-import { S3_BUCKET_NAME, s3Client } from "../../config/aws.config";
+import { formatVersion, normalizeVersion } from "../../core/utils/certificate";
 
 interface MulterRequest extends Request {
   body: {
@@ -17,24 +16,25 @@ export class RootCertificateUploadService {
   }
 
   private createStorageEngine(): multer.StorageEngine {
-    return multerS3({
-      s3: s3Client,
-      bucket: S3_BUCKET_NAME,
-      contentType: multerS3.AUTO_CONTENT_TYPE,
-      key: this.generateS3Key.bind(this),
-    });
+    return multer.memoryStorage();
   }
 
-  private async generateS3Key(req: MulterRequest, file: Express.Multer.File, callback: any) {
-    try {
-      if (!file.originalname.endsWith(".pem")) {
-        return callback(new Error("Invalid Certificate Type - Only Root CA files are allowed"), "");
-      }
-      const version = req.body.version || "CA1";
-      return callback(null, `certificates/AmazonRoot${version}.pem`);
-    } catch (error) {
-      callback(error, "");
+  private async generateS3Key(req: MulterRequest, file: Express.Multer.File): Promise<string> {
+    if (!file.originalname.endsWith(".pem")) {
+      throw new Error("Invalid Certificate Type - Only Root CA files are allowed");
     }
+
+    const version = req.body.version || "CA1";
+    const normalizedVersion = normalizeVersion(version);
+    const formattedVersion = formatVersion(normalizedVersion);
+
+    return `certificates/AmazonRoot${formattedVersion}.pem`;
+  }
+
+  private generateCertificateId(version: string): string {
+    const normalizedVersion = normalizeVersion(version);
+    const formattedVersion = formatVersion(normalizedVersion);
+    return `AmazonRoot${formattedVersion}`;
   }
 
   public uploadRootCertificate() {
@@ -46,9 +46,89 @@ export class RootCertificateUploadService {
       }
     };
 
-    return multer({
+    const upload = multer({
       storage: this.storage,
       fileFilter: fileFilter,
+      limits: {
+        fileSize: 10 * 1024 * 1024,
+      },
     }).single("root-ca-file");
+
+    return async (req: MulterRequest, res: any, next: any) => {
+      upload(req, res, async (err) => {
+        if (err) {
+          return next(err);
+        }
+
+        if (!req.file) {
+          return next(new Error("No file uploaded"));
+        }
+
+        try {
+          const version = req.body.version || "CA1";
+          const s3Key = await this.generateS3Key(req, req.file);
+          const certificateId = this.generateCertificateId(version);
+
+          req.file = {
+            ...req.file,
+            s3Key: s3Key,
+            certificateId: certificateId,
+            version: normalizeVersion(version),
+          } as any;
+
+          next();
+        } catch (error) {
+          next(error);
+        }
+      });
+    };
+  }
+
+  public uploadRootCertificateSpecialized() {
+    const fileFilter = (_req: Request, file: Express.Multer.File, callback: multer.FileFilterCallback) => {
+      if (file.originalname.endsWith(".pem")) {
+        callback(null, true);
+      } else {
+        callback(new Error("Only Root CA certificate files are allowed"));
+      }
+    };
+
+    const upload = multer({
+      storage: this.storage,
+      fileFilter: fileFilter,
+      limits: {
+        fileSize: 10 * 1024 * 1024,
+      },
+    }).single("root-ca-file");
+
+    return async (req: MulterRequest, res: any, next: any) => {
+      upload(req, res, async (err) => {
+        if (err) {
+          return next(err);
+        }
+
+        if (!req.file) {
+          return next(new Error("No file uploaded"));
+        }
+
+        try {
+          const version = req.body.version || "CA1";
+          const normalizedVersion = normalizeVersion(version);
+          const formattedVersion = formatVersion(normalizedVersion);
+          const certificateId = `AmazonRoot${formattedVersion}`;
+
+          req.file = {
+            ...req.file,
+            certificateId: certificateId,
+            version: normalizedVersion,
+            formattedVersion: formattedVersion,
+          } as any;
+
+          next();
+        } catch (error) {
+          next(error);
+        }
+      });
+    };
   }
 }

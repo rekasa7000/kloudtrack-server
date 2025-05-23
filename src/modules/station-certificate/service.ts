@@ -1,36 +1,44 @@
-import path from "path";
-import fs from "fs";
 import crypto from "crypto";
 import { AppError } from "../../core/utils/error";
-import { getCertificateFingerPrint, writeCertificateToFile } from "../../core/utils/certificate";
+import { getCertificateFingerPrint } from "../../core/utils/certificate";
 import { sanitizePathComponent } from "../../core/utils/sanitizer";
 import { StationCertificateRepository } from "./repository";
 import { config } from "../../config/environment";
+import { ContentType, S3Service } from "../../core/service/aws-s3";
 
 export class StationCertificateService {
   private repository: StationCertificateRepository;
+  private s3Service: S3Service;
 
   constructor(stationCertificateRepository: StationCertificateRepository) {
     this.repository = stationCertificateRepository;
+    this.s3Service = new S3Service({
+      bucketName: config.aws.s3.bucketName,
+      region: config.aws.region,
+    });
   }
 
   async getAllCertificates() {
     const stationCertificates = await this.repository.findAll();
 
-    return stationCertificates.map((cert) => {
-      const certExists = fs.existsSync(path.join(process.cwd(), cert.certPath));
-      const keyExists = fs.existsSync(path.join(process.cwd(), cert.keyPath));
+    const certificatesWithStatus = await Promise.all(
+      stationCertificates.map(async (cert) => {
+        const certExists = await this.s3Service.objectExists(cert.certPath);
+        const keyExists = await this.s3Service.objectExists(cert.keyPath);
 
-      return {
-        stationId: cert.stationId,
-        status: cert.status,
-        expiresAt: cert.expiresAt,
-        certificates: {
-          certficate: certExists,
-          privateKey: keyExists,
-        },
-      };
-    });
+        return {
+          stationId: cert.stationId,
+          status: cert.status,
+          expiresAt: cert.expiresAt,
+          certificates: {
+            certificate: certExists,
+            privateKey: keyExists,
+          },
+        };
+      })
+    );
+
+    return certificatesWithStatus;
   }
 
   async uploadCertificate(
@@ -43,86 +51,127 @@ export class StationCertificateService {
       certificateArn?: string;
       certFile?: Express.Multer.File;
       keyFile?: Express.Multer.File;
+      certLocation?: string;
+      keyLocation?: string;
     }
   ) {
-    const { serialCode, certificateContent, privateKeyContent, certificateId, certificateArn } = certificateData;
+    const { serialCode, certificateContent, privateKeyContent, certificateId, certificateArn, certFile, keyFile } =
+      certificateData;
 
     if (!serialCode) {
       throw new AppError("Station Serial is Required", 400);
     }
 
     const sanitizedSerial = sanitizePathComponent(serialCode);
-
     if (sanitizedSerial !== serialCode) {
       throw new AppError("Invalid characters in serial code", 400);
     }
 
     const station = await this.repository.findBySerial(serialCode);
-
     if (!station) {
       throw new AppError("No station with serial input found", 404);
     }
 
     const existingCert = await this.repository.findByStationId(station.id);
-
     if (existingCert) {
       throw new AppError(`Certificate for station ${station.stationName} already exists`, 409);
     }
 
-    const namePart = sanitizePathComponent(station.stationType.substring(0, 5).toUpperCase());
-
-    const stationDir = path.join(config.certificates.rootCaPath, `${namePart}_${sanitizedSerial}`);
-    if (!fs.existsSync(stationDir)) {
-      fs.mkdirSync(stationDir, { recursive: true });
-    }
-
-    const certFileName = `${namePart}_${sanitizedSerial}-certificate.pem.crt`;
-    const keyFileName = `${namePart}_${sanitizedSerial}-private.pem.key`;
-
-    const certPath = path.join(stationDir, certFileName);
-    const keyPath = path.join(stationDir, keyFileName);
-
-    let fingerprint: string;
+    let certContent: string;
+    let keyContent: string;
 
     if (certificateContent && privateKeyContent) {
-      await writeCertificateToFile(certificateContent, certPath);
-      await writeCertificateToFile(privateKeyContent, keyPath);
-      fingerprint = getCertificateFingerPrint(certificateContent);
-    } else if (certificateData.certFile && certificateData.keyFile) {
-      const certificateFile = fs.readFileSync(certificateData.certFile.path);
-      fingerprint = crypto.createHash("sha256").update(certificateFile).digest("hex");
+      certContent = certificateContent;
+      keyContent = privateKeyContent;
+    } else if (certFile?.buffer && keyFile?.buffer) {
+      certContent = certFile.buffer.toString("utf8");
+      keyContent = keyFile.buffer.toString("utf8");
     } else {
       throw new AppError("Both Certificate and private key are required", 400);
     }
 
-    const expiresAt = new Date();
-    expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+    if (!certContent || !keyContent) {
+      throw new AppError("Certificate or Key content is missing", 400);
+    }
 
-    const certPathRelative = `/certificates/${namePart}_${sanitizedSerial}/${certFileName}`;
-    const keyPathRelative = `/certificates/${namePart}_${sanitizedSerial}/${keyFileName}`;
+    const fingerprint = getCertificateFingerPrint(certContent);
 
-    const createdCertificate = await this.repository.create({
-      uploadedByUserId: userId,
-      stationId: station.id,
-      certPath: certPathRelative,
-      keyPath: keyPathRelative,
-      awsCertId: certificateId || null,
-      awsCertArn: certificateArn || null,
-      status: "ACTIVE",
-      expiresAt,
-      fingerprint,
-    });
+    const certS3Key = `${sanitizedSerial}-certificate.pem.crt`;
+    const keyS3Key = `${sanitizedSerial}-private.pem.key`;
 
-    return {
-      id: createdCertificate.id,
-      stationId: createdCertificate.stationId,
-      certificatePath: certPathRelative,
-      privateKeyPath: keyPathRelative,
-      certificateFileName: certFileName,
-      privateKeyFileName: keyFileName,
-      status: createdCertificate.status,
-      expiresAt: createdCertificate.expiresAt,
-    };
+    try {
+      await this.s3Service.putObject(certS3Key, certContent, {
+        prefix: `${S3Service.PREFIXES.CERTIFICATES}${serialCode}/`,
+        contentType: ContentType.CCRT,
+        metadata: {
+          "station-id": station.id.toString(),
+          "station-serial": sanitizedSerial,
+          "station-type": station.stationType,
+          "certificate-type": "private-key",
+          "uploaded-at": new Date().toISOString(),
+        },
+        tags: {
+          Type: "PrivateKey",
+          StationId: station.id.toString(),
+          Environment: process.env.NODE_ENV || "development",
+        },
+      });
+
+      await this.s3Service.putObject(keyS3Key, keyContent, {
+        prefix: `${S3Service.PREFIXES.CERTIFICATES}${serialCode}/`,
+        contentType: ContentType.PEM,
+        metadata: {
+          "station-id": station.id.toString(),
+          "station-serial": sanitizedSerial,
+          "station-type": station.stationType,
+          "certificate-type": "private-key",
+          "uploaded-at": new Date().toISOString(),
+        },
+        tags: {
+          Type: "PrivateKey",
+          StationId: station.id.toString(),
+          Environment: process.env.NODE_ENV || "development",
+        },
+      });
+
+      const expiresAt = new Date();
+      expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+
+      const certPath = `${S3Service.PREFIXES.CERTIFICATES}${serialCode}/${certS3Key}`;
+      const keyPath = `${S3Service.PREFIXES.CERTIFICATES}${serialCode}/${keyS3Key}`;
+      const certLocation = certFile?.location;
+      const keyLocation = keyFile?.location;
+
+      const createdCertificate = await this.repository.create({
+        uploadedByUserId: userId,
+        stationId: station.id,
+        certPath,
+        keyPath,
+        keyLocation,
+        certLocation,
+        awsCertId: certificateId || null,
+        awsCertArn: certificateArn || null,
+        status: "ACTIVE",
+        expiresAt,
+        fingerprint,
+      });
+
+      return {
+        id: createdCertificate.id,
+        stationId: station.id,
+        certificatePath: certPath,
+        privateKeyPath: keyPath,
+        certificateFileName: certS3Key,
+        privateKeyFileName: keyS3Key,
+        status: createdCertificate.status,
+        expiresAt: createdCertificate.expiresAt,
+      };
+    } catch (error) {
+      throw new AppError(
+        `Failed to upload certificates to S3: ${error instanceof Error ? error.message : "Unknown error"}`,
+        500
+      );
+    }
   }
 
   async updateCertificate(
@@ -141,21 +190,19 @@ export class StationCertificateService {
       throw new AppError(`Station Id is Required`, 400);
     }
 
-    const existingCert = await this.repository.findByStationId(stationId);
+    const existingCertificate = await this.repository.findByStationId(stationId);
 
-    if (!existingCert) {
+    if (!existingCertificate) {
       throw new AppError(`Certificate for station ${stationId} not found`, 404);
     }
 
-    if (!existingCert.station) {
+    if (!existingCertificate.station) {
       throw new AppError(`Certificate for station ${stationId} not found`, 404);
     }
 
     const { certificateContent, privateKeyContent, certificateId, certificateArn, status } = certificateData;
 
     const updateData: any = {};
-    let certPathRelative = existingCert.certPath;
-    let keyPathRelative = existingCert.keyPath;
 
     if (status) {
       if (!["ACTIVE", "INACTIVE", "REVOKED"].includes(status)) {
@@ -172,63 +219,118 @@ export class StationCertificateService {
       updateData.awsCertArn = certificateArn;
     }
 
-    const namePart = sanitizePathComponent(existingCert.station.stationType.substring(0, 5).toUpperCase());
-    const sanitizedSerial = sanitizePathComponent(existingCert.station.serialCode);
-    const stationDir = path.join(config.certificates.rootCaPath, `${namePart}_${sanitizedSerial}`);
-
-    if (!fs.existsSync(stationDir)) {
-      fs.mkdirSync(stationDir, { recursive: true });
-    }
-
     let updatedCertificate = false;
     let updatedPrivateKey = false;
+    console.log(existingCertificate.keyPath);
 
-    if (certificateContent) {
-      const certPath = path.join(process.cwd(), certPathRelative);
-      await writeCertificateToFile(certificateContent, certPath);
-      updateData.fingerprint = getCertificateFingerPrint(certificateContent);
-      const expiresAt = new Date();
-      expiresAt.setFullYear(expiresAt.getFullYear() + 1);
-      updateData.expiresAt = expiresAt;
-      updatedCertificate = true;
-    } else if (certificateData.certFile) {
-      const certificateFile = fs.readFileSync(certificateData.certFile.path);
-      updateData.fingerprint = crypto.createHash("sha256").update(certificateFile).digest("hex");
-      const expiresAt = new Date();
-      expiresAt.setFullYear(expiresAt.getFullYear() + 1);
-      updateData.expiresAt = expiresAt;
-      updatedCertificate = true;
+    const certificateText = await this.s3Service.getObject(existingCertificate.certPath);
+    const privateKeyText = await this.s3Service.getObject(existingCertificate.keyPath);
+    try {
+      if (certificateContent) {
+        if (certificateText === certificateContent) {
+          throw new AppError("New station certificate and the current one has the same content", 400);
+        }
+
+        await this.s3Service.putObject(existingCertificate.certPath, certificateContent, {
+          contentType: "application/x-pem-file",
+          metadata: {
+            "station-id": stationId.toString(),
+            "updated-at": new Date().toISOString(),
+            "certificate-type": "station-certificate",
+          },
+        });
+
+        updateData.fingerprint = getCertificateFingerPrint(certificateContent);
+        const expiresAt = new Date();
+        expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+        updateData.expiresAt = expiresAt;
+        updatedCertificate = true;
+      } else if (certificateData.certFile) {
+        const certificateContent = certificateData.certFile.buffer?.toString("utf8") || "";
+        if (!certificateContent) {
+          throw new AppError("Failed to read certificate file content", 400);
+        }
+        if (certificateText === certificateContent) {
+          throw new AppError("New station certificate and the current one has the same content", 400);
+        }
+
+        await this.s3Service.putObject(existingCertificate.certPath, certificateContent, {
+          contentType: "application/x-pem-file",
+          metadata: {
+            "station-id": stationId.toString(),
+            "updated-at": new Date().toISOString(),
+            "certificate-type": "station-certificate",
+          },
+        });
+        updateData.fingerprint = crypto.createHash("sha256").update(certificateContent).digest("hex");
+        const expiresAt = new Date();
+        expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+        updateData.expiresAt = expiresAt;
+        updatedCertificate = true;
+      }
+
+      if (privateKeyContent) {
+        if (privateKeyContent === privateKeyText) {
+          throw new AppError("New station certificate and the current one has the same content", 400);
+        }
+
+        await this.s3Service.putObject(existingCertificate.keyPath, privateKeyContent, {
+          contentType: "application/x-pem-file",
+          metadata: {
+            "station-id": stationId.toString(),
+            "updated-at": new Date().toISOString(),
+            "certificate-type": "private-key",
+          },
+        });
+        updatedPrivateKey = true;
+      } else if (certificateData.keyFile) {
+        const privateKeyContent = certificateData.keyFile.buffer?.toString("utf8") || "";
+
+        if (!privateKeyContent) {
+          throw new AppError("Failed to read private key file content", 400);
+        }
+        if (privateKeyContent === privateKeyText) {
+          throw new AppError("New station certificate and the current one has the same content", 400);
+        }
+
+        await this.s3Service.putObject(existingCertificate.keyPath, privateKeyContent, {
+          contentType: "application/x-pem-file",
+          metadata: {
+            "station-id": stationId.toString(),
+            "updated-at": new Date().toISOString(),
+            "certificate-type": "private-key",
+          },
+        });
+        updatedPrivateKey = true;
+      }
+
+      if (Object.keys(updateData).length === 0 && !updatedCertificate && !updatedPrivateKey) {
+        throw new AppError("No Updates Provided", 400);
+      }
+
+      const updatedRecord = await this.repository.update(stationId, updateData);
+
+      return {
+        id: updatedRecord.id,
+        stationId: updatedRecord.stationId,
+        status: updatedRecord.status,
+        certificateId: updatedRecord.awsCertId,
+        certificateArn: updatedRecord.awsCertArn,
+        expiresAt: updatedRecord.expiresAt,
+        certificatePath: updatedRecord.certPath,
+        privateKeyPath: updatedRecord.keyPath,
+        updated: {
+          certificate: updatedCertificate,
+          privateKey: updatedPrivateKey,
+          metadata: !!(certificateId || certificateArn || status),
+        },
+      };
+    } catch (error) {
+      throw new AppError(
+        `Failed to update certificates in S3: ${error instanceof Error ? error.message : "Unknown error"}`,
+        500
+      );
     }
-
-    if (privateKeyContent) {
-      const keyPath = path.join(process.cwd(), keyPathRelative);
-      await writeCertificateToFile(privateKeyContent, keyPath);
-      updatedPrivateKey = true;
-    } else if (certificateData.keyFile) {
-      updatedPrivateKey = true;
-    }
-
-    if (Object.keys(updateData).length === 0 && !updatedCertificate && !updatedPrivateKey) {
-      throw new AppError("No Updates Provided", 400);
-    }
-
-    const updatedRecord = await this.repository.update(stationId, updateData);
-
-    return {
-      id: updatedRecord.id,
-      stationId: updatedRecord.stationId,
-      status: updatedRecord.status,
-      certificateId: updatedRecord.awsCertId,
-      certificateArn: updatedRecord.awsCertArn,
-      expiresAt: updatedRecord.expiresAt,
-      certificatePath: updatedRecord.certPath,
-      privateKeyPath: updatedRecord.keyPath,
-      updated: {
-        certificate: updatedCertificate,
-        privateKey: updatedPrivateKey,
-        metadata: !!(certificateId || certificateArn || status),
-      },
-    };
   }
 
   async deleteCertificate(stationId: number) {
@@ -246,18 +348,22 @@ export class StationCertificateService {
       throw new AppError(`Certificate for station ${stationId} not found`, 404);
     }
 
-    await this.repository.delete(stationId);
+    try {
+      await Promise.all([
+        this.s3Service.deleteObject(existingCert.certPath, false),
+        this.s3Service.deleteObject(existingCert.keyPath, false),
+        //! DO NOT THROW AN ERROR
+      ]);
 
-    const namePart = sanitizePathComponent(existingCert.station.stationType.substring(0, 5).toUpperCase());
-    const sanitizedSerial = sanitizePathComponent(existingCert.station.serialCode);
+      await this.repository.delete(stationId);
 
-    const stationDir = path.join(config.certificates.rootCaPath, `${namePart}_${sanitizedSerial}`);
-
-    if (fs.existsSync(stationDir)) {
-      fs.rmSync(stationDir, { recursive: true, force: true });
+      return true;
+    } catch (error) {
+      throw new AppError(
+        `Failed to delete certificates: ${error instanceof Error ? error.message : "Unknown error"}`,
+        500
+      );
     }
-
-    return true;
   }
 
   async getCertificateByStationId(stationId: number) {
@@ -275,31 +381,108 @@ export class StationCertificateService {
       throw new AppError(`Certificate for station ${stationId} not found`, 404);
     }
 
-    const certificatePath = path.join(process.cwd(), existingCert.certPath);
-    const privateKeyPath = path.join(process.cwd(), existingCert.keyPath);
+    try {
+      const [certExists, keyExists] = await Promise.all([
+        this.s3Service.objectExists(existingCert.certPath),
+        this.s3Service.objectExists(existingCert.keyPath),
+      ]);
 
-    const hasCertificate = fs.existsSync(certificatePath);
-    const hasPrivateKey = fs.existsSync(privateKeyPath);
+      if (!certExists || !keyExists) {
+        throw new AppError(
+          `One or more required certificate files for station ${existingCert.station.stationName} are missing in S3`,
+          404
+        );
+      }
 
-    if (!hasCertificate || !hasPrivateKey) {
+      const [certificateContent, privateKeyContent] = await Promise.all([
+        this.s3Service.getObject(existingCert.certPath),
+        this.s3Service.getObject(existingCert.keyPath),
+      ]);
+
+      return {
+        id: existingCert.id,
+        stationId: existingCert.stationId,
+        status: existingCert.status,
+        expiresAt: existingCert.expiresAt,
+        certificateId: existingCert.awsCertId,
+        certificateArn: existingCert.awsCertArn,
+        certificate: certificateContent,
+        privateKey: privateKeyContent,
+      };
+    } catch (error) {
       throw new AppError(
-        `One or more required certificate files for station ${existingCert.station.stationName} are missing`,
-        404
+        `Failed to retrieve certificates from S3: ${error instanceof Error ? error.message : "Unknown error"}`,
+        500
       );
     }
+  }
 
-    const certificateContent = fs.readFileSync(certificatePath, "utf8");
-    const privateKeyContent = fs.readFileSync(privateKeyPath, "utf8");
+  async listAllCertificatesInS3() {
+    try {
+      const result = await this.s3Service.listObjects({
+        prefix: S3Service.PREFIXES.CERTIFICATES,
+      });
 
-    return {
-      id: existingCert.id,
-      stationId: existingCert.stationId,
-      status: existingCert.status,
-      expiresAt: existingCert.expiresAt,
-      certificateId: existingCert.awsCertId,
-      certificateArn: existingCert.awsCertArn,
-      certificate: certificateContent,
-      privateKey: privateKeyContent,
-    };
+      return result.objects.map((obj) => ({
+        key: obj.Key,
+        lastModified: obj.LastModified,
+        size: obj.Size,
+      }));
+    } catch (error) {
+      throw new AppError(
+        `Failed to list certificates in S3: ${error instanceof Error ? error.message : "Unknown error"}`,
+        500
+      );
+    }
+  }
+
+  async backupCertificate(stationId: number) {
+    const existingCert = await this.repository.findByStationId(stationId);
+    if (!existingCert) {
+      throw new AppError(`Certificate for station ${stationId} not found`, 404);
+    }
+
+    try {
+      const [certificateContent, privateKeyContent] = await Promise.all([
+        this.s3Service.getObject(existingCert.certPath),
+        this.s3Service.getObject(existingCert.keyPath),
+      ]);
+
+      const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+      const backupCertKey = `backup-${timestamp}-${existingCert.certPath.split("/").pop()}`;
+      const backupKeyKey = `backup-${timestamp}-${existingCert.keyPath.split("/").pop()}`;
+
+      await Promise.all([
+        this.s3Service.putObject(backupCertKey, certificateContent, {
+          prefix: S3Service.PREFIXES.BACKUPS,
+          contentType: "application/x-pem-file",
+          metadata: {
+            "backup-date": timestamp,
+            "original-station-id": stationId.toString(),
+            "backup-type": "certificate",
+          },
+        }),
+        this.s3Service.putObject(backupKeyKey, privateKeyContent, {
+          prefix: S3Service.PREFIXES.BACKUPS,
+          contentType: "application/x-pem-file",
+          metadata: {
+            "backup-date": timestamp,
+            "original-station-id": stationId.toString(),
+            "backup-type": "private-key",
+          },
+        }),
+      ]);
+
+      return {
+        backupCertificatePath: `${S3Service.PREFIXES.BACKUPS}${backupCertKey}`,
+        backupPrivateKeyPath: `${S3Service.PREFIXES.BACKUPS}${backupKeyKey}`,
+        backupDate: timestamp,
+      };
+    } catch (error) {
+      throw new AppError(
+        `Failed to backup certificate: ${error instanceof Error ? error.message : "Unknown error"}`,
+        500
+      );
+    }
   }
 }

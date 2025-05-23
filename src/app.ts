@@ -60,7 +60,12 @@ export class App {
     this.telemetryContainer = new TelemetryContainer(this.prisma);
     this.userContainer = new UserContainer(this.prisma);
 
-    this.iotManager = new IoTManager(this.stationContainer, this.telemetryContainer, this.commandContainer);
+    this.iotManager = new IoTManager(
+      this.stationContainer,
+      this.telemetryContainer,
+      this.commandContainer,
+      this.rootCertificateContainer
+    );
     this.configureMiddleware();
     this.setupRoutes();
     this.configureErrorHandling();
@@ -113,6 +118,7 @@ export class App {
   public async initialize(): Promise<void> {
     try {
       await this.prisma.$connect();
+      this.iotManager.initialize();
       console.log("Connected to database successfully");
     } catch (error) {
       console.error("Failed to initialize application:", error);

@@ -6,64 +6,19 @@ import {
   normalizeVersion,
 } from "../../core/utils/certificate";
 import { RootCertificateRepository } from "./repository";
-import { s3Client, S3_BUCKET_NAME } from "../../config/aws.config";
-import { GetObjectCommand, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { S3Service, ContentType } from "../../core/service/aws-s3";
+import { config } from "../../config/environment";
 
 export class RootCertificateService {
   private repository: RootCertificateRepository;
+  private s3Service: S3Service;
 
   constructor(rootCertificateRepository: RootCertificateRepository) {
     this.repository = rootCertificateRepository;
-  }
-
-  private async getS3Object(key: string): Promise<string> {
-    try {
-      const command = new GetObjectCommand({
-        Bucket: S3_BUCKET_NAME,
-        Key: key,
-      });
-
-      const response = await s3Client.send(command);
-      const body = response.Body;
-
-      if (!body) {
-        throw new AppError("Certificate file not found in S3", 404);
-      }
-
-      return await body.transformToString();
-    } catch (error) {
-      if (error instanceof AppError) throw error;
-      throw new AppError("Error reading certificate from S3", 500);
-    }
-  }
-
-  private async putS3Object(key: string, content: string): Promise<void> {
-    try {
-      const command = new PutObjectCommand({
-        Bucket: S3_BUCKET_NAME,
-        Key: key,
-        Body: content,
-        ContentType: "application/x-pem-file",
-      });
-
-      await s3Client.send(command);
-    } catch (error) {
-      throw new AppError("Error uploading certificate to S3", 500);
-    }
-  }
-
-  private async deleteS3Object(key: string): Promise<void> {
-    try {
-      const command = new DeleteObjectCommand({
-        Bucket: S3_BUCKET_NAME,
-        Key: key,
-      });
-
-      await s3Client.send(command);
-    } catch (error) {
-      // Don't throw error if file doesn't exist, just log it
-      console.warn(`Could not delete S3 object ${key}:`, error);
-    }
+    this.s3Service = new S3Service({
+      bucketName: config.aws.s3.bucketName,
+      region: config.aws.region,
+    });
   }
 
   async getRootCertificate() {
@@ -73,17 +28,14 @@ export class RootCertificateService {
       throw new AppError("Amazon Root CA certificate record not found", 404);
     }
 
-    // Extract S3 key from the path (assuming path contains the S3 key)
-    const s3Key = rootCertificate.path.startsWith("certificates/")
-      ? rootCertificate.path
-      : `certificates/${rootCertificate.path}`;
-
-    const rootCA = await this.getS3Object(s3Key);
+    const certificateId = this.extractCertificateIdFromPath(rootCertificate.path);
+    const rootCA = await this.s3Service.getCertificate(certificateId);
 
     return {
       id: rootCertificate.id,
       version: formatVersion(rootCertificate.version),
       status: rootCertificate.status,
+      path: rootCertificate.path,
       rootCA,
     };
   }
@@ -93,12 +45,18 @@ export class RootCertificateService {
     certificateData: {
       certificateText?: string;
       version?: string;
+      certificateId?: string;
       s3Key?: string;
-      s3Location?: string;
+      fileBuffer?: Buffer;
+      originalFilename?: string;
+      fileSize?: number;
     }
   ) {
     const existingCertificate = await this.repository.findCurrentActiveRoot();
 
+    if (existingCertificate?.version === certificateData.version) {
+      throw new AppError(`Version [${certificateData.version}] of certificate is already in the database`, 400);
+    }
     if (certificateData.certificateText) {
       const { certificateText, version = "CA1" } = certificateData;
 
@@ -107,23 +65,27 @@ export class RootCertificateService {
       }
 
       const normalizedVersion = normalizeVersion(version);
-      const s3Key = `certificates/AmazonRoot${formatVersion(normalizedVersion)}.pem`;
+      const certificateId = `AmazonRoot${formatVersion(normalizedVersion)}`;
 
-      await this.putS3Object(s3Key, certificateText);
+      await this.s3Service.uploadCertificate(certificateId, certificateText, {
+        version: normalizedVersion,
+        "uploaded-by": userId.toString(),
+      });
+
       const fingerprint = getCertificateFingerPrint(certificateText);
 
       if (existingCertificate) {
         await this.repository.updateManyStatus("ACTIVE", "INACTIVE");
-        // Delete old certificate from S3
-        if (existingCertificate.path) {
-          await this.deleteS3Object(existingCertificate.path);
-        }
       }
+
+      const s3Key = `${S3Service.PREFIXES.CERTIFICATES}${certificateId}.pem`;
+
+      const s3Location = `https://${this.s3Service.getBucketName()}.s3.${config.aws.region}.amazonaws.com/${s3Key}`;
 
       const rootCertificate = await this.repository.createRoot({
         uploadedByUserId: userId,
         path: s3Key,
-        location: certificateData.s3Location,
+        location: s3Location,
         version: normalizedVersion,
         status: "ACTIVE",
       });
@@ -135,33 +97,44 @@ export class RootCertificateService {
       };
     }
 
-    // File upload case
-    const { s3Key, version = "CA1" } = certificateData;
-    if (!s3Key) {
-      throw new AppError("Root CA certificate file is required", 400);
+    const { certificateId, s3Key, version = "CA1", fileBuffer, originalFilename, fileSize } = certificateData;
+
+    if (!fileBuffer || !certificateId || !s3Key) {
+      throw new AppError("Root CA certificate file and metadata are required", 400);
+    }
+
+    const certificateText = fileBuffer.toString("utf8");
+
+    if (!validateCertificate(certificateText)) {
+      throw new AppError("Invalid certificate format", 400);
     }
 
     const normalizedVersion = normalizeVersion(version);
-    const certificateText = await this.getS3Object(s3Key);
 
-    if (!validateCertificate(certificateText)) {
-      await this.deleteS3Object(s3Key);
-      throw new AppError("Invalid certificate format", 400);
-    }
+    await this.s3Service.uploadCertificate(certificateId, certificateText, {
+      "original-filename": originalFilename || "",
+      "file-size": fileSize?.toString() || "",
+      version: normalizedVersion,
+      "uploaded-by": userId.toString(),
+    });
 
     const fingerprint = getCertificateFingerPrint(certificateText);
 
     if (existingCertificate) {
       await this.repository.updateManyStatus("ACTIVE", "INACTIVE");
-      // Delete old certificate from S3
       if (existingCertificate.path) {
-        await this.deleteS3Object(existingCertificate.path);
+        const oldCertificateId = this.extractCertificateIdFromPath(existingCertificate.path);
+        await this.s3Service.deleteCertificate(oldCertificateId);
       }
     }
 
+    const finalS3Key = `${S3Service.PREFIXES.CERTIFICATES}${certificateId}.pem`;
+    const s3Location = `https://${this.s3Service.getBucketName()}.s3.${config.aws.region}.amazonaws.com/${s3Key}`;
+
     const rootCertificate = await this.repository.createRoot({
       uploadedByUserId: userId,
-      path: s3Key,
+      path: finalS3Key,
+      location: s3Location,
       version: normalizedVersion,
       status: "ACTIVE",
     });
@@ -178,8 +151,11 @@ export class RootCertificateService {
     certificateData: {
       certificateText?: string;
       version?: string;
+      certificateId?: string;
       s3Key?: string;
-      s3Location?: string;
+      fileBuffer?: Buffer;
+      originalFilename?: string;
+      fileSize?: number;
     }
   ) {
     if (!id) {
@@ -200,17 +176,22 @@ export class RootCertificateService {
       }
 
       const normalizedVersion = version ? normalizeVersion(version) : existingCertificate.version;
-      const s3Key = `certificates/AmazonRoot${formatVersion(normalizedVersion)}.pem`;
+      const certificateId = `AmazonRoot${formatVersion(normalizedVersion)}`;
+      const newS3Key = `${S3Service.PREFIXES.CERTIFICATES}${certificateId}.pem`;
 
-      // Delete old certificate if path is different
-      if (existingCertificate.path && existingCertificate.path !== s3Key) {
-        await this.deleteS3Object(existingCertificate.path);
+      if (existingCertificate.path !== newS3Key) {
+        const oldCertificateId = this.extractCertificateIdFromPath(existingCertificate.path);
+        await this.s3Service.deleteCertificate(oldCertificateId);
       }
 
-      await this.putS3Object(s3Key, certificateText);
+      await this.s3Service.uploadCertificate(certificateId, certificateText, {
+        version: normalizedVersion,
+        "updated-at": new Date().toISOString(),
+        location: certificateData.s3Key || "",
+      });
 
       const updatedCertificate = await this.repository.updateRoot(id, {
-        path: s3Key,
+        path: newS3Key,
         version: normalizedVersion,
         updatedAt: new Date(),
       });
@@ -221,28 +202,46 @@ export class RootCertificateService {
       };
     }
 
-    // File upload case
-    const { s3Key, version } = certificateData;
+    const { certificateId, s3Key, version = "CA1", fileBuffer, originalFilename, fileSize } = certificateData;
+
     if (!s3Key) {
       throw new AppError("Root CA certificate file or certificate text is required", 400);
     }
 
-    const normalizedVersion = version ? normalizeVersion(version) : existingCertificate.version;
-    const certificateText = await this.getS3Object(s3Key);
+    if (!fileBuffer || !certificateId || !s3Key) {
+      throw new AppError("Root CA certificate file and metadata are required", 400);
+    }
 
-    if (!validateCertificate(certificateText)) {
-      await this.deleteS3Object(s3Key);
+    const normalizedVersion = version ? normalizeVersion(version) : existingCertificate.version;
+
+    const newCertificateText = fileBuffer.toString("utf8");
+    const certificateText = await this.s3Service.getObject(existingCertificate.path);
+
+    if (!validateCertificate(newCertificateText)) {
       throw new AppError("Invalid certificate format", 400);
     }
 
-    // Delete old certificate if path is different
-    if (existingCertificate.path && existingCertificate.path !== s3Key) {
-      await this.deleteS3Object(existingCertificate.path);
+    if (certificateText === newCertificateText) {
+      throw new AppError("New certificate has the same content with the current one", 400);
     }
+
+    if (existingCertificate.path !== s3Key) {
+      const oldCertificateId = this.extractCertificateIdFromPath(existingCertificate.path);
+      await this.s3Service.deleteCertificate(oldCertificateId);
+    }
+
+    await this.s3Service.uploadCertificate(certificateId, certificateText, {
+      version: normalizedVersion,
+      "updated-at": new Date().toISOString(),
+      location: certificateData.s3Key || "",
+    });
+
+    const s3Location = `https://${this.s3Service.getBucketName()}.s3.${config.aws.region}.amazonaws.com/${s3Key}`;
 
     const updatedCertificate = await this.repository.updateRoot(id, {
       path: s3Key,
       version: normalizedVersion,
+      location: s3Location,
       updatedAt: new Date(),
     });
 
@@ -260,7 +259,8 @@ export class RootCertificateService {
     }
 
     if (existingCertificate.path) {
-      await this.deleteS3Object(existingCertificate.path);
+      const certificateId = this.extractCertificateIdFromPath(existingCertificate.path);
+      await this.s3Service.deleteCertificate(certificateId);
     }
 
     await this.repository.deleteRoot(id);
@@ -300,5 +300,22 @@ export class RootCertificateService {
       ...cert,
       version: formatVersion(cert.version),
     }));
+  }
+
+  private extractCertificateIdFromPath(path: string): string {
+    const cleanPath = path.startsWith("certificates/") ? path.substring(13) : path;
+
+    const withoutExtension = cleanPath.endsWith(".pem") ? cleanPath.slice(0, -4) : cleanPath;
+
+    return withoutExtension;
+  }
+
+  async getCertificateById(certificateId: string): Promise<string> {
+    return await this.s3Service.getCertificate(certificateId);
+  }
+
+  async certificateExists(certificateId: string): Promise<boolean> {
+    const key = `${S3Service.PREFIXES.CERTIFICATES}${certificateId}.pem`;
+    return await this.s3Service.objectExists(key);
   }
 }

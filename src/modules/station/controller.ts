@@ -50,4 +50,11 @@ export class StationController {
     const station = await this.service.getStationById(+id);
     return sendResponse(res, station, 200, "Station fetched successfully");
   });
+
+  activateStation = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const station = await this.service.activateStation(+id);
+    return sendResponse(res, station, 200, "Station fetched successfully");
+  });
 }

@@ -54,7 +54,7 @@ export class AppRoutes {
     this.router.use("/organization", protect, this.organizationContainer.routes.getRouter());
     this.router.use("/root/certificate", protect, this.rootCertificateContainer.routes.getRouter());
     this.router.use("/station", protect, this.stationContainer.routes.getRouter());
-    this.router.use("/station-cert", protect, this.stationCertificateContainer.routes.getRouter());
+    this.router.use("/certificate/station", protect, this.stationCertificateContainer.routes.getRouter());
     this.router.use("/user", protect, this.userContainer.routes.getRouter());
     this.router.use("/telemetry", protect, this.telemetryContainer.routes.getRouter());
   }

@@ -16,6 +16,11 @@ export class StationRoutes {
     this.router.get("/", restrictTo("SUPERADMIN"), this.controller.getAll.bind(this.controller));
     this.router.get("/:id", this.controller.getById.bind(this.controller));
     this.router.post("/", restrictTo("SUPERADMIN"), this.controller.create.bind(this.controller));
+    this.router.post(
+      "/:id/activate",
+      restrictTo("SUPERADMIN", "ADMIN"),
+      this.controller.activateStation.bind(this.controller)
+    );
     this.router.put("/:id", restrictTo("SUPERADMIN"), this.controller.update.bind(this.controller));
     this.router.delete("/:id", restrictTo("SUPERADMIN"), this.controller.delete.bind(this.controller));
   }

@@ -7,6 +7,11 @@ import { TelemetryContainer } from "../telemetry/container";
 import { CommandContainer } from "../command/container";
 import { config } from "../../config/environment";
 import { logger } from "../../core/utils/logger";
+import { S3Service } from "../../core/service/aws-s3";
+import path from "path";
+import fs from "fs/promises";
+import os from "os";
+import { RootCertificateContainer } from "../root-certificate/container";
 
 export class IoTManager extends EventEmitter {
   private static instance: IoTManager;
@@ -17,16 +22,24 @@ export class IoTManager extends EventEmitter {
   private stationContainer: StationContainer;
   private telemetryContainer: TelemetryContainer;
   private commandContainer: CommandContainer;
+  private rootCertificateContainer: RootCertificateContainer;
+  private s3Service: S3Service;
 
   constructor(
     stationContainer: StationContainer,
     telemetryContainer: TelemetryContainer,
-    commandContainer: CommandContainer
+    commandContainer: CommandContainer,
+    rootCertificateContainer: RootCertificateContainer
   ) {
     super();
     this.stationContainer = stationContainer;
     this.telemetryContainer = telemetryContainer;
     this.commandContainer = commandContainer;
+    this.rootCertificateContainer = rootCertificateContainer;
+    this.s3Service = new S3Service({
+      bucketName: config.aws.s3.bucketName,
+      region: config.aws.region,
+    });
     this.setupAWS();
   }
 
@@ -63,6 +76,7 @@ export class IoTManager extends EventEmitter {
   public async connectStation(stationId: number): Promise<void> {
     try {
       const station = await this.stationContainer.service.getStationById(stationId);
+      const rootCertificate = await this.rootCertificateContainer.service.getRootCertificate();
       if (!station || !station.certificate) {
         throw new Error(`Station ${stationId} not found or missing certificate`);
       }
@@ -74,10 +88,30 @@ export class IoTManager extends EventEmitter {
         return;
       }
 
+      const [privateKey, certificate, rootCA] = await Promise.all([
+        this.s3Service.getObject(station.certificate.keyPath),
+        this.s3Service.getObject(station.certificate.certPath),
+        this.s3Service.getObject(rootCertificate.path),
+      ]);
+
+      const certDir = path.join(os.tmpdir(), "iot-certs");
+      console.log(certDir);
+      await fs.mkdir(certDir, { recursive: true });
+
+      const keyPath = path.join(certDir, "private.key");
+      const certPath = path.join(certDir, "certificate.pem");
+      const caPath = path.join(certDir, "root-CA.pem");
+
+      await Promise.all([
+        fs.writeFile(keyPath, privateKey),
+        fs.writeFile(certPath, certificate),
+        fs.writeFile(caPath, rootCA),
+      ]);
+
       const device = new awsIot({
-        keyPath: station.certificate.keyPath,
-        certPath: station.certificate.certPath,
-        caPath: config.certificates.rootCaPath,
+        keyPath,
+        certPath,
+        caPath,
         clientId: clientId,
         host: config.aws.iot.endpoint,
       });
@@ -99,8 +133,8 @@ export class IoTManager extends EventEmitter {
       // const telemetryTopic = `weather/stations/${stationId}/telemetry`;
       // const commandTopic = `weather/stations/${stationId}/commands`;
       // const statusTopic = `weather/stations/${stationId}/status`;
-      const telemetryTopic = `weather/stations/1/telemetry`;
-      const commandTopic = `weather/stations/1/commands`;
+      const telemetryTopic = `kloudtrack/KT-DEVICE-12345/data`;
+      // const commandTopic = `weather/stations/1/commands`;
       const statusTopic = `weather/stations/1/status`;
 
       device.subscribe([telemetryTopic, statusTopic]);
@@ -119,7 +153,7 @@ export class IoTManager extends EventEmitter {
           clientId,
         };
 
-        console.log(message);
+        logger.info(message);
 
         await this.handleIncomingMessage(stationId, message);
       } catch (error) {
@@ -152,9 +186,9 @@ export class IoTManager extends EventEmitter {
   private async handleIncomingMessage(stationId: number, message: IoTMessage): Promise<void> {
     const { topic, payload } = message;
 
-    if (topic.includes("/telemetry")) {
+    if (topic.includes("/data")) {
       await this.handleTelemetryData(stationId, payload);
-    } else if (topic.includes("/status")) {
+    } else if (topic.includes("/command")) {
       await this.handleStatusUpdate(stationId, payload);
     } else {
       logger.warn(`Unknown topic received: ${topic}`);
@@ -169,13 +203,13 @@ export class IoTManager extends EventEmitter {
         humidity: data.humidity,
         pressure: data.pressure,
         heatIndex: data.heatIndex,
-        windDirection: data.windDirection,
-        windSpeed: data.windSpeed,
+        windDirection: data.wind_direction,
+        windSpeed: data.wind_speed,
         precipitation: data.precipitation,
-        uvIndex: data.uvIndex,
+        uvIndex: data.uv_index,
         distance: data.distance,
-        lightIntensity: data.lightIntensity,
-        recordedAt: new Date(data.timestamp || Date.now()),
+        lightIntensity: data.light_intensity,
+        recordedAt: new Date(data.recordedAt || Date.now()),
       };
 
       await this.telemetryContainer.service.createTelemetry(stationId, telemetryData);
@@ -207,7 +241,7 @@ export class IoTManager extends EventEmitter {
         throw new Error(`Station ${stationId} not found`);
       }
 
-      const clientId = `weather-station-${station.serialCode}`;
+      const clientId = station.stationName;
       const device = this.stationConnections.get(clientId);
 
       if (!device) {

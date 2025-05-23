@@ -20,12 +20,15 @@ export const config = {
       endpoint: process.env.AWS_IOT_HOST || "",
       policyName: process.env.AWS_IOT_POLICY_NAME || "",
     },
+    s3: {
+      bucketName: process.env.S3_BUCKET_NAME || "kloudtrack",
+    },
   },
   certificates: {
     dir: process.env.CERTS_DIR || "/certificates",
     rootCaPath: process.env.ROOT_CA_PATH || "/certificates",
   },
   logging: {
-    level: process.env.LOG_LEVEL || "",
+    level: process.env.LOG_LEVEL || "info",
   },
 };
