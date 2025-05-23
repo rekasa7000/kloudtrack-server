@@ -6,8 +6,7 @@ export const validateRequest = (schema: AnyZodObject) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const contentType = req.headers["content-type"];
-      const isMultipartFormData =
-        contentType && contentType.includes("multipart/form-data");
+      const isMultipartFormData = contentType && contentType.includes("multipart/form-data");
 
       const validationObject = {
         body: req.body,
@@ -39,12 +38,7 @@ export const validateRequest = (schema: AnyZodObject) => {
           message: err.message,
         }));
 
-        return next(
-          new AppError(
-            `Validation error: ${JSON.stringify(errorMessages)}`,
-            400
-          )
-        );
+        return next(new AppError(`Validation error: ${JSON.stringify(errorMessages)}`, 400));
       }
       return next(error);
     }

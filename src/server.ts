@@ -1,26 +1,11 @@
 import app from "./app";
-import config from "./config/environment.config";
-import logger from "./core/utils/logger";
-import { initializeTelemetryService } from "./modules/station/telemetry/telemetry.setup";
+import dotenv from "dotenv";
 
-async function initializeApp() {
-  try {
-    await initializeTelemetryService();
-    logger.info("Application services initialized successfully");
-  } catch (error) {
-    logger.error("Failed to initialize application services:", error);
-    process.exit(1);
-  }
-}
-const server = app.listen(config.PORT, () => {
-  logger.info(`Server running on port ${config.PORT}`);
+dotenv.config();
 
-  initializeApp();
-});
+const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 
-process.on("SIGTERM", () => {
-  logger.info("SIGTERM signal received: closing HTTP server");
-  server.close(() => {
-    logger.info("HTTP server closed");
-  });
+app.start(PORT).catch((err) => {
+  console.error("Failed to start application:", err);
+  process.exit(1);
 });
