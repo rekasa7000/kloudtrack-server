@@ -170,12 +170,24 @@ export class UserRepository {
     });
   }
 
-  async createUserOrganization(userId: number, organizationId: number) {
+  async addUserToOrganization(userId: number, organizationId: number) {
     return this.prisma.userOrganization.create({
       data: {
         userId,
         organizationId,
       },
+    });
+  }
+
+  async addUsersToOrganization(userIds: number[], organizationId: number) {
+    const data = userIds.map((userId) => ({
+      userId,
+      organizationId,
+    }));
+
+    return this.prisma.userOrganization.createMany({
+      data,
+      skipDuplicates: true,
     });
   }
 }

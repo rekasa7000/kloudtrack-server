@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { asyncHandler } from "../../core/middlewares/error-handler.middleware";
-import { CommandService, CommandPayload } from "./service";
+import { CommandService } from "./service";
 import { Request, Response } from "express";
 import { sendResponse } from "../../core/utils/response";
 import { AppError } from "../../core/utils/error";

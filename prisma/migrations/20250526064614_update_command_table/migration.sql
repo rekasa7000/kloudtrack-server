@@ -11,7 +11,10 @@ CREATE TYPE "user_role_enum" AS ENUM ('USER', 'ADMIN', 'SUPERADMIN');
 CREATE TYPE "problem_status_enum" AS ENUM ('OPEN', 'IN_PROGRESS', 'RESOLVED');
 
 -- CreateEnum
-CREATE TYPE "command_status_enum" AS ENUM ('PENDING', 'DELIVERED', 'EXECUTED', 'FAILED');
+CREATE TYPE "command_status_enum" AS ENUM ('PENDING', 'SENT', 'EXECUTED', 'FAILED', 'TIMEOUT');
+
+-- CreateEnum
+CREATE TYPE "command_type_enum" AS ENUM ('RESET', 'ACTIVATE', 'DEACTIVATE', 'FIRMWARE_UPDATE', 'SYNC_DATA', 'FETCH_DATAT');
 
 -- CreateTable
 CREATE TABLE "users" (
@@ -164,6 +167,8 @@ CREATE TABLE "commands" (
     "station_id" INTEGER NOT NULL,
     "issued_by" INTEGER NOT NULL,
     "command" JSONB NOT NULL,
+    "type" "command_type_enum" NOT NULL,
+    "status" "command_status_enum" NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "executed_at" TIMESTAMP(3),

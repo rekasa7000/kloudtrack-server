@@ -293,4 +293,16 @@ export class UserService {
       return userWithoutPassword;
     });
   }
+
+  async addUserToOrganization(userId: number, organizationId: number) {
+    const userOrganization = await this.repository.addUserToOrganization(userId, organizationId);
+
+    return userOrganization;
+  }
+
+  async addUsersToOrganization(userIds: number[], organizationId: number) {
+    const userOrganizations = await this.repository.addUsersToOrganization(userIds, organizationId);
+
+    return userOrganizations;
+  }
 }
