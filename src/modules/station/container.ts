@@ -3,6 +3,7 @@ import { StationRepository } from "./repository";
 import { StationService } from "./service";
 import { StationController } from "./controller";
 import { StationRoutes } from "./route";
+import { IoTManager } from "../iot/service";
 
 export class StationContainer {
   public readonly repository: StationRepository;
@@ -15,5 +16,9 @@ export class StationContainer {
     this.service = new StationService(this.repository);
     this.controller = new StationController(this.service);
     this.routes = new StationRoutes(this.controller);
+  }
+
+  public setIoTManager(iotManager: IoTManager): void {
+    this.service.setIoTManager(iotManager);
   }
 }

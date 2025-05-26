@@ -123,17 +123,6 @@ export class UserRepository {
       throw new Error(`User with ID ${userId} not found`);
     }
 
-    if (user.profilePicture) {
-      try {
-        const oldKey = user.profilePicture.split("/").pop();
-        if (oldKey) {
-          // Logic to delete old file from S3 would go here
-        }
-      } catch (error) {
-        console.error("Error deleting old profile picture:", error);
-      }
-    }
-
     const fileExtension = path.extname(file.originalname);
     const fileName = `${userId}-${uuidv4()}${fileExtension}`;
 
@@ -177,6 +166,15 @@ export class UserRepository {
             AND: [{ passwordChangedAt: null }, { createdAt: { lt: thresholdDate } }],
           },
         ],
+      },
+    });
+  }
+
+  async createUserOrganization(userId: number, organizationId: number) {
+    return this.prisma.userOrganization.create({
+      data: {
+        userId,
+        organizationId,
       },
     });
   }

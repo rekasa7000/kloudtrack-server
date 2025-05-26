@@ -5,10 +5,12 @@ import { sanitizePathComponent } from "../../core/utils/sanitizer";
 import { StationCertificateRepository } from "./repository";
 import { config } from "../../config/environment";
 import { ContentType, S3Service } from "../../core/service/aws-s3";
+import { StationContainer } from "../station/container";
 
 export class StationCertificateService {
   private repository: StationCertificateRepository;
   private s3Service: S3Service;
+  private stationContainer?: StationContainer;
 
   constructor(stationCertificateRepository: StationCertificateRepository) {
     this.repository = stationCertificateRepository;
@@ -16,6 +18,10 @@ export class StationCertificateService {
       bucketName: config.aws.s3.bucketName,
       region: config.aws.region,
     });
+  }
+
+  public setStationContainer(stationContainer: StationContainer): void {
+    this.stationContainer = stationContainer;
   }
 
   async getAllCertificates() {
@@ -155,6 +161,10 @@ export class StationCertificateService {
         expiresAt,
         fingerprint,
       });
+
+      if (this.stationContainer && createdCertificate.stationId) {
+        await this.stationContainer.service.checkAndConnectStation(createdCertificate.stationId);
+      }
 
       return {
         id: createdCertificate.id,
@@ -310,6 +320,9 @@ export class StationCertificateService {
 
       const updatedRecord = await this.repository.update(stationId, updateData);
 
+      if (this.stationContainer && updatedRecord.stationId) {
+        await this.stationContainer.service.checkAndConnectStation(updatedRecord.stationId);
+      }
       return {
         id: updatedRecord.id,
         stationId: updatedRecord.stationId,
@@ -356,7 +369,9 @@ export class StationCertificateService {
       ]);
 
       await this.repository.delete(stationId);
-
+      if (this.stationContainer && stationId) {
+        await this.stationContainer.service.checkAndConnectStation(stationId);
+      }
       return true;
     } catch (error) {
       throw new AppError(

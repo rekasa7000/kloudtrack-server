@@ -6,7 +6,6 @@ import { errorHandler } from "./core/middlewares/error-handler.middleware";
 import { AppRoutes } from "./route";
 import { AppError } from "./core/utils/error";
 import http from "http";
-import path from "path";
 import { PrismaClient } from "@prisma/client";
 import { prisma } from "./config/database.config";
 import { config } from "./config/environment";
@@ -25,7 +24,6 @@ export class App {
   public server: http.Server;
   private prisma: PrismaClient;
   private appRoutes!: AppRoutes;
-  private certificateBasePath: string;
   private awsIotEndpoint: string;
 
   private authContainer: AuthContainer;
@@ -43,7 +41,6 @@ export class App {
     this.app = express();
     this.server = http.createServer(this.app);
 
-    this.certificateBasePath = config.certificates.rootCaPath || path.join(__dirname, "../certificates");
     this.awsIotEndpoint = config.aws.iot.endpoint;
 
     if (!this.awsIotEndpoint) {
@@ -66,6 +63,11 @@ export class App {
       this.commandContainer,
       this.rootCertificateContainer
     );
+
+    this.stationContainer.setIoTManager(this.iotManager);
+    this.stationCertificateContainer.setStationContainer(this.stationContainer);
+    this.commandContainer.setIoTManager(this.iotManager);
+
     this.configureMiddleware();
     this.setupRoutes();
     this.configureErrorHandling();

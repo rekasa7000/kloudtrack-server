@@ -44,11 +44,23 @@ enum ProblemStatus {
 
 enum CommandStatus {
   PENDING
-  DELIVERED
+  SENT
   EXECUTED
   FAILED
+  TIMEOUT
 
   @@map("command_status_enum")
+}
+
+enum CommandType {
+  RESET
+  ACTIVATE
+  DEACTIVATE
+  FIRMWARE_UPDATE
+  SYNC_DATA
+  FETCH_DATAT
+
+  @@map("command_type_enum")
 }
 
 model User {
@@ -223,13 +235,15 @@ model Telemetry {
 }
 
 model Command {
-  id         Int       @id @default(autoincrement()) @map("command_id")
-  stationId  Int       @map("station_id")
-  issuedBy   Int       @map("issued_by")
-  command    Json      @map("command")
-  createdAt  DateTime  @default(now()) @map("created_at")
-  updatedAt  DateTime  @updatedAt @map("updated_at")
-  executedAt DateTime? @map("executed_at")
+  id         Int           @id @default(autoincrement()) @map("command_id")
+  stationId  Int           @map("station_id")
+  issuedBy   Int           @map("issued_by")
+  command    Json          @map("command")
+  type       CommandType   @map("type")
+  status     CommandStatus @map("status")
+  createdAt  DateTime      @default(now()) @map("created_at")
+  updatedAt  DateTime      @updatedAt @map("updated_at")
+  executedAt DateTime?     @map("executed_at")
 
   station Station @relation(fields: [stationId], references: [id])
   user    User?   @relation(fields: [issuedBy], references: [id])

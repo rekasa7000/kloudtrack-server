@@ -1,11 +1,7 @@
 import app from "./app";
-import dotenv from "dotenv";
+import { config } from "./config/environment";
 
-dotenv.config();
-
-const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
-
-app.start(PORT).catch((err) => {
+app.start(config.port).catch((err) => {
   console.error("Failed to start application:", err);
   process.exit(1);
 });
