@@ -22,10 +22,16 @@ declare global {
 export class AuthMiddleware {
   static protect = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const token = extractToken(req);
+      // JWT from cookie
+      const token = req.cookies[config.cookie];
+
+      // JWT from authorization
+      // const token = extractToken(req);
+
       if (!token) {
         return next(new AppError("You are not logged in. Please log in to get access.", 401));
       }
+
       const decoded = jwt.verify(token, config.jwt.secret) as TokenPayload;
       const currentUser = await prisma.user.findUnique({
         where: { id: decoded.id },

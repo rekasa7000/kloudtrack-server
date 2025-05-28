@@ -18,6 +18,7 @@ import { StationContainer } from "./modules/station/container";
 import { StationCertificateContainer } from "./modules/station-certificate/container";
 import { TelemetryContainer } from "./modules/telemetry/container";
 import { UserContainer } from "./modules/user/container";
+import cookieParser from "cookie-parser";
 
 export class App {
   public app: Application;
@@ -77,7 +78,7 @@ export class App {
   private configureMiddleware(): void {
     this.app.use(customCors);
     this.app.options(/(.*)/, cors(corsOptions));
-
+    this.app.use(cookieParser());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
   }

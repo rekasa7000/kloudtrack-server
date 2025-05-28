@@ -7,7 +7,6 @@ export const validateRequest = (schema: AnyZodObject) => {
     try {
       const contentType = req.headers["content-type"];
       const isMultipartFormData = contentType && contentType.includes("multipart/form-data");
-
       const validationObject = {
         body: req.body,
         query: req.query,
