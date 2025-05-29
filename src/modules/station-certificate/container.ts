@@ -4,6 +4,7 @@ import { StationCertificateRepository } from "./repository";
 import { StationCertificateRoutes } from "./route";
 import { StationCertificateService } from "./service";
 import { StationCertificateUploadService } from "./upload";
+import { StationContainer } from "../station/container";
 
 export class StationCertificateContainer {
   public readonly uploadService: StationCertificateUploadService;
@@ -18,5 +19,9 @@ export class StationCertificateContainer {
     this.service = new StationCertificateService(this.repository);
     this.controller = new StationCertificateController(this.service);
     this.routes = new StationCertificateRoutes(this.controller, this.uploadService);
+  }
+
+  public setStationContainer(stationContainer: StationContainer): void {
+    this.service.setStationContainer(stationContainer);
   }
 }

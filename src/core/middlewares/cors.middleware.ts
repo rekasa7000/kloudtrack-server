@@ -9,16 +9,14 @@ interface CorsConfig {
 }
 
 const corsConfig: CorsConfig = {
-  allowedOrigins: ["http://localhost:5173"],
+  allowedOrigins: ["http://localhost:5173", "http://localhost:5174"],
   allowApiKeyOrigins: true,
   apiKeyHeader: "x-api-key",
 };
 
 export const customCors = (req: Request, res: Response, next: NextFunction) => {
   const origin = req.headers.origin;
-  const apiKey = req.headers[corsConfig.apiKeyHeader.toLowerCase()] as
-    | string
-    | undefined;
+  const apiKey = req.headers[corsConfig.apiKeyHeader.toLowerCase()] as string | undefined;
 
   if (corsConfig.allowApiKeyOrigins && apiKey) {
     // * VALIDATE API KEY HERE. FOR NOW, ALLOW ALL

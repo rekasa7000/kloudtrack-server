@@ -2,12 +2,18 @@ import { StationRepository } from "./repository";
 import { Station, StationType } from "@prisma/client";
 import { logger } from "../../core/utils/logger";
 import { CreateStationDTO, UpdateStationDTO } from "./type";
+import { IoTManager } from "../iot/service";
 
 export class StationService {
   private repository: StationRepository;
+  private iotManager?: IoTManager;
 
   constructor(stationRepository: StationRepository) {
     this.repository = stationRepository;
+  }
+
+  public setIoTManager(iotManager: IoTManager): void {
+    this.iotManager = iotManager;
   }
 
   async createStation(data: CreateStationDTO, userId: number): Promise<Station> {
@@ -15,27 +21,10 @@ export class StationService {
       const station = await this.repository.create(data, userId);
 
       logger.info(`Station created: ${station.stationName} (ID: ${station.id})`);
+      await this.checkAndConnectStation(station.id);
       return station;
     } catch (error) {
       logger.error("Failed to create station:", error);
-      throw error;
-    }
-  }
-
-  async getStationById(id: number) {
-    try {
-      return await this.repository.findById(id);
-    } catch (error) {
-      logger.error(`Failed to get station ${id}:`, error);
-      throw error;
-    }
-  }
-
-  async getStationBySerialCode(serialCode: string): Promise<Station | null> {
-    try {
-      return await this.repository.findBySerial(serialCode);
-    } catch (error) {
-      logger.error(`Failed to get station by serial code ${serialCode}:`, error);
       throw error;
     }
   }
@@ -76,6 +65,10 @@ export class StationService {
       const station = await this.repository.update(id, data);
 
       logger.info(`Station updated: ${station.stationName} (ID: ${station.id})`);
+
+      if (station.isActive !== undefined) {
+        await this.checkAndConnectStation(station.id);
+      }
       return station;
     } catch (error) {
       logger.error(`Failed to update station ${id}:`, error);
@@ -120,6 +113,24 @@ export class StationService {
     }
   }
 
+  async getStationById(id: number) {
+    try {
+      return await this.repository.findById(id);
+    } catch (error) {
+      logger.error(`Failed to get station ${id}:`, error);
+      throw error;
+    }
+  }
+
+  async getStationBySerialCode(serialCode: string): Promise<Station | null> {
+    try {
+      return await this.repository.findBySerial(serialCode);
+    } catch (error) {
+      logger.error(`Failed to get station by serial code ${serialCode}:`, error);
+      throw error;
+    }
+  }
+
   async deleteStation(id: number): Promise<void> {
     try {
       await this.repository.delete(id);
@@ -137,6 +148,35 @@ export class StationService {
     } catch (error) {
       logger.error(`Failed to get stations by organization ${organizationId}:`, error);
       throw error;
+    }
+  }
+
+  public async checkAndConnectStation(stationId: number): Promise<void> {
+    if (!this.iotManager) {
+      logger.warn("IoT Manager not available");
+      return;
+    }
+
+    try {
+      const station = await this.getStationById(stationId);
+
+      if (!station) {
+        logger.warn(`Station ${stationId} not found`);
+        return;
+      }
+
+      const shouldBeConnected = station.certificate;
+      const currentlyConnected = this.iotManager.getConnectionStatus(stationId)?.isConnected || false;
+
+      if (shouldBeConnected && !currentlyConnected) {
+        await this.iotManager.connectStation(stationId);
+        logger.info(`Station ${stationId} connected to IoT`);
+      } else if (!shouldBeConnected && currentlyConnected) {
+        await this.iotManager.disconnectStation(stationId);
+        logger.info(`Station ${stationId} disconnected from IoT`);
+      }
+    } catch (error) {
+      logger.error(`Failed to manage IoT connection for station ${stationId}:`, error);
     }
   }
 }

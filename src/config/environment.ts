@@ -4,7 +4,7 @@ dotenv.config();
 
 export const config = {
   env: process.env.NODE_ENV || "development",
-  port: process.env.PORT || "3000",
+  port: Number(process.env.PORT) || 3000,
   cookie: process.env.COOKIE_NAME || "KLOUDTRACK_COOKIE_JWT",
   jwt: {
     secret: process.env.JWT_SECRET || "",

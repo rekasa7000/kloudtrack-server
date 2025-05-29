@@ -6,7 +6,6 @@ import { errorHandler } from "./core/middlewares/error-handler.middleware";
 import { AppRoutes } from "./route";
 import { AppError } from "./core/utils/error";
 import http from "http";
-import path from "path";
 import { PrismaClient } from "@prisma/client";
 import { prisma } from "./config/database.config";
 import { config } from "./config/environment";
@@ -19,13 +18,13 @@ import { StationContainer } from "./modules/station/container";
 import { StationCertificateContainer } from "./modules/station-certificate/container";
 import { TelemetryContainer } from "./modules/telemetry/container";
 import { UserContainer } from "./modules/user/container";
+import cookieParser from "cookie-parser";
 
 export class App {
   public app: Application;
   public server: http.Server;
   private prisma: PrismaClient;
   private appRoutes!: AppRoutes;
-  private certificateBasePath: string;
   private awsIotEndpoint: string;
 
   private authContainer: AuthContainer;
@@ -43,7 +42,6 @@ export class App {
     this.app = express();
     this.server = http.createServer(this.app);
 
-    this.certificateBasePath = config.certificates.rootCaPath || path.join(__dirname, "../certificates");
     this.awsIotEndpoint = config.aws.iot.endpoint;
 
     if (!this.awsIotEndpoint) {
@@ -66,6 +64,11 @@ export class App {
       this.commandContainer,
       this.rootCertificateContainer
     );
+
+    this.stationContainer.setIoTManager(this.iotManager);
+    this.stationCertificateContainer.setStationContainer(this.stationContainer);
+    this.commandContainer.setIoTManager(this.iotManager);
+
     this.configureMiddleware();
     this.setupRoutes();
     this.configureErrorHandling();
@@ -75,7 +78,7 @@ export class App {
   private configureMiddleware(): void {
     this.app.use(customCors);
     this.app.options(/(.*)/, cors(corsOptions));
-
+    this.app.use(cookieParser());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
   }

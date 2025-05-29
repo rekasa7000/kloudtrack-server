@@ -5,6 +5,7 @@ import nodemailer from "nodemailer";
 import { AuthRepository } from "./repository";
 import { prisma } from "../../config/database.config";
 import { Response } from "express";
+import { AppError } from "../../core/utils/error";
 
 export class AuthService {
   private transporter: nodemailer.Transporter;
@@ -17,12 +18,12 @@ export class AuthService {
   async login(email: string, password: string, res: Response): Promise<{ user: Partial<User>; token: string }> {
     const user = await this.repository.findByEmail(email);
     if (!user) {
-      throw new Error("Invalid email or password");
+      throw new AppError("Invalid email or password", 400);
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      throw new Error("Invalid email or password");
+      throw new AppError("Invalid email or password", 400);
     }
 
     const token = generateToken(user.id, res);
