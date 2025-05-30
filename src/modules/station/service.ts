@@ -1,7 +1,7 @@
 import { StationRepository } from "./repository";
 import { Station, StationType } from "@prisma/client";
 import { logger } from "../../core/utils/logger";
-import { CreateStationDTO, UpdateStationDTO } from "./type";
+import { CreateStationDTO, InternalCreateStationDTO, UpdateStationDTO } from "./type";
 import { IoTManager } from "../iot/service";
 
 export class StationService {
@@ -18,7 +18,14 @@ export class StationService {
 
   async createStation(data: CreateStationDTO, userId: number): Promise<Station> {
     try {
-      const station = await this.repository.create(data, userId);
+      const serial = this.generateSerialCode(12);
+      const updatedData: InternalCreateStationDTO = {
+        ...data,
+        serialCode: serial,
+        isActive: false,
+        createdByUserId: userId,
+      };
+      const station = await this.repository.create(updatedData);
 
       logger.info(`Station created: ${station.stationName} (ID: ${station.id})`);
       await this.checkAndConnectStation(station.id);
@@ -178,5 +185,15 @@ export class StationService {
     } catch (error) {
       logger.error(`Failed to manage IoT connection for station ${stationId}:`, error);
     }
+  }
+
+  private generateSerialCode(length = 12): string {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let result = "";
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * chars.length);
+      result += chars[randomIndex];
+    }
+    return result;
   }
 }

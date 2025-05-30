@@ -27,13 +27,13 @@ export class StationRepository {
     };
   }
 
-  async create(data: Prisma.StationUncheckedCreateInput, userId: number) {
+  async create(data: Prisma.StationUncheckedCreateInput) {
     return this.prisma.station.create({
       data: {
         ...data,
         isActive: false,
         activatedAt: null,
-        createdByUserId: userId,
+        createdByUserId: data.createdByUserId,
       },
       include: {
         certificate: true,
@@ -169,7 +169,7 @@ export class StationRepository {
     return await this.prisma.station.update({
       where: { id },
       data: {
-        firmwareVersion: status.firmwareVersion,
+        firmwareId: status.firmwareId,
       },
     });
   }

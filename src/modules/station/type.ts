@@ -4,29 +4,32 @@ export interface CreateStationDTO {
   stationName: string;
   stationType: StationType;
   location: any;
-  barangay: string;
+  address: string;
   city: string;
-  province: string;
+  state: string;
   country: string;
-  serialCode: string;
   elevation?: number;
   stationPicture?: string;
-  firmwareVersion: string;
-  createdByUserId: number;
+  firmwareId: number;
   organizationId?: number;
+}
+
+export interface InternalCreateStationDTO extends CreateStationDTO {
+  serialCode: string;
   isActive: boolean;
+  createdByUserId: number;
 }
 
 export interface UpdateStationDTO {
   stationName?: string;
   stationType?: StationType;
   location?: any;
-  barangay?: string;
+  address?: string;
   city?: string;
-  province?: string;
+  state?: string;
   country?: string;
   elevation?: number;
   stationPicture?: string;
-  firmwareVersion?: string;
+  firmwareId?: number;
   isActive?: boolean;
 }

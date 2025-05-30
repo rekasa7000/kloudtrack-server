@@ -88,6 +88,7 @@ model User {
   problemReport      ProblemReport[]
   stationCertificate StationCertificate[]
   resetToken         ResetToken[]
+  Firmware           Firmware[]
 
   @@map("users")
 }
@@ -152,16 +153,16 @@ model Station {
   stationName     String      @unique @map("station_name")
   stationType     StationType @map("station_type")
   location        Json        @map("location")
-  barangay        String      @map("barangay")
+  address         String      @map("address")
   city            String      @map("city")
-  province        String      @map("province")
+  state           String      @map("state")
   country         String      @map("country")
   serialCode      String      @unique @map("serial_code")
   elevation       Float?      @map("elevation")
   stationPicture  String?     @map("station_picture")
   isActive        Boolean     @map("is_active")
   activatedAt     DateTime?   @map("activated_at")
-  firmwareVersion String      @map("firmware_version")
+  firmwareId      Int         @map("firmware_version")
   createdByUserId Int         @map("created_by_user_id")
   createdAt       DateTime    @default(now()) @map("created_at")
   updatedAt       DateTime?   @updatedAt @map("updated_at")
@@ -170,6 +171,7 @@ model Station {
   command     Command[]
   telemetry   Telemetry[]
 
+  firmware     Firmware?     @relation(fields: [firmwareId], references: [id])
   user         User?         @relation(fields: [createdByUserId], references: [id])
   organization Organization? @relation(fields: [organizationId], references: [id])
 
@@ -249,6 +251,21 @@ model Command {
   user    User?   @relation(fields: [issuedBy], references: [id])
 
   @@map("commands")
+}
+
+model Firmware {
+  id         Int      @id @default(autoincrement()) @map("firmware_id")
+  uploadedBy Int      @map("uploaded_by")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  path       String   @map("path")
+  location   String?  @map("location")
+  version    String   @map("version")
+
+  user    User?     @relation(fields: [uploadedBy], references: [id])
+  Station Station[]
+
+  @@map("firmwares")
 }
 
 model ProblemReport {

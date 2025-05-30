@@ -3189,3 +3189,108 @@
 {"level":"info","time":"2025-05-28T05:52:05.915Z","pid":52192,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-28T05:52:05.915Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
 {"level":"info","time":"2025-05-28T05:52:06.374Z","pid":52192,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
 {"level":"info","time":"2025-05-28T05:52:06.626Z","pid":52192,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T00:24:32.259Z","pid":6603,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T00:24:32.259Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T00:24:32.772Z","pid":6603,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T00:24:33.106Z","pid":6603,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T00:24:37.184Z","pid":6877,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T00:24:37.184Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T00:24:37.584Z","pid":6877,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T00:24:37.876Z","pid":6877,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T01:37:06.688Z","pid":4429,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T01:37:06.688Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T01:37:07.352Z","pid":4429,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T01:37:07.637Z","pid":4429,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T01:37:11.822Z","pid":4718,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T01:37:11.822Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T01:37:12.760Z","pid":4718,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T01:37:13.054Z","pid":4718,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T02:39:13.085Z","pid":18968,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T02:39:13.085Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T02:39:13.780Z","pid":18968,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T02:39:14.069Z","pid":18968,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T02:39:18.733Z","pid":19189,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T02:39:18.733Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T02:39:19.550Z","pid":19189,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T02:39:19.845Z","pid":19189,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T02:39:56.931Z","pid":19439,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T02:39:56.931Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T02:39:57.387Z","pid":19439,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T02:39:57.721Z","pid":19439,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T02:39:59.015Z","pid":19468,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T02:39:59.014Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T02:39:59.474Z","pid":19468,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T02:39:59.829Z","pid":19468,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T02:42:22.684Z","pid":19803,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T02:42:22.683Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T02:42:23.143Z","pid":19803,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T02:42:23.395Z","pid":19803,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T02:42:26.909Z","pid":19846,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T02:42:26.909Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T02:42:27.321Z","pid":19846,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T02:42:27.611Z","pid":19846,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T02:42:36.091Z","pid":19924,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T02:42:36.091Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T02:42:36.496Z","pid":19924,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T02:42:36.784Z","pid":19924,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T02:42:41.257Z","pid":19967,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T02:42:41.257Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T02:42:41.644Z","pid":19967,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T02:42:41.923Z","pid":19967,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T02:42:57.930Z","pid":20040,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T02:42:57.929Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T02:42:58.387Z","pid":20040,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T02:42:58.720Z","pid":20040,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T02:43:03.611Z","pid":20088,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T02:43:03.610Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T02:43:04.345Z","pid":20088,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T02:43:04.893Z","pid":20088,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T02:43:06.709Z","pid":20131,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T02:43:06.709Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T02:43:07.123Z","pid":20131,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T02:43:07.417Z","pid":20131,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T02:43:13.333Z","pid":20173,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T02:43:13.333Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T02:43:13.752Z","pid":20173,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T02:43:14.047Z","pid":20173,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T02:43:21.724Z","pid":20225,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T02:43:21.724Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T02:43:22.125Z","pid":20225,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T02:43:22.418Z","pid":20225,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T02:43:26.552Z","pid":20266,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T02:43:26.552Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T02:43:27.086Z","pid":20266,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T02:43:27.378Z","pid":20266,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T02:44:16.235Z","pid":20391,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T02:44:16.234Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T02:44:16.651Z","pid":20391,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T02:44:16.945Z","pid":20391,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T02:49:53.225Z","pid":21206,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T02:49:53.225Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T02:49:53.810Z","pid":21206,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T02:49:54.141Z","pid":21206,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T02:51:22.875Z","pid":21439,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T02:51:22.875Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T02:51:23.339Z","pid":21439,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T02:51:23.629Z","pid":21439,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T02:51:45.991Z","pid":21542,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T02:51:45.991Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T02:51:46.394Z","pid":21542,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T02:51:46.686Z","pid":21542,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T02:51:53.018Z","pid":21594,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T02:51:53.017Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T02:51:53.419Z","pid":21594,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T02:51:53.717Z","pid":21594,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T06:02:35.670Z","pid":38709,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T06:02:35.670Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T06:02:36.177Z","pid":38709,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T06:02:36.470Z","pid":38709,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T06:02:42.039Z","pid":38777,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T06:02:42.039Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T06:02:42.473Z","pid":38777,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T06:02:42.768Z","pid":38777,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T06:04:08.203Z","pid":39040,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T06:04:08.202Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T06:04:08.658Z","pid":39040,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T06:04:08.904Z","pid":39040,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T06:05:28.736Z","pid":39405,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T06:05:28.736Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T06:05:29.398Z","pid":39405,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T06:05:29.728Z","pid":39405,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T06:05:33.593Z","pid":39456,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T06:05:33.592Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T06:05:33.989Z","pid":39456,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T06:05:34.283Z","pid":39456,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T06:06:21.829Z","pid":39597,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T06:06:21.829Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T06:06:22.226Z","pid":39597,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T06:06:22.518Z","pid":39597,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T06:06:40.099Z","pid":39663,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T06:06:40.099Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T06:06:40.572Z","pid":39663,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T06:06:40.864Z","pid":39663,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T06:06:44.009Z","pid":39727,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T06:06:44.008Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T06:06:44.408Z","pid":39727,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T06:06:44.702Z","pid":39727,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T06:37:59.093Z","pid":45609,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T06:37:59.093Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T06:37:59.665Z","pid":45609,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T06:37:59.999Z","pid":45609,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T06:39:10.143Z","pid":45841,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T06:39:10.142Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T06:39:10.656Z","pid":45841,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T06:39:10.958Z","pid":45841,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T07:14:53.984Z","pid":52853,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T07:14:53.984Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T07:14:54.582Z","pid":52853,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T07:14:54.948Z","pid":52853,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-05-30T07:14:59.180Z","pid":53065,"hostname":"kloudtech-regee-pop-os","timestamp":"2025-05-30T07:14:59.180Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-05-30T07:14:59.577Z","pid":53065,"hostname":"kloudtech-regee-pop-os","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-05-30T07:14:59.875Z","pid":53065,"hostname":"kloudtech-regee-pop-os","msg":"IoT Manager initialized with 0 stations"}
