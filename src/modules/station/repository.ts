@@ -185,4 +185,15 @@ export class StationRepository {
       orderBy: { createdAt: "desc" },
     });
   }
+
+  async addToOrganization(stationId: number, organizationId: number) {
+    return await this.prisma.station.update({
+      where: {
+        id: stationId,
+      },
+      data: {
+        organizationId,
+      },
+    });
+  }
 }
