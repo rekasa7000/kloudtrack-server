@@ -31,9 +31,7 @@ export class StationRepository {
     return this.prisma.station.create({
       data: {
         ...data,
-        isActive: false,
         activatedAt: null,
-        createdByUserId: data.createdByUserId,
       },
       include: {
         certificate: true,

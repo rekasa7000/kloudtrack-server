@@ -18,7 +18,7 @@ export class StationService {
 
   async createStation(data: CreateStationDTO, userId: number): Promise<Station> {
     try {
-      const serial = this.generateSerialCode(12);
+      const serial = this.generateSerialCode(8);
       const updatedData: InternalCreateStationDTO = {
         ...data,
         serialCode: serial,
