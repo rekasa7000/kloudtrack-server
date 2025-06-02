@@ -6,45 +6,33 @@ export class OrganizationService {
   constructor(private organizationRepository: OrganizationRepository) {}
 
   async createOrganization(data: Prisma.OrganizationUncheckedCreateInput) {
-    try {
-      return this.organizationRepository.create(data);
-    } catch (error) {
-      throw new AppError("Failed to create organization", 500);
-    }
+    return this.organizationRepository.create(data);
   }
+
   async update(data: Prisma.OrganizationUncheckedUpdateInput, id: number) {
     try {
-      return this.organizationRepository.update(data, id);
+      return await this.organizationRepository.update(data, id);
     } catch (error) {
-      throw new AppError("Failed to update organization", 500);
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2025") {
+        throw new AppError("Organization not found", 404);
+      }
+      throw error;
     }
   }
+
   async delete(id: number) {
-    try {
-      return this.organizationRepository.delete(id);
-    } catch (error) {
-      throw new AppError("Failed to delete organization", 500);
-    }
+    return this.organizationRepository.delete(id);
   }
+
   async findById(id: number) {
-    try {
-      return this.organizationRepository.findById(id);
-    } catch (error) {
-      throw new AppError("Failed to find organization", 500);
-    }
+    return this.organizationRepository.findById(id);
   }
+
   async findMany() {
-    try {
-      return this.organizationRepository.findMany();
-    } catch (error) {
-      throw new AppError("Failed to find many organization", 500);
-    }
+    return this.organizationRepository.findMany();
   }
+
   async findByUserId(userId: number) {
-    try {
-      return this.organizationRepository.findByUserId(userId);
-    } catch (error) {
-      throw new AppError("Failed to find organization based on user", 500);
-    }
+    return this.organizationRepository.findByUserId(userId);
   }
 }

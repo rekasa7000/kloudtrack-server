@@ -1,6 +1,6 @@
 {
   "name": "kloudtrack-backend",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Backend for weather station data collection using MQTT, WebSocket and REST API",
   "main": "dist/server.js",
   "scripts": {
