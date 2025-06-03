@@ -254,13 +254,16 @@ model Command {
 }
 
 model Firmware {
-  id         Int      @id @default(autoincrement()) @map("firmware_id")
-  uploadedBy Int      @map("uploaded_by")
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
-  path       String   @map("path")
-  location   String?  @map("location")
-  version    String   @map("version")
+  id          Int      @id @default(autoincrement()) @map("firmware_id")
+  uploadedBy  Int      @map("uploaded_by")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  serial      String   @map("firmware_serial")
+  title       String   @unique @map("title")
+  description String?  @map("description")
+  path        String   @map("path")
+  location    String?  @map("location")
+  version     String   @map("version")
 
   user    User?     @relation(fields: [uploadedBy], references: [id])
   Station Station[]

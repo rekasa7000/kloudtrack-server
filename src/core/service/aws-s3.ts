@@ -265,10 +265,9 @@ export class S3Service {
     firmwareId: string,
     firmwareBuffer: Buffer,
     version: string,
-    deviceType: string,
     metadata?: Record<string, string>
   ): Promise<void> {
-    const key = `${deviceType}/${firmwareId}_v${version}.bin`;
+    const key = `${version}/firmware.bin`;
 
     await this.putObject(key, firmwareBuffer, {
       prefix: S3Service.PREFIXES.FIRMWARE,
@@ -277,7 +276,6 @@ export class S3Service {
         type: "firmware",
         "firmware-id": firmwareId,
         version: version,
-        "device-type": deviceType,
         "uploaded-at": new Date().toISOString(),
         size: firmwareBuffer.length.toString(),
         ...metadata,
@@ -285,7 +283,6 @@ export class S3Service {
       tags: {
         Type: "Firmware",
         Version: version,
-        DeviceType: deviceType,
         Environment: process.env.NODE_ENV || "development",
       },
     });
@@ -296,8 +293,8 @@ export class S3Service {
     return await this.getObjectBuffer(key);
   }
 
-  async deleteFirmware(firmwareId: string, version: string, deviceType: string): Promise<void> {
-    const key = `${S3Service.PREFIXES.FIRMWARE}${deviceType}/${firmwareId}_v${version}.bin`;
+  async deleteFirmware(firmwareId: string, version: string): Promise<void> {
+    const key = `${S3Service.PREFIXES.FIRMWARE}${version}/firmware.bin`;
     await this.deleteObject(key);
   }
 

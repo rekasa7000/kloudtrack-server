@@ -12,12 +12,9 @@ export class StationCertificateService {
   private s3Service: S3Service;
   private stationContainer?: StationContainer;
 
-  constructor(stationCertificateRepository: StationCertificateRepository) {
+  constructor(stationCertificateRepository: StationCertificateRepository, s3Service: S3Service) {
     this.repository = stationCertificateRepository;
-    this.s3Service = new S3Service({
-      bucketName: config.aws.s3.bucketName,
-      region: config.aws.region,
-    });
+    this.s3Service = s3Service;
   }
 
   public setStationContainer(stationContainer: StationContainer): void {

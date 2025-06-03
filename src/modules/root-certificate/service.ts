@@ -13,12 +13,9 @@ export class RootCertificateService {
   private repository: RootCertificateRepository;
   private s3Service: S3Service;
 
-  constructor(rootCertificateRepository: RootCertificateRepository) {
+  constructor(rootCertificateRepository: RootCertificateRepository, s3Service: S3Service) {
     this.repository = rootCertificateRepository;
-    this.s3Service = new S3Service({
-      bucketName: config.aws.s3.bucketName,
-      region: config.aws.region,
-    });
+    this.s3Service = s3Service;
   }
 
   async getRootCertificate() {
@@ -158,10 +155,6 @@ export class RootCertificateService {
       fileSize?: number;
     }
   ) {
-    if (!id) {
-      throw new AppError("Certificate ID is required", 400);
-    }
-
     const existingCertificate = await this.repository.findByIdRoot(id);
 
     if (!existingCertificate) {

@@ -19,6 +19,8 @@ import { StationCertificateContainer } from "./modules/station-certificate/conta
 import { TelemetryContainer } from "./modules/telemetry/container";
 import { UserContainer } from "./modules/user/container";
 import cookieParser from "cookie-parser";
+import { S3Service } from "./core/service/aws-s3";
+import { FirmwareContainer } from "./modules/firmware/container";
 
 export class App {
   public app: Application;
@@ -29,6 +31,7 @@ export class App {
 
   private authContainer: AuthContainer;
   private commandContainer: CommandContainer;
+  private firmwareContainer: FirmwareContainer;
   private organizationContainer: OrganizationContainer;
   private rootCertificateContainer: RootCertificateContainer;
   private stationContainer: StationContainer;
@@ -37,6 +40,7 @@ export class App {
   private userContainer: UserContainer;
 
   private iotManager: IoTManager;
+  private s3Service: S3Service;
 
   constructor() {
     this.app = express();
@@ -48,13 +52,19 @@ export class App {
       throw new Error("AWS_IOT_ENDPOINT environment variable is required");
     }
 
+    this.s3Service = new S3Service({
+      bucketName: config.aws.s3.bucketName,
+      region: config.aws.region,
+    });
+
     this.prisma = prisma || new PrismaClient();
     this.authContainer = new AuthContainer(this.prisma);
     this.commandContainer = new CommandContainer(this.prisma);
+    this.firmwareContainer = new FirmwareContainer(this.prisma, this.s3Service);
     this.organizationContainer = new OrganizationContainer(this.prisma);
-    this.rootCertificateContainer = new RootCertificateContainer(this.prisma);
+    this.rootCertificateContainer = new RootCertificateContainer(this.prisma, this.s3Service);
     this.stationContainer = new StationContainer(this.prisma);
-    this.stationCertificateContainer = new StationCertificateContainer(this.prisma);
+    this.stationCertificateContainer = new StationCertificateContainer(this.prisma, this.s3Service);
     this.telemetryContainer = new TelemetryContainer(this.prisma);
     this.userContainer = new UserContainer(this.prisma);
 
@@ -88,6 +98,7 @@ export class App {
       this.prisma,
       this.authContainer,
       this.commandContainer,
+      this.firmwareContainer,
       this.organizationContainer,
       this.rootCertificateContainer,
       this.stationContainer,

@@ -9,12 +9,14 @@ import { RootCertificateContainer } from "./modules/root-certificate/container";
 import { StationCertificateContainer } from "./modules/station-certificate/container";
 import { PrismaClient } from "@prisma/client";
 import { protect } from "./core/middlewares/auth.middleware";
+import { FirmwareContainer } from "./modules/firmware/container";
 
 export class AppRoutes {
   private router: Router;
   private prisma: PrismaClient;
   private authContainer: AuthContainer;
   private commandContainer: CommandContainer;
+  private firmwareContainer: FirmwareContainer;
   private organizationContainer: OrganizationContainer;
   private rootCertificateContainer: RootCertificateContainer;
   private stationContainer: StationContainer;
@@ -26,6 +28,7 @@ export class AppRoutes {
     prisma: PrismaClient,
     authContainer: AuthContainer,
     commandContainer: CommandContainer,
+    firmwarContainer: FirmwareContainer,
     organizationContainer: OrganizationContainer,
     rootCertificateContainer: RootCertificateContainer,
     stationContainer: StationContainer,
@@ -38,6 +41,7 @@ export class AppRoutes {
 
     this.authContainer = authContainer;
     this.commandContainer = commandContainer;
+    this.firmwareContainer = firmwarContainer;
     this.organizationContainer = organizationContainer;
     this.rootCertificateContainer = rootCertificateContainer;
     this.stationContainer = stationContainer;
@@ -51,6 +55,7 @@ export class AppRoutes {
   private initializeRoutes(): void {
     this.router.use("/auth", this.authContainer.routes.getRouter());
     this.router.use("/command", protect, this.commandContainer.routes.getRouter());
+    this.router.use("/firmware", protect, this.firmwareContainer.routes.getRouter());
     this.router.use("/organization", protect, this.organizationContainer.routes.getRouter());
     this.router.use("/root/certificate", protect, this.rootCertificateContainer.routes.getRouter());
     this.router.use("/station", protect, this.stationContainer.routes.getRouter());
