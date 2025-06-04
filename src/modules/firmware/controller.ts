@@ -39,8 +39,35 @@ export class FirmwareController {
 
     return sendResponse(res, result, 201, "Amazon Root CA certificate uploaded successfully");
   });
-  updateFirmware = asyncHandler(async (req: Request, res: Response) => {});
-  deleteFirmware = asyncHandler(async (req: Request, res: Response) => {});
-  findFirmwareById = asyncHandler(async (req: Request, res: Response) => {});
-  findManyFirmware = asyncHandler(async (req: Request, res: Response) => {});
+  updateFirmware = asyncHandler(async (req: Request, res: Response) => {
+    const { title, description } = req.body;
+    const id = +req.params.id;
+
+    if (!title && !description) {
+      throw new AppError("Please include the input in the request", 400);
+    }
+
+    const result = await this.service.update(id, { title, description });
+
+    return sendResponse(res, result, 200, "Firmware metadata updated");
+  });
+  deleteFirmware = asyncHandler(async (req: Request, res: Response) => {
+    const id = +req.params.id;
+
+    const result = await this.service.delete(id);
+
+    return sendResponse(res, result, 200, "Firmware deleted succesfully");
+  });
+  findFirmwareById = asyncHandler(async (req: Request, res: Response) => {
+    const id = +req.params.id;
+
+    const result = await this.service.findById(id);
+
+    return sendResponse(res, result, 200, "Firmware fetched successfully");
+  });
+  findManyFirmware = asyncHandler(async (req: Request, res: Response) => {
+    const result = await this.service.findMany();
+
+    return sendResponse(res, result, 200, "Firmware fetched successfully");
+  });
 }
