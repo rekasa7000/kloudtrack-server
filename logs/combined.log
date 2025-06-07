@@ -3388,3 +3388,9 @@
 {"level":"info","time":"2025-06-07T03:22:54.502Z","pid":53354,"hostname":"fedora","timestamp":"2025-06-07T03:22:54.502Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
 {"level":"info","time":"2025-06-07T03:22:54.938Z","pid":53354,"hostname":"fedora","msg":"Initializing IoT Manager..."}
 {"level":"info","time":"2025-06-07T03:22:55.628Z","pid":53354,"hostname":"fedora","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-06-07T03:26:27.138Z","pid":57551,"hostname":"fedora","timestamp":"2025-06-07T03:26:27.138Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-06-07T03:26:27.529Z","pid":57551,"hostname":"fedora","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-06-07T03:26:28.184Z","pid":57551,"hostname":"fedora","msg":"IoT Manager initialized with 0 stations"}
+{"level":"info","time":"2025-06-07T03:26:32.815Z","pid":58496,"hostname":"fedora","timestamp":"2025-06-07T03:26:32.814Z","message":"Starting a postgresql pool with 17 connections in PgBouncer mode.","target":"quaint::pooled","msg":"Database info:"}
+{"level":"info","time":"2025-06-07T03:26:33.150Z","pid":58496,"hostname":"fedora","msg":"Initializing IoT Manager..."}
+{"level":"info","time":"2025-06-07T03:26:33.830Z","pid":58496,"hostname":"fedora","msg":"IoT Manager initialized with 0 stations"}
