@@ -288,3 +288,29 @@ model ProblemReport {
 
   @@map("problem_reports")
 }
+
+model SystemMetrics {
+  id                 Int      @id @default(autoincrement()) @map("system_metrics_id")
+  timestamp          DateTime @default(now()) @map("timestamp")
+  cpuUsagePercent    Float    @map("cpu_usage_percent")
+  cpuLoad1Min        Float    @map("cpu_load_1_min")
+  cpuLoad5Min        Float    @map("cpu_load_5_min")
+  cpuLoad15Min       Float    @map("cpu_load_15_min")
+  cpuTemperature     Float?   @map("cpu_temperature")
+  totalMemoryGB      Float    @map("total_memory_gb")
+  usedMemoryGB       Float    @map("used_memory_gb")
+  freeMemoryGB       Float    @map("free_memory_gb")
+  memoryUsagePercent Float    @map("memory_usage_percent")
+  totalDiskGB        Float    @map("total_disk_gb")
+  usedDiskGB         Float    @map("used_disk_gb")
+  freeDiskGB         Float    @map("free_disk_gb")
+  diskUsagePercent   Float    @map("disk_usage_percent")
+  networkRxBytes     BigInt?  @map("network_rx_bytes")
+  networkTxBytes     BigInt?  @map("network_tx_bytes")
+  uptime             BigInt   @map("uptime")
+  processCount       Int      @map("process_count")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  @@map("system_metrics")
+}

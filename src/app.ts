@@ -21,6 +21,7 @@ import { UserContainer } from "./modules/user/container";
 import cookieParser from "cookie-parser";
 import { S3Service } from "./core/service/aws-s3";
 import { FirmwareContainer } from "./modules/firmware/container";
+import { SystemMetricsContainer } from "./modules/system-metrics/container";
 
 export class App {
   public app: Application;
@@ -36,6 +37,7 @@ export class App {
   private rootCertificateContainer: RootCertificateContainer;
   private stationContainer: StationContainer;
   private stationCertificateContainer: StationCertificateContainer;
+  private systemMetricsContainer: SystemMetricsContainer;
   private telemetryContainer: TelemetryContainer;
   private userContainer: UserContainer;
 
@@ -65,6 +67,7 @@ export class App {
     this.rootCertificateContainer = new RootCertificateContainer(this.prisma, this.s3Service);
     this.stationContainer = new StationContainer(this.prisma);
     this.stationCertificateContainer = new StationCertificateContainer(this.prisma, this.s3Service);
+    this.systemMetricsContainer = new SystemMetricsContainer(this.prisma);
     this.telemetryContainer = new TelemetryContainer(this.prisma);
     this.userContainer = new UserContainer(this.prisma);
 
@@ -75,6 +78,7 @@ export class App {
       this.rootCertificateContainer
     );
 
+    this.systemMetricsContainer.service.startMetricsCollection();
     this.stationContainer.setIoTManager(this.iotManager);
     this.stationCertificateContainer.setStationContainer(this.stationContainer);
     this.commandContainer.setIoTManager(this.iotManager);
@@ -103,6 +107,7 @@ export class App {
       this.rootCertificateContainer,
       this.stationContainer,
       this.stationCertificateContainer,
+      this.systemMetricsContainer,
       this.telemetryContainer,
       this.userContainer
     );

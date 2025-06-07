@@ -10,6 +10,7 @@ import { StationCertificateContainer } from "./modules/station-certificate/conta
 import { PrismaClient } from "@prisma/client";
 import { protect } from "./core/middlewares/auth.middleware";
 import { FirmwareContainer } from "./modules/firmware/container";
+import { SystemMetricsContainer } from "./modules/system-metrics/container";
 
 export class AppRoutes {
   private router: Router;
@@ -21,6 +22,7 @@ export class AppRoutes {
   private rootCertificateContainer: RootCertificateContainer;
   private stationContainer: StationContainer;
   private stationCertificateContainer: StationCertificateContainer;
+  private systemMetricsContainer: SystemMetricsContainer;
   private telemetryContainer: TelemetryContainer;
   private userContainer: UserContainer;
 
@@ -33,6 +35,7 @@ export class AppRoutes {
     rootCertificateContainer: RootCertificateContainer,
     stationContainer: StationContainer,
     stationCertificateContainer: StationCertificateContainer,
+    systemMetricsContainer: SystemMetricsContainer,
     telemetryContainer: TelemetryContainer,
     userContainer: UserContainer
   ) {
@@ -46,6 +49,7 @@ export class AppRoutes {
     this.rootCertificateContainer = rootCertificateContainer;
     this.stationContainer = stationContainer;
     this.stationCertificateContainer = stationCertificateContainer;
+    this.systemMetricsContainer = systemMetricsContainer;
     this.telemetryContainer = telemetryContainer;
     this.userContainer = userContainer;
 
@@ -60,8 +64,9 @@ export class AppRoutes {
     this.router.use("/root/certificate", protect, this.rootCertificateContainer.routes.getRouter());
     this.router.use("/station", protect, this.stationContainer.routes.getRouter());
     this.router.use("/certificate/station", protect, this.stationCertificateContainer.routes.getRouter());
-    this.router.use("/user", protect, this.userContainer.routes.getRouter());
+    this.router.use("/health", protect, this.systemMetricsContainer.routes.getRouter());
     this.router.use("/telemetry", protect, this.telemetryContainer.routes.getRouter());
+    this.router.use("/user", protect, this.userContainer.routes.getRouter());
   }
 
   public getRouter(): Router {
