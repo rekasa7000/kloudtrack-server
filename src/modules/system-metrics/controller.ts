@@ -55,6 +55,7 @@ export class SystemMetricsController {
       count: metrics.length,
     });
   });
+
   public forceCollectMetrics = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     await this.healthService.collectAndSaveMetrics();
 

@@ -62,9 +62,9 @@ export class TelemetryRepository {
         stationType: true,
         id: true,
         location: true,
-        barangay: true,
+        address: true,
         city: true,
-        province: true,
+        state: true,
         country: true,
       },
     });
