@@ -1,6 +1,5 @@
 import * as si from "systeminformation";
 import { SystemMetrics } from "./types";
-import { spec } from "node:test/reporters";
 
 export class SystemMetricsCollector {
   private static instance: SystemMetricsCollector;
@@ -12,6 +11,31 @@ export class SystemMetricsCollector {
       SystemMetricsCollector.instance = new SystemMetricsCollector();
     }
     return SystemMetricsCollector.instance;
+  }
+
+  private findPrimaryDisk(diskData: any[]): any {
+    const rootDisk = diskData.find((disk) => disk.mount === "/");
+    if (rootDisk) {
+      return rootDisk;
+    }
+
+    const regularDisks = diskData.filter((disk) => {
+      return (
+        disk.rw &&
+        disk.size > 1024 * 1024 * 1024 &&
+        !["efivarfs", "tmpfs", "devtmpfs", "proc", "sysfs"].includes(disk.type) &&
+        !disk.mount?.startsWith("/sys") &&
+        !disk.mount?.startsWith("/proc") &&
+        !disk.mount?.startsWith("/dev/")
+      );
+    });
+
+    if (regularDisks.length > 0) {
+      return regularDisks.sort((a, b) => b.size - a.size)[0];
+    }
+
+    const fallbackDisk = diskData.find((disk) => disk.size > 0);
+    return fallbackDisk || { size: 0, used: 0, available: 0 };
   }
 
   public async collectMetrics(): Promise<SystemMetrics> {
@@ -34,6 +58,8 @@ export class SystemMetricsCollector {
         temperature: tempData?.main ? parseFloat(tempData.main.toFixed(2)) : undefined,
       };
 
+      const primaryDisk = this.findPrimaryDisk(diskData);
+
       const memory = {
         totalGB: parseFloat((memData.total / 1024 ** 3).toFixed(2)),
         usedGB: parseFloat((memData.used / 1024 ** 3).toFixed(2)),
@@ -41,7 +67,6 @@ export class SystemMetricsCollector {
         usagePercent: parseFloat(((memData.used / memData.total) * 100).toFixed(2)),
       };
 
-      const primaryDisk = diskData[0] || { size: 0, used: 0, available: 0 };
       const disk = {
         totalGB: parseFloat((primaryDisk.size / 1024 ** 3).toFixed(2)),
         usedGB: parseFloat((primaryDisk.used / 1024 ** 3).toFixed(2)),
@@ -51,6 +76,7 @@ export class SystemMetricsCollector {
 
       let totalRx = 0n;
       let totalTx = 0n;
+
       try {
         if (networkData && networkData.length > 0) {
           networkData.forEach((net) => {
@@ -106,7 +132,6 @@ export class SystemMetricsCollector {
       };
     } catch (error) {
       console.error("Error collecting system metrics:", error);
-
       throw new Error("Failed to collect system metrics");
     }
   }

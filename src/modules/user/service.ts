@@ -7,6 +7,7 @@ import { generateResetToken } from "../../core/utils/token";
 export interface UserCreateInput
   extends Omit<Prisma.UserUncheckedCreateInput, "passwordChangedAt" | "createdAt" | "updatedAt"> {
   confirmPassword?: string;
+  organizationId?: string;
 }
 
 export interface UserUpdateInput
