@@ -1,5 +1,5 @@
 import { AppError } from "../../core/utils/error";
-import { OrganizationRepository } from "./repository";
+import { OrganizationRepository, PaginationOptions, PaginatedResult } from "./repository";
 import { Prisma } from "@prisma/client";
 
 export class OrganizationService {
@@ -30,6 +30,34 @@ export class OrganizationService {
 
   async findMany() {
     return this.organizationRepository.findMany();
+  }
+
+  async findManyPaginated(options: PaginationOptions): Promise<PaginatedResult<any>> {
+    if (options.page && options.page < 1) {
+      throw new AppError("Page number must be greater than 0", 400);
+    }
+
+    if (options.limit && (options.limit < 1 || options.limit > 100)) {
+      throw new AppError("Limit must be between 1 and 100", 400);
+    }
+
+    return this.organizationRepository.findManyPaginated(options);
+  }
+
+  async searchOrganizations(searchTerm: string, options: PaginationOptions): Promise<PaginatedResult<any>> {
+    if (!searchTerm || searchTerm.trim().length === 0) {
+      throw new AppError("Search term is required", 400);
+    }
+
+    if (options.page && options.page < 1) {
+      throw new AppError("Page number must be greater than 0", 400);
+    }
+
+    if (options.limit && (options.limit < 1 || options.limit > 100)) {
+      throw new AppError("Limit must be between 1 and 100", 400);
+    }
+
+    return this.organizationRepository.searchOrganizations(searchTerm.trim(), options);
   }
 
   async findByUserId(userId: number) {
