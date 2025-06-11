@@ -1,8 +1,17 @@
 import { Request, Response } from "express";
 import { Role } from "@prisma/client";
-import { UserService, UserCreateInput, UserUpdateInput, ChangePasswordInput, ResetPasswordInput } from "./service";
+import {
+  UserService,
+  UserCreateInput,
+  UserUpdateInput,
+  ChangePasswordInput,
+  ResetPasswordInput,
+  AddUserToOrganizationInput,
+  AddUsersToOrganizationInput,
+} from "./service";
 import { AppError } from "../../core/utils/error";
-import { FindManyUsersParams } from "./repository";
+import { FindManyUsersParams, FindUsersByOrganizationParams } from "./repository";
+import { sendResponse } from "../../core/utils/response"; // Import the sendResponse utility
 import multer from "multer";
 import { asyncHandler } from "../../core/middlewares/error-handler.middleware";
 
@@ -38,11 +47,7 @@ export class UserController {
     }
 
     const user = await this.service.getUser(userId);
-
-    res.status(200).json({
-      status: "success",
-      data: { user },
-    });
+    sendResponse(res, { user });
   });
 
   getUserById = asyncHandler(async (req: Request, res: Response) => {
@@ -53,11 +58,7 @@ export class UserController {
     }
 
     const user = await this.service.getUser(userId);
-
-    res.status(200).json({
-      status: "success",
-      data: { user },
-    });
+    sendResponse(res, { user });
   });
 
   getUsers = asyncHandler(async (req: Request, res: Response) => {
@@ -86,8 +87,8 @@ export class UserController {
 
     const { users, total } = await this.service.findUsers(params);
 
-    res.status(200).json({
-      status: "success",
+    sendResponse(res, {
+      users,
       results: users.length,
       pagination: {
         total,
@@ -95,21 +96,96 @@ export class UserController {
         limit: params.limit,
         pages: Math.ceil(total / params.limit!),
       },
-      data: { users },
+    });
+  });
+
+  getUsersByOrganization = asyncHandler(async (req: Request, res: Response) => {
+    const organizationId = parseInt(req.params.organizationId);
+
+    if (isNaN(organizationId)) {
+      throw new AppError("Invalid organization ID", 400);
+    }
+
+    const {
+      page = "1",
+      limit = "10",
+      search = "",
+      role,
+      isAdmin,
+      orderField = "createdAt",
+      orderDirection = "desc",
+    } = req.query;
+
+    const params: FindUsersByOrganizationParams = {
+      organizationId,
+      page: parseInt(page as string),
+      limit: parseInt(limit as string),
+      searchTerm: search as string,
+      orderBy: {
+        field: orderField as any,
+        direction: orderDirection as "asc" | "desc",
+      },
+    };
+
+    if (role && Object.values(Role).includes(role as Role)) {
+      params.role = role as Role;
+    }
+
+    if (isAdmin !== undefined) {
+      params.isAdmin = isAdmin === "true";
+    }
+
+    const { users, total } = await this.service.findUsersByOrganization(params);
+
+    sendResponse(res, {
+      users,
+      results: users.length,
+      pagination: {
+        total,
+        page: params.page,
+        limit: params.limit,
+        pages: Math.ceil(total / params.limit!),
+      },
+    });
+  });
+
+  getUsersByOrganizationSimple = asyncHandler(async (req: Request, res: Response) => {
+    const organizationId = parseInt(req.params.organizationId);
+
+    if (isNaN(organizationId)) {
+      throw new AppError("Invalid organization ID", 400);
+    }
+
+    const users = await this.service.getUsersByOrganizationSimple(organizationId);
+
+    sendResponse(res, {
+      users,
+      results: users.length,
+    });
+  });
+
+  getAdminUsersByOrganization = asyncHandler(async (req: Request, res: Response) => {
+    const organizationId = parseInt(req.params.organizationId);
+
+    if (isNaN(organizationId)) {
+      throw new AppError("Invalid organization ID", 400);
+    }
+
+    const users = await this.service.getAdminUsersByOrganization(organizationId);
+
+    sendResponse(res, {
+      users,
+      results: users.length,
     });
   });
 
   createUser = asyncHandler(async (req: Request, res: Response) => {
     const userData: UserCreateInput = req.body;
-
     const createdByUserId = req.user?.id;
 
     const newUser = await this.service.createUser(userData, createdByUserId);
 
-    res.status(201).json({
-      status: "success",
-      data: { user: newUser },
-    });
+    sendResponse(res, { user: newUser }, 201, "User created successfully");
   });
 
   bulkCreateUsers = asyncHandler(async (req: Request, res: Response) => {
@@ -118,18 +194,18 @@ export class UserController {
     }
 
     const usersData: UserCreateInput[] = req.body;
-
     const createdByUserId = req.user?.id;
 
     const result = await this.service.bulkCreateUsers(usersData, createdByUserId);
 
-    res.status(201).json({
-      status: "success",
-      data: {
+    sendResponse(
+      res,
+      {
         count: result.count,
-        message: `Successfully created ${result.count} users`,
       },
-    });
+      201,
+      `Successfully created ${result.count} users`
+    );
   });
 
   updateUser = asyncHandler(async (req: Request, res: Response) => {
@@ -140,7 +216,6 @@ export class UserController {
     }
 
     const userData: UserUpdateInput = req.body;
-
     const requestingUserId = req.user?.id;
     const isUser = req.user?.role === Role.USER;
 
@@ -150,10 +225,7 @@ export class UserController {
 
     const updatedUser = await this.service.updateUser(userId, userData);
 
-    res.status(200).json({
-      status: "success",
-      data: { user: updatedUser },
-    });
+    sendResponse(res, { user: updatedUser }, 200, "User updated successfully");
   });
 
   deleteUser = asyncHandler(async (req: Request, res: Response) => {
@@ -176,10 +248,7 @@ export class UserController {
 
     const deletedUser = await this.service.deleteUser(userId);
 
-    res.status(200).json({
-      status: "success",
-      data: { user: deletedUser },
-    });
+    sendResponse(res, { user: deletedUser }, 200, "User deleted successfully");
   });
 
   uploadProfilePicture = asyncHandler(async (req: Request, res: Response) => {
@@ -209,10 +278,7 @@ export class UserController {
       },
     });
 
-    res.status(200).json({
-      status: "success",
-      data: { user: updatedUser },
-    });
+    sendResponse(res, { user: updatedUser }, 200, "Profile picture uploaded successfully");
   });
 
   changePassword = asyncHandler(async (req: Request, res: Response) => {
@@ -243,19 +309,15 @@ export class UserController {
 
     const updatedUser = await this.service.changePassword(passwordData);
 
-    res.status(200).json({
-      status: "success",
-      data: { user: updatedUser },
-    });
+    sendResponse(res, { user: updatedUser }, 200, "Password changed successfully");
   });
 
   getUsersWithoutOrganization = asyncHandler(async (_req: Request, res: Response) => {
     const users = await this.service.getUsersWithoutOrganization();
 
-    res.status(200).json({
-      status: "success",
+    sendResponse(res, {
+      users,
       results: users.length,
-      data: { users },
     });
   });
 
@@ -269,10 +331,113 @@ export class UserController {
 
     const users = await this.service.getUsersWithExpiredPasswords(daysThreshold);
 
-    res.status(200).json({
-      status: "success",
+    sendResponse(res, {
+      users,
       results: users.length,
-      data: { users },
     });
+  });
+
+  addUserToOrganization = asyncHandler(async (req: Request, res: Response) => {
+    const { userId, organizationId, isAdmin = false } = req.body;
+
+    if (!userId || !organizationId) {
+      throw new AppError("userId and organizationId are required", 400);
+    }
+
+    if (typeof userId !== "number" || typeof organizationId !== "number") {
+      throw new AppError("userId and organizationId must be numbers", 400);
+    }
+
+    const data: AddUserToOrganizationInput = {
+      userId,
+      organizationId,
+      isAdmin: Boolean(isAdmin),
+    };
+
+    const userOrganization = await this.service.addUserToOrganization(data);
+
+    sendResponse(res, { userOrganization }, 201, "User added to organization successfully");
+  });
+
+  addUsersToOrganization = asyncHandler(async (req: Request, res: Response) => {
+    const { userIds, organizationId, isAdmin = false } = req.body;
+
+    if (!userIds || !organizationId) {
+      throw new AppError("userIds and organizationId are required", 400);
+    }
+
+    if (!Array.isArray(userIds) || userIds.length === 0) {
+      throw new AppError("userIds must be a non-empty array", 400);
+    }
+
+    if (typeof organizationId !== "number") {
+      throw new AppError("organizationId must be a number", 400);
+    }
+
+    if (!userIds.every((id) => typeof id === "number")) {
+      throw new AppError("All userIds must be numbers", 400);
+    }
+
+    const data: AddUsersToOrganizationInput = {
+      userIds,
+      organizationId,
+      isAdmin: Boolean(isAdmin),
+    };
+
+    const result = await this.service.addUsersToOrganization(data);
+
+    sendResponse(
+      res,
+      {
+        count: result.count,
+      },
+      201,
+      `Successfully added ${result.count} users to organization`
+    );
+  });
+
+  removeUserFromOrganization = asyncHandler(async (req: Request, res: Response) => {
+    const userId = parseInt(req.params.userId);
+    const organizationId = parseInt(req.params.organizationId);
+
+    if (isNaN(userId) || isNaN(organizationId)) {
+      throw new AppError("Invalid userId or organizationId", 400);
+    }
+
+    const result = await this.service.removeUserFromOrganization(userId, organizationId);
+
+    sendResponse(
+      res,
+      {
+        count: result.count,
+      },
+      200,
+      "User successfully removed from organization"
+    );
+  });
+
+  updateUserOrganizationRole = asyncHandler(async (req: Request, res: Response) => {
+    const userId = parseInt(req.params.userId);
+    const organizationId = parseInt(req.params.organizationId);
+    const { isAdmin } = req.body;
+
+    if (isNaN(userId) || isNaN(organizationId)) {
+      throw new AppError("Invalid userId or organizationId", 400);
+    }
+
+    if (typeof isAdmin !== "boolean") {
+      throw new AppError("isAdmin must be a boolean", 400);
+    }
+
+    const result = await this.service.updateUserOrganizationRole(userId, organizationId, isAdmin);
+
+    sendResponse(
+      res,
+      {
+        count: result.count,
+      },
+      200,
+      `User role successfully updated to ${isAdmin ? "admin" : "member"}`
+    );
   });
 }

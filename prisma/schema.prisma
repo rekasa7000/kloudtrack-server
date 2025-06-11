@@ -111,6 +111,7 @@ model Organization {
   displayPicture   String?   @map("display_picture")
   createdAt        DateTime  @default(now()) @map("created_at")
   updatedAt        DateTime? @updatedAt @map("updated_at")
+  isActive         Boolean   @default(true) @map("is_active")
 
   userOrganizations UserOrganization[]
   apiKey            ApiKey[]

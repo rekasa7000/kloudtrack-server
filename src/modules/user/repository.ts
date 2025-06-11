@@ -15,6 +15,19 @@ export interface FindManyUsersParams {
   };
 }
 
+export interface FindUsersByOrganizationParams {
+  organizationId: number;
+  page?: number;
+  limit?: number;
+  searchTerm?: string;
+  role?: Role;
+  isAdmin?: boolean;
+  orderBy?: {
+    field: keyof User;
+    direction: "asc" | "desc";
+  };
+}
+
 export interface UserUploadPictureParams {
   userId: number;
   file: {
@@ -116,6 +129,107 @@ export class UserRepository {
     return { users, total };
   }
 
+  async findUsersByOrganization(params: FindUsersByOrganizationParams): Promise<{ users: User[]; total: number }> {
+    const {
+      organizationId,
+      page = 1,
+      limit = 10,
+      searchTerm = "",
+      role,
+      isAdmin,
+      orderBy = { field: "createdAt", direction: "desc" },
+    } = params;
+
+    const skip = (page - 1) * limit;
+
+    const where: Prisma.UserWhereInput = {
+      userOrganizations: {
+        some: {
+          organizationId,
+          ...(isAdmin !== undefined && { isAdmin }),
+        },
+      },
+    };
+
+    if (searchTerm) {
+      where.OR = [
+        { userName: { contains: searchTerm, mode: "insensitive" } },
+        { firstName: { contains: searchTerm, mode: "insensitive" } },
+        { lastName: { contains: searchTerm, mode: "insensitive" } },
+        { email: { contains: searchTerm, mode: "insensitive" } },
+      ];
+    }
+
+    if (role) {
+      where.role = role;
+    }
+
+    const [users, total] = await Promise.all([
+      this.prisma.user.findMany({
+        where,
+        skip,
+        take: limit,
+        orderBy: { [orderBy.field]: orderBy.direction },
+        include: {
+          userOrganizations: {
+            include: {
+              organization: true,
+            },
+          },
+        },
+      }),
+      this.prisma.user.count({ where }),
+    ]);
+
+    return { users, total };
+  }
+
+  async findUsersByOrganizationSimple(organizationId: number): Promise<User[]> {
+    return this.prisma.user.findMany({
+      where: {
+        userOrganizations: {
+          some: {
+            organizationId,
+          },
+        },
+      },
+      include: {
+        userOrganizations: {
+          where: {
+            organizationId,
+          },
+          include: {
+            organization: true,
+          },
+        },
+      },
+    });
+  }
+
+  async findAdminUsersByOrganization(organizationId: number): Promise<User[]> {
+    return this.prisma.user.findMany({
+      where: {
+        userOrganizations: {
+          some: {
+            organizationId,
+            isAdmin: true,
+          },
+        },
+      },
+      include: {
+        userOrganizations: {
+          where: {
+            organizationId,
+            isAdmin: true,
+          },
+          include: {
+            organization: true,
+          },
+        },
+      },
+    });
+  }
+
   async uploadProfilePicture({ userId, file }: UserUploadPictureParams): Promise<User> {
     const user = await this.findById(userId);
 
@@ -170,24 +284,47 @@ export class UserRepository {
     });
   }
 
-  async addUserToOrganization(userId: number, organizationId: number) {
+  async addUserToOrganization(userId: number, organizationId: number, isAdmin: boolean = false) {
     return this.prisma.userOrganization.create({
       data: {
+        userId,
+        organizationId,
+        isAdmin,
+      },
+    });
+  }
+
+  async addUsersToOrganization(userIds: number[], organizationId: number, isAdmin: boolean = false) {
+    const data = userIds.map((userId) => ({
+      userId,
+      organizationId,
+      isAdmin,
+    }));
+
+    return this.prisma.userOrganization.createMany({
+      data,
+      skipDuplicates: true,
+    });
+  }
+
+  async removeUserFromOrganization(userId: number, organizationId: number) {
+    return this.prisma.userOrganization.deleteMany({
+      where: {
         userId,
         organizationId,
       },
     });
   }
 
-  async addUsersToOrganization(userIds: number[], organizationId: number) {
-    const data = userIds.map((userId) => ({
-      userId,
-      organizationId,
-    }));
-
-    return this.prisma.userOrganization.createMany({
-      data,
-      skipDuplicates: true,
+  async updateUserOrganizationRole(userId: number, organizationId: number, isAdmin: boolean) {
+    return this.prisma.userOrganization.updateMany({
+      where: {
+        userId,
+        organizationId,
+      },
+      data: {
+        isAdmin,
+      },
     });
   }
 }

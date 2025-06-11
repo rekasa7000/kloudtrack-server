@@ -46,9 +46,18 @@ export class OrganizationRepository {
     });
   }
 
+  async softDelete(id: number) {
+    return this.prisma.organization.update({
+      where: { id },
+      data: { isActive: false },
+    });
+  }
+
   async findById(id: number) {
     return this.prisma.organization.findUnique({
-      where: { id },
+      where: {
+        id,
+      },
     });
   }
 
@@ -58,7 +67,6 @@ export class OrganizationRepository {
 
   async findManyPaginated(options: PaginationOptions = {}): Promise<PaginatedResult<any>> {
     const { page = 1, limit = 10, sortBy = "createdAt", sortOrder = "desc" } = options;
-
     const skip = (page - 1) * limit;
 
     const orderBy: Prisma.OrganizationOrderByWithRelationInput = {
@@ -88,11 +96,14 @@ export class OrganizationRepository {
     };
   }
 
-  async findByUserId(userId: number) {
+  async findByUserId(userId: number, includeInactive: boolean = false) {
+    const whereClause: any = { userId };
+    if (!includeInactive) {
+      whereClause.organization = { isActive: true };
+    }
+
     return await this.prisma.userOrganization.findFirst({
-      where: {
-        userId,
-      },
+      where: whereClause,
       include: {
         organization: true,
       },
@@ -101,7 +112,6 @@ export class OrganizationRepository {
 
   async searchOrganizations(searchTerm: string, options: PaginationOptions = {}): Promise<PaginatedResult<any>> {
     const { page = 1, limit = 10, sortBy = "createdAt", sortOrder = "desc" } = options;
-
     const skip = (page - 1) * limit;
 
     const whereClause: Prisma.OrganizationWhereInput = {
@@ -149,5 +159,25 @@ export class OrganizationRepository {
         limit,
       },
     };
+  }
+
+  async isOrganizationActive(id: number): Promise<boolean> {
+    const organization = await this.prisma.organization.findUnique({
+      where: { id },
+      select: { isActive: true },
+    });
+    return organization?.isActive || false;
+  }
+
+  async findActiveOrganizations() {
+    return this.prisma.organization.findMany({
+      where: { isActive: true },
+    });
+  }
+
+  async findInactiveOrganizations() {
+    return this.prisma.organization.findMany({
+      where: { isActive: false },
+    });
   }
 }

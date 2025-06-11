@@ -14,7 +14,6 @@ export class OrganizationController {
   createOrganization = asyncHandler(async (req: Request, res: Response) => {
     const { organizationName, description } = req.body;
     const data = await this.service.createOrganization({ organizationName, description });
-
     return sendResponse(
       res,
       {
@@ -22,6 +21,7 @@ export class OrganizationController {
         organizationName: data.organizationName,
         description: data.description,
         displayPicture: data.displayPicture,
+        isActive: data.isActive,
         createdAt: data.createdAt,
       },
       201,
@@ -33,21 +33,36 @@ export class OrganizationController {
     const { id } = req.params;
     const { organizationName, description } = req.body;
     const updatedOrganization = await this.service.update({ organizationName, description }, +id);
-
     return sendResponse(res, updatedOrganization, 200, "Organization updated successfully");
   });
 
   deleteOrganization = asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
     await this.service.delete(+id);
-
     return sendResponse(res, undefined, 200, "Organization deleted successfully");
+  });
+
+  deactivateOrganization = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    await this.service.deactivateOrganization(+id);
+    return sendResponse(res, undefined, 200, "Organization deactivated successfully");
+  });
+
+  activateOrganization = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    await this.service.activateOrganization(+id);
+    return sendResponse(res, undefined, 200, "Organization activated successfully");
+  });
+
+  checkOrganizationStatus = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const isActive = await this.service.isOrganizationActive(+id);
+    return sendResponse(res, { id: +id, isActive }, 200, `Organization is ${isActive ? "active" : "inactive"}`);
   });
 
   getOrganizationById = asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
     const data = await this.service.findById(+id);
-
     return sendResponse(res, data, 200, "Organization retrieved successfully");
   });
 
@@ -65,7 +80,6 @@ export class OrganizationController {
     };
 
     const result = await this.service.findManyPaginated(options);
-
     return sendResponse(res, result, 200, "Organizations retrieved successfully");
   });
 
@@ -84,13 +98,21 @@ export class OrganizationController {
     };
 
     const result = await this.service.searchOrganizations(searchTerm as string, options);
-
     return sendResponse(res, result, 200, "Organizations search completed successfully");
   });
 
   getAllOrganizations = asyncHandler(async (req: Request, res: Response) => {
     const data = await this.service.findMany();
-
     return sendResponse(res, data, 200, "All organizations retrieved successfully");
+  });
+
+  getActiveOrganizations = asyncHandler(async (req: Request, res: Response) => {
+    const data = await this.service.findActiveOrganizations();
+    return sendResponse(res, data, 200, "Active organizations retrieved successfully");
+  });
+
+  getInactiveOrganizations = asyncHandler(async (req: Request, res: Response) => {
+    const data = await this.service.findInactiveOrganizations();
+    return sendResponse(res, data, 200, "Inactive organizations retrieved successfully");
   });
 }

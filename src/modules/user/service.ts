@@ -1,7 +1,12 @@
 import { Prisma, Role, User } from "@prisma/client";
 import { AppError } from "../../core/utils/error";
 import { hashPassword, comparePassword } from "../../core/utils/password";
-import { UserRepository, FindManyUsersParams, UserUploadPictureParams } from "./repository";
+import {
+  UserRepository,
+  FindManyUsersParams,
+  FindUsersByOrganizationParams,
+  UserUploadPictureParams,
+} from "./repository";
 import { generateResetToken } from "../../core/utils/token";
 
 export interface UserCreateInput
@@ -27,6 +32,18 @@ export interface ResetPasswordInput {
   token: string;
   newPassword: string;
   confirmPassword: string;
+}
+
+export interface AddUserToOrganizationInput {
+  userId: number;
+  organizationId: number;
+  isAdmin?: boolean;
+}
+
+export interface AddUsersToOrganizationInput {
+  userIds: number[];
+  organizationId: number;
+  isAdmin?: boolean;
 }
 
 export class UserService {
@@ -251,6 +268,37 @@ export class UserService {
     return { users: usersWithoutPasswords, total };
   }
 
+  async findUsersByOrganization(
+    params: FindUsersByOrganizationParams
+  ): Promise<{ users: Partial<User>[]; total: number }> {
+    const { users, total } = await this.repository.findUsersByOrganization(params);
+
+    const usersWithoutPasswords = users.map((user) => {
+      const { password, ...userWithoutPassword } = user;
+      return userWithoutPassword;
+    });
+
+    return { users: usersWithoutPasswords, total };
+  }
+
+  async getUsersByOrganizationSimple(organizationId: number): Promise<Partial<User>[]> {
+    const users = await this.repository.findUsersByOrganizationSimple(organizationId);
+
+    return users.map((user) => {
+      const { password, ...userWithoutPassword } = user;
+      return userWithoutPassword;
+    });
+  }
+
+  async getAdminUsersByOrganization(organizationId: number): Promise<Partial<User>[]> {
+    const users = await this.repository.findAdminUsersByOrganization(organizationId);
+
+    return users.map((user) => {
+      const { password, ...userWithoutPassword } = user;
+      return userWithoutPassword;
+    });
+  }
+
   async uploadProfilePicture(params: UserUploadPictureParams): Promise<User> {
     const user = await this.repository.findById(params.userId);
     if (!user) {
@@ -295,15 +343,64 @@ export class UserService {
     });
   }
 
-  async addUserToOrganization(userId: number, organizationId: number) {
-    const userOrganization = await this.repository.addUserToOrganization(userId, organizationId);
+  async addUserToOrganization(data: AddUserToOrganizationInput) {
+    const { userId, organizationId, isAdmin = false } = data;
+
+    const user = await this.repository.findById(userId);
+    if (!user) {
+      throw new AppError(`User with ID ${userId} not found`, 404);
+    }
+
+    const userOrganization = await this.repository.addUserToOrganization(userId, organizationId, isAdmin);
 
     return userOrganization;
   }
 
-  async addUsersToOrganization(userIds: number[], organizationId: number) {
-    const userOrganizations = await this.repository.addUsersToOrganization(userIds, organizationId);
+  async addUsersToOrganization(data: AddUsersToOrganizationInput) {
+    const { userIds, organizationId, isAdmin = false } = data;
+
+    const existingUsers = await Promise.all(
+      userIds.map(async (userId) => {
+        const user = await this.repository.findById(userId);
+        if (!user) {
+          throw new AppError(`User with ID ${userId} not found`, 404);
+        }
+        return user;
+      })
+    );
+
+    const userOrganizations = await this.repository.addUsersToOrganization(userIds, organizationId, isAdmin);
 
     return userOrganizations;
+  }
+
+  async removeUserFromOrganization(userId: number, organizationId: number) {
+    const user = await this.repository.findById(userId);
+    if (!user) {
+      throw new AppError(`User with ID ${userId} not found`, 404);
+    }
+
+    const result = await this.repository.removeUserFromOrganization(userId, organizationId);
+
+    if (result.count === 0) {
+      throw new AppError(`User is not a member of organization with ID ${organizationId}`, 404);
+    }
+
+    return result;
+  }
+
+  async updateUserOrganizationRole(userId: number, organizationId: number, isAdmin: boolean) {
+    const user = await this.repository.findById(userId);
+    if (!user) {
+      throw new AppError(`User with ID ${userId} not found`, 404);
+    }
+
+    const result = await this.repository.updateUserOrganizationRole(userId, organizationId, isAdmin);
+
+    if (result.count === 0) {
+      throw new AppError(`User is not a member of organization with ID ${organizationId}`, 404);
+    }
+
+    return result;
   }
 }
