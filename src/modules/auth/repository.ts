@@ -11,8 +11,26 @@ export class AuthRepository {
     return this.prisma.user.findUnique({ where: { email } });
   }
 
-  async findById(id: number): Promise<User | null> {
-    return this.prisma.user.findUnique({ where: { id } });
+  async findById(id: number) {
+    const data = await this.prisma.user.findUnique({
+      where: { id },
+      include: {
+        userOrganizations: {
+          select: {
+            organizationId: true,
+          },
+        },
+      },
+    });
+
+    if (!data) return null;
+
+    const organizationId = data.userOrganizations[0]?.organizationId ?? null;
+
+    return {
+      ...data,
+      organizationId,
+    };
   }
 
   async update(id: number, data: Partial<User>): Promise<User> {

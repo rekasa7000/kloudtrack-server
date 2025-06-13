@@ -39,7 +39,7 @@ export class AuthService {
     };
   }
 
-  async getProfile(userId: number): Promise<Partial<User>> {
+  async getProfile(userId: number) {
     const user = await this.repository.findById(userId);
     if (!user) {
       throw new Error("User not found");
@@ -52,6 +52,7 @@ export class AuthService {
       role: user.role,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
+      organizationId: user.organizationId,
     };
   }
 

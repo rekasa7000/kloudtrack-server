@@ -6,6 +6,7 @@ import { errorHandler } from "./core/middlewares/error-handler.middleware";
 import { AppRoutes } from "./route";
 import { AppError } from "./core/utils/error";
 import http from "http";
+import { Server as SocketIOServer } from "socket.io";
 import { PrismaClient } from "@prisma/client";
 import { prisma } from "./config/database.config";
 import { config } from "./config/environment";
@@ -22,13 +23,17 @@ import cookieParser from "cookie-parser";
 import { S3Service } from "./core/service/aws-s3";
 import { FirmwareContainer } from "./modules/firmware/container";
 import { SystemMetricsContainer } from "./modules/system-metrics/container";
+import { WebSocketManager } from "./core/websocket/socket.manager";
+import { AuthWebSocketMiddleware } from "./core/middlewares/websocket.middleware";
 
 export class App {
   public app: Application;
   public server: http.Server;
+  public io: SocketIOServer;
   private prisma: PrismaClient;
   private appRoutes!: AppRoutes;
   private awsIotEndpoint: string;
+  private websocketManager: WebSocketManager;
 
   private authContainer: AuthContainer;
   private commandContainer: CommandContainer;
@@ -47,6 +52,17 @@ export class App {
   constructor() {
     this.app = express();
     this.server = http.createServer(this.app);
+
+    this.io = new SocketIOServer(this.server, {
+      cors: {
+        origin: ["http://localhost:5173", "http://localhost:5174"],
+        methods: ["GET", "POST"],
+        credentials: true,
+      },
+      transports: ["websocket", "polling"],
+      pingTimeout: 60000,
+      pingInterval: 25000,
+    });
 
     this.awsIotEndpoint = config.aws.iot.endpoint;
 
@@ -78,12 +94,21 @@ export class App {
       this.rootCertificateContainer
     );
 
+    this.websocketManager = new WebSocketManager(
+      this.io,
+      this.userContainer,
+      this.stationContainer,
+      this.telemetryContainer,
+      this.commandContainer
+    );
+
     this.systemMetricsContainer.service.startMetricsCollection();
     this.stationContainer.setIoTManager(this.iotManager);
     this.stationCertificateContainer.setStationContainer(this.stationContainer);
     this.commandContainer.setIoTManager(this.iotManager);
 
     this.configureMiddleware();
+    this.setupWebSocket();
     this.setupRoutes();
     this.configureErrorHandling();
     this.setupShutdownHandlers();
@@ -95,6 +120,13 @@ export class App {
     this.app.use(cookieParser());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
+  }
+
+  private setupWebSocket(): void {
+    this.io.use(AuthWebSocketMiddleware(this.authContainer));
+    this.websocketManager.initialize();
+
+    console.log("WebSocket server configured");
   }
 
   private setupRoutes(): void {
@@ -152,6 +184,7 @@ export class App {
 
       this.server.listen(port, () => {
         console.log(`Server running on http://localhost:${port}`);
+        console.log(`WebSocket server running on ws://localhost:${port}`);
       });
     } catch (error) {
       console.error("Failed to start server:", error);
@@ -162,11 +195,22 @@ export class App {
 
   public async stop(): Promise<void> {
     try {
+      // Close WebSocket connections
+      this.io.close();
+
+      // Close HTTP server
+      this.server.close();
+
       await this.prisma.$disconnect();
       console.log("Disconnected from database");
     } catch (error) {
       console.error("Error during shutdown:", error);
     }
+  }
+
+  // Method to get WebSocket manager for external use
+  public getWebSocketManager(): WebSocketManager {
+    return this.websocketManager;
   }
 }
 

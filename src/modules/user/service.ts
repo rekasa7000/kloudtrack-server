@@ -9,14 +9,31 @@ import {
 } from "./repository";
 import { generateResetToken } from "../../core/utils/token";
 
-export interface UserCreateInput
-  extends Omit<Prisma.UserUncheckedCreateInput, "passwordChangedAt" | "createdAt" | "updatedAt"> {
+export interface UserCreateInput {
+  userName: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  email: string;
+  role: Role;
+  password: string;
+  phone?: string | null;
+  profilePicture?: string | null;
+  createdByUserId?: number | null;
   confirmPassword?: string;
-  organizationId?: string;
+  organizationId?: number;
 }
 
-export interface UserUpdateInput
-  extends Omit<Prisma.UserUncheckedUpdateInput, "passwordChangedAt" | "createdAt" | "updatedAt"> {
+export interface UserUpdateInput {
+  id?: number;
+  userName?: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  email?: string;
+  role?: Role;
+  password?: string;
+  phone?: string | null;
+  profilePicture?: string | null;
+  createdByUserId?: number | null;
   currentPassword?: string;
   confirmPassword?: string;
 }
@@ -86,6 +103,9 @@ export class UserService {
 
     const user = await this.repository.create(userData);
 
+    if (data.organizationId) {
+      await this.repository.addUserToOrganization(user.id, data.organizationId);
+    }
     const { password, ...userWithoutPassword } = user;
     return userWithoutPassword as User;
   }

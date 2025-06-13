@@ -63,6 +63,25 @@ enum CommandType {
   @@map("command_type_enum")
 }
 
+enum NotificationType {
+  alert
+  info
+  warning
+  success
+  system
+
+  @@map("notification_type_enum")
+}
+
+enum NotificationPriority {
+  low
+  medium
+  high
+  urgent
+
+  @@map("notification_priority_enum")
+}
+
 model User {
   id                Int       @id @default(autoincrement()) @map("user_id")
   userName          String    @unique @map("user_name")
@@ -89,8 +108,35 @@ model User {
   stationCertificate StationCertificate[]
   resetToken         ResetToken[]
   Firmware           Firmware[]
+  Notification       Notification[]
 
   @@map("users")
+}
+
+model Notification {
+  id             Int                  @id @default(autoincrement()) @map("notification_id")
+  userId         Int                  @map("user_id")
+  organizationId Int?                 @map("organization_id")
+  type           NotificationType     @map("notification_type")
+  title          String               @map("notification_title")
+  message        String               @map("message")
+  data           String?              @map("data")
+  priority       NotificationPriority @map("priority")
+  isRead         Boolean              @default(false) @map("is_read")
+  readAt         DateTime?            @map("read_at")
+  createdAt      DateTime             @default(now()) @map("created_at")
+  updatedAt      DateTime             @updatedAt @map("updated_at")
+  expiresAt      DateTime?            @map("expires_at")
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([organizationId])
+  @@index([userId, isRead])
+  @@index([userId, createdAt])
+  @@index([expiresAt])
+  @@map("notifications")
 }
 
 model ResetToken {
@@ -116,6 +162,7 @@ model Organization {
   userOrganizations UserOrganization[]
   apiKey            ApiKey[]
   station           Station[]
+  Notification      Notification[]
 
   @@map("organizations")
 }
