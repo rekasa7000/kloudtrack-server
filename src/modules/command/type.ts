@@ -15,8 +15,10 @@ export enum CommandType {
   data = "FETCH_DATA",
 }
 
+export type Commands = "reset" | "activate" | "deactivate" | "update" | "sync" | "data";
+
 export interface CommandPayload {
-  command: "reset" | "activate" | "deactivate" | "update" | "sync" | "data";
-  url?: string | undefined;
-  force?: boolean | undefined;
+  command: Commands;
+  url?: string;
+  force?: boolean;
 }

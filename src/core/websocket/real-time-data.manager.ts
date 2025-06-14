@@ -1,13 +1,23 @@
-// core/websocket/realtime-data.manager.ts
 import { Server as SocketIOServer } from "socket.io";
 import { StationContainer } from "../../modules/station/container";
 import { TelemetryContainer } from "../../modules/telemetry/container";
 import { EventEmitter } from "events";
+import { Prisma } from "@prisma/client";
 
 export interface TelemetryData {
-  stationId: string;
+  stationId: number; // Changed from string to number to match your schema
   timestamp: Date;
   data: {
+    temperature?: number;
+    humidity?: number;
+    pressure?: number;
+    heatIndex?: number;
+    windDirection?: number;
+    windSpeed?: number;
+    precipitation?: number;
+    uvIndex?: number;
+    distance?: number;
+    lightIntensity?: number;
     [key: string]: any;
   };
   metadata?: {
@@ -16,7 +26,7 @@ export interface TelemetryData {
 }
 
 export interface StationStatus {
-  stationId: string;
+  stationId: number; // Changed from string to number
   status: "online" | "offline" | "error" | "maintenance";
   lastSeen: Date;
   metadata?: {
@@ -25,8 +35,8 @@ export interface StationStatus {
 }
 
 export class RealTimeDataManager extends EventEmitter {
-  private dataBuffer: Map<string, TelemetryData[]> = new Map();
-  private stationStatus: Map<string, StationStatus> = new Map();
+  private dataBuffer: Map<number, TelemetryData[]> = new Map(); // Changed key type to number
+  private stationStatus: Map<number, StationStatus> = new Map(); // Changed key type to number
   private flushInterval: NodeJS.Timeout;
   private statusCheckInterval: NodeJS.Timeout;
 
@@ -49,7 +59,7 @@ export class RealTimeDataManager extends EventEmitter {
   }
 
   public initialize(): void {
-    // Listen for telemetry data from IoT Manager
+    // Listen for telemetry data from MQTT/IoT Manager
     this.setupTelemetryListeners();
 
     // Listen for station status updates
@@ -59,7 +69,7 @@ export class RealTimeDataManager extends EventEmitter {
   }
 
   private setupTelemetryListeners(): void {
-    // Listen for new telemetry data
+    // Listen for new telemetry data from MQTT
     this.on("telemetry_received", (data: TelemetryData) => {
       this.handleTelemetryData(data);
     });
@@ -89,6 +99,14 @@ export class RealTimeDataManager extends EventEmitter {
 
     // Check for alerts/thresholds
     this.checkDataThresholds(data);
+
+    // Update station status to online when receiving data
+    this.updateStationStatus({
+      stationId: data.stationId,
+      status: "online",
+      lastSeen: data.timestamp,
+      metadata: { lastDataReceived: data.timestamp },
+    });
   }
 
   private handleStationStatusChange(status: StationStatus): void {
@@ -153,14 +171,20 @@ export class RealTimeDataManager extends EventEmitter {
     }
   }
 
-  private getStationThresholds(stationId: string): { [key: string]: any } {
+  private getStationThresholds(stationId: number): { [key: string]: any } {
     // This would typically come from database configuration
-    // For now, return default thresholds
+    // For now, return default thresholds based on your telemetry schema
     return {
-      temperature: { min: -10, max: 50 },
+      temperature: { min: -40, max: 60 },
       humidity: { min: 0, max: 100 },
       pressure: { min: 800, max: 1200 },
-      voltage: { min: 11.5, max: 14.5 },
+      heatIndex: { min: -50, max: 70 },
+      windSpeed: { min: 0, max: 200 },
+      windDirection: { min: 0, max: 360 },
+      precipitation: { min: 0, max: 1000 },
+      uvIndex: { min: 0, max: 15 },
+      distance: { min: 0, max: 10000 },
+      lightIntensity: { min: 0, max: 100000 },
     };
   }
 
@@ -173,7 +197,7 @@ export class RealTimeDataManager extends EventEmitter {
     return false;
   }
 
-  private aggregateRecentData(stationId: string): any {
+  private aggregateRecentData(stationId: number): any {
     const recentData = this.dataBuffer.get(stationId) || [];
     if (recentData.length === 0) return null;
 
@@ -218,94 +242,109 @@ export class RealTimeDataManager extends EventEmitter {
     };
   }
 
-  //   private async flushBufferedData(): Promise<void> {
-  //     if (this.dataBuffer.size === 0) return;
+  private async flushBufferedData(): Promise<void> {
+    if (this.dataBuffer.size === 0) return;
 
-  //     try {
-  //       // Process each station's buffered data
-  //       for (const [stationId, dataArray] of this.dataBuffer.entries()) {
-  //         if (dataArray.length === 0) continue;
+    try {
+      // Process each station's buffered data
+      for (const [stationId, dataArray] of this.dataBuffer.entries()) {
+        if (dataArray.length === 0) continue;
 
-  //         // Save to database in batch
-  //         await this.saveTelemetryBatch(stationId, dataArray);
+        // Save to database in batch
+        await this.saveTelemetryBatch(stationId, dataArray);
 
-  //         // Clear buffer for this station
-  //         this.dataBuffer.set(stationId, []);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error flushing buffered data:", error);
-  //     }
-  //   }
+        // Clear buffer for this station
+        this.dataBuffer.set(stationId, []);
+      }
+    } catch (error) {
+      console.error("Error flushing buffered data:", error);
+    }
+  }
 
-  //   private async saveTelemetryBatch(stationId: number, dataArray: TelemetryData[]): Promise<void> {
-  //     try {
-  //       // Prepare batch data for database
-  //       const telemetryRecords = dataArray.map((data) => ({
-  //         stationId: data.stationId,
-  //         timestamp: data.timestamp,
-  //         data: JSON.stringify(data.data),
-  //         metadata: data.metadata ? JSON.stringify(data.metadata) : null,
-  //       }));
+  private async saveTelemetryBatch(stationId: number, dataArray: TelemetryData[]): Promise<void> {
+    try {
+      // Process each telemetry data point individually since your service doesn't have createBatch
+      for (const data of dataArray) {
+        const telemetryRecord: Prisma.TelemetryUncheckedCreateInput = {
+          stationId: data.stationId,
+          recordedAt: data.timestamp,
+          temperature: data.data.temperature,
+          humidity: data.data.humidity,
+          pressure: data.data.pressure,
+          heatIndex: data.data.heatIndex,
+          windDirection: data.data.windDirection,
+          windSpeed: data.data.windSpeed,
+          precipitation: data.data.precipitation,
+          uvIndex: data.data.uvIndex,
+          distance: data.data.distance,
+          lightIntensity: data.data.lightIntensity,
+        };
 
-  //       // Save using telemetry container
-  //       await this.telemetryContainer.service.createBatch(telemetryRecords);
-  //     } catch (error) {
-  //       console.error(`Error saving telemetry batch for station ${stationId}:`, error);
-  //     }
-  //   }
+        // Save using telemetry container service
+        await this.telemetryContainer.service.createTelemetry(data.stationId, telemetryRecord);
+      }
+    } catch (error) {
+      console.error(`Error saving telemetry batch for station ${stationId}:`, error);
+    }
+  }
 
-  //   private async checkStationStatuses(): Promise<void> {
-  //     try {
-  //       // Get all stations that should be online
-  //       const stations = await this.stationContainer.service.getActiveStations();
+  private async checkStationStatuses(): Promise<void> {
+    try {
+      // Get all stations - you'll need to implement getActiveStations in your StationContainer
+      // For now, check all stations that have sent data
+      const stationIds = Array.from(this.stationStatus.keys());
 
-  //       for (const station of stations) {
-  //         const lastSeen = await this.getStationLastSeen(station.id);
-  //         const now = new Date();
-  //         const timeSinceLastSeen = now.getTime() - lastSeen.getTime();
+      for (const stationId of stationIds) {
+        const lastSeen = await this.getStationLastSeen(stationId);
+        const now = new Date();
+        const timeSinceLastSeen = now.getTime() - lastSeen.getTime();
 
-  //         let status: StationStatus["status"] = "online";
+        let status: StationStatus["status"] = "online";
 
-  //         // Consider offline if no data received for 2 minutes
-  //         if (timeSinceLastSeen > 2 * 60 * 1000) {
-  //           status = "offline";
-  //         }
+        // Consider offline if no data received for 2 minutes
+        if (timeSinceLastSeen > 2 * 60 * 1000) {
+          status = "offline";
+        }
 
-  //         // Consider error if no data received for 10 minutes
-  //         if (timeSinceLastSeen > 10 * 60 * 1000) {
-  //           status = "error";
-  //         }
+        // Consider error if no data received for 10 minutes
+        if (timeSinceLastSeen > 10 * 60 * 1000) {
+          status = "error";
+        }
 
-  //         const currentStatus = this.stationStatus.get(station.id);
+        const currentStatus = this.stationStatus.get(stationId);
 
-  //         // Only emit if status changed
-  //         if (!currentStatus || currentStatus.status !== status) {
-  //           this.emit("station_status_changed", {
-  //             stationId: station.id,
-  //             status,
-  //             lastSeen,
-  //             metadata: {
-  //               timeSinceLastSeen,
-  //               previousStatus: currentStatus?.status,
-  //             },
-  //           });
-  //         }
-  //       }
-  //     } catch (error) {
-  //       console.error("Error checking station statuses:", error);
-  //     }
-  //   }
+        // Only emit if status changed
+        if (!currentStatus || currentStatus.status !== status) {
+          this.emit("station_status_changed", {
+            stationId: stationId,
+            status,
+            lastSeen,
+            metadata: {
+              timeSinceLastSeen,
+              previousStatus: currentStatus?.status,
+            },
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error checking station statuses:", error);
+    }
+  }
 
-  //   private async getStationLastSeen(stationId: string): Promise<Date> {
-  //     try {
-  //       const lastTelemetry = await this.telemetryContainer.service.getLatest(stationId);
-  //       return lastTelemetry ? lastTelemetry.timestamp : new Date(0);
-  //     } catch (error) {
-  //       return new Date(0);
-  //     }
-  //   }
+  private async getStationLastSeen(stationId: number): Promise<Date> {
+    try {
+      // Get the latest telemetry data for this station
+      const telemetryData = await this.telemetryContainer.service.findManyTelemetry(stationId, 1, 0);
+      if (telemetryData && telemetryData.data && telemetryData.data.length > 0) {
+        return telemetryData.data[0].recordedAt;
+      }
+      return new Date(0);
+    } catch (error) {
+      return new Date(0);
+    }
+  }
 
-  // Public methods for external services
+  // Public methods for external services (MQTT handlers can call these)
   public receiveTelemetryData(data: TelemetryData): void {
     this.emit("telemetry_received", data);
   }
@@ -318,23 +357,57 @@ export class RealTimeDataManager extends EventEmitter {
     this.emit("station_status_changed", status);
   }
 
-  public getStationStatus(stationId: string): StationStatus | undefined {
+  public getStationStatus(stationId: number): StationStatus | undefined {
     return this.stationStatus.get(stationId);
   }
 
-  public getAllStationStatuses(): Map<string, StationStatus> {
+  public getAllStationStatuses(): Map<number, StationStatus> {
     return new Map(this.stationStatus);
   }
 
-  //   public async getStationDataSummary(stationId: string, hours: number = 24): Promise<any> {
-  //     try {
-  //       const summary = await this.telemetryContainer.service.getDataSummary(stationId, hours);
-  //       return summary;
-  //     } catch (error) {
-  //       console.error("Error getting station data summary:", error);
-  //       return null;
-  //     }
-  //   }
+  public async getStationDataSummary(stationId: number, hours: number = 24): Promise<any> {
+    try {
+      // Calculate how many records to fetch based on hours
+      // Assuming data comes every 5 minutes, 12 records per hour
+      const recordsToFetch = hours * 12;
+      const summary = await this.telemetryContainer.service.findManyTelemetry(stationId, recordsToFetch, 0);
+      return summary;
+    } catch (error) {
+      console.error("Error getting station data summary:", error);
+      return null;
+    }
+  }
+
+  // Method to process MQTT message and convert to TelemetryData
+  public processMqttMessage(stationId: number, mqttPayload: any): void {
+    try {
+      const telemetryData: TelemetryData = {
+        stationId: stationId,
+        timestamp: new Date(),
+        data: {
+          temperature: mqttPayload.temperature,
+          humidity: mqttPayload.humidity,
+          pressure: mqttPayload.pressure,
+          heatIndex: mqttPayload.heatIndex,
+          windDirection: mqttPayload.windDirection,
+          windSpeed: mqttPayload.windSpeed,
+          precipitation: mqttPayload.precipitation,
+          uvIndex: mqttPayload.uvIndex,
+          distance: mqttPayload.distance,
+          lightIntensity: mqttPayload.lightIntensity,
+        },
+        metadata: {
+          source: "mqtt",
+          receivedAt: new Date(),
+          rawPayload: mqttPayload,
+        },
+      };
+
+      this.receiveTelemetryData(telemetryData);
+    } catch (error) {
+      console.error(`Error processing MQTT message for station ${stationId}:`, error);
+    }
+  }
 
   public destroy(): void {
     if (this.flushInterval) {
