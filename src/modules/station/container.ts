@@ -3,7 +3,7 @@ import { StationRepository } from "./repository";
 import { StationService } from "./service";
 import { StationController } from "./controller";
 import { StationRoutes } from "./route";
-import { IoTManager } from "../iot/service";
+import { IoTManager } from "../../core/iot/iot.manager";
 
 export class StationContainer {
   public readonly repository: StationRepository;

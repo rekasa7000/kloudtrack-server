@@ -10,7 +10,7 @@ import { Server as SocketIOServer } from "socket.io";
 import { PrismaClient } from "@prisma/client";
 import { prisma } from "./config/database.config";
 import { config } from "./config/environment";
-import { IoTManager } from "./modules/iot/service";
+import { IoTManager } from "./core/iot/iot.manager";
 import { AuthContainer } from "./modules/auth/container";
 import { CommandContainer } from "./modules/command/container";
 import { OrganizationContainer } from "./modules/organization/container";

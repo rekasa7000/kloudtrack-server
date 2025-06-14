@@ -2,7 +2,7 @@ import { StationRepository } from "./repository";
 import { Station, StationType } from "@prisma/client";
 import { logger } from "../../core/utils/logger";
 import { CreateStationDTO, InternalCreateStationDTO, UpdateStationDTO } from "./type";
-import { IoTManager } from "../iot/service";
+import { IoTManager } from "../../core/iot/iot.manager";
 
 export class StationService {
   private repository: StationRepository;

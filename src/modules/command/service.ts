@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { AppError } from "../../core/utils/error";
 import { CommandRepository } from "./repository";
-import { IoTManager } from "../iot/service";
+import { IoTManager } from "../../core/iot/iot.manager";
 import { logger } from "../../core/utils/logger";
 import { CommandPayload, CommandStatus, CommandType } from "./type";
 

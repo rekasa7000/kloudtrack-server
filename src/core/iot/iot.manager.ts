@@ -2,16 +2,16 @@ import AWS from "aws-sdk";
 import { device as awsIot } from "aws-iot-device-sdk";
 import { EventEmitter } from "events";
 import { IoTMessage, StationConnection } from "../../types";
-import { StationContainer } from "../station/container";
-import { TelemetryContainer } from "../telemetry/container";
-import { CommandContainer } from "../command/container";
+import { StationContainer } from "../../modules/station/container";
+import { TelemetryContainer } from "../../modules/telemetry/container";
+import { CommandContainer } from "../../modules/command/container";
 import { config } from "../../config/environment";
-import { logger } from "../../core/utils/logger";
-import { S3Service } from "../../core/service/aws-s3";
+import { logger } from "../utils/logger";
+import { S3Service } from "../service/aws-s3";
 import path from "path";
 import fs from "fs/promises";
 import os from "os";
-import { RootCertificateContainer } from "../root-certificate/container";
+import { RootCertificateContainer } from "../../modules/root-certificate/container";
 
 export class IoTManager extends EventEmitter {
   private static instance: IoTManager;

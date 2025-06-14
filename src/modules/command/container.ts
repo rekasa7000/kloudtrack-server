@@ -3,7 +3,7 @@ import { CommandService } from "./service";
 import { CommandController } from "./controller";
 import { CommandRoutes } from "./route";
 import { PrismaClient } from "@prisma/client";
-import { IoTManager } from "../iot/service";
+import { IoTManager } from "../../core/iot/iot.manager";
 
 export class CommandContainer {
   public readonly repository: CommandRepository;
