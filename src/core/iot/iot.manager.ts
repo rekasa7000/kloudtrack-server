@@ -12,6 +12,7 @@ import path from "path";
 import fs from "fs/promises";
 import os from "os";
 import { RootCertificateContainer } from "../../modules/root-certificate/container";
+import { WebSocketManager } from "../websocket/socket.manager";
 
 export class IoTManager extends EventEmitter {
   private static instance: IoTManager;
@@ -29,7 +30,8 @@ export class IoTManager extends EventEmitter {
     stationContainer: StationContainer,
     telemetryContainer: TelemetryContainer,
     commandContainer: CommandContainer,
-    rootCertificateContainer: RootCertificateContainer
+    rootCertificateContainer: RootCertificateContainer,
+    private webSocketManager?: WebSocketManager
   ) {
     super();
     this.stationContainer = stationContainer;

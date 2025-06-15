@@ -27,7 +27,6 @@ export class OrganizationRepository {
   }
 
   async create(data: Prisma.OrganizationUncheckedCreateInput) {
-    console.log(data);
     return this.prisma.organization.create({
       data,
     });

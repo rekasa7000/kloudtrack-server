@@ -12,8 +12,8 @@ export class OrganizationController {
   }
 
   createOrganization = asyncHandler(async (req: Request, res: Response) => {
-    const { organizationName, description } = req.body;
-    const data = await this.service.createOrganization({ organizationName, description });
+    const { name, description } = req.body;
+    const data = await this.service.createOrganization({ organizationName: name, description });
     return sendResponse(
       res,
       {

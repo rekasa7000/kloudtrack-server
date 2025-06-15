@@ -1,9 +1,11 @@
 import multer from "multer";
 import { Request, Response, NextFunction } from "express";
+import { AppError } from "../../core/utils/error";
 
 interface MulterRequest extends Request {
   body: {
-    name?: string;
+    name?: string; // ✅ This should match frontend now
+    description?: string;
   };
   file?: Express.Multer.File & { s3Key?: string; name?: string };
 }
@@ -31,9 +33,19 @@ export class OrganizationUpload {
 
   public uploadOrganizationPicture() {
     const fileFilter = (_req: Request, file: Express.Multer.File, callback: multer.FileFilterCallback) => {
+      console.log("🔍 FILE FILTER CALLED - FILE DETECTED!");
+      console.log("File details:", {
+        fieldname: file.fieldname,
+        originalname: file.originalname,
+        mimetype: file.mimetype,
+        size: file.size,
+      });
+
       if (this.imageTypes.includes(file.mimetype)) {
+        console.log("✅ File type accepted");
         callback(null, true);
       } else {
+        console.log("❌ File type rejected");
         callback(new Error("Invalid file type. Only JPEG, PNG, GIF, and WebP images are allowed."));
       }
     };
